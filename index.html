@@ -99,116 +99,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/12/22/hello-world/" data-id="cix161xmn0002h8kk5o0mqrgw" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-多线程读写测试数据" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/08/23/多线程读写测试数据/" class="article-date">
-  <time datetime="2016-08-23T13:04:44.000Z" itemprop="datePublished">2016-08-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/23/多线程读写测试数据/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>var data = [<br>  {“month”:0,”tem”:9859,”city”:”delete”},<br>  {“month”:1,”tem”:17953,”city”:”delete”},<br>  {“month”:2,”tem”:16396,”city”:”delete”},<br>  {“month”:3,”tem”:17844,”city”:”delete”},<br>  {“month”:4,”tem”:23180,”city”:”delete”},<br>  {“month”:5,”tem”:16541,”city”:”delete”},<br>  {“month”:0,”tem”:9011,”city”:”WAL”},<br>  {“month”:1,”tem”:7039,”city”:”WAL”},<br>  {“month”:2,”tem”:7403,”city”:”WAL”},<br>  {“month”:3,”tem”:7013,”city”:”WAL”},<br>  {“month”:4,”tem”:6953,”city”:”WAL”},<br>  {“month”:5,”tem”:7091,”city”:”WAL”},</p>
-<p>];<br>var chart = new G2.Chart({<br>  id: ‘c1’,<br>  width: 1000,<br>  height: 500<br>});<br>var defs = {<br>  ‘month’: {<br>    alias: ‘试验组别’,<br>    type: ‘cat’,<br>    values: [‘1’,’2’,’3’,’4’,’5’,’6’]<br>  },<br>  ‘city’: {<br>    alias: ‘模式’<br>  },<br>  ‘tem’: {<br>    alias: ‘2线程读时间’<br>  }<br>};</p>
-<p>chart.source(data, defs);<br>chart.line().position(‘month*tem’).color(‘city’).size(2);<br>chart.render();</p>
-<p>var data = [<br>  {“month”:0,”tem”:8381,”city”:”delete”},<br>  {“month”:1,”tem”:8782,”city”:”delete”},<br>  {“month”:2,”tem”:8492,”city”:”delete”},<br>  {“month”:3,”tem”:9204,”city”:”delete”},<br>  {“month”:4,”tem”:8962,”city”:”delete”},<br>  {“month”:5,”tem”:9552,”city”:”delete”},<br>  {“month”:0,”tem”:1624,”city”:”WAL”},<br>  {“month”:1,”tem”:2707,”city”:”WAL”},<br>  {“month”:2,”tem”:2607,”city”:”WAL”},<br>  {“month”:3,”tem”:2999,”city”:”WAL”},<br>  {“month”:4,”tem”:3456,”city”:”WAL”},<br>  {“month”:4,”tem”:2656,”city”:”WAL”},</p>
-<p>];<br>var chart = new G2.Chart({<br>  id: ‘c1’,<br>  width: 1000,<br>  height: 500<br>});<br>var defs = {<br>  ‘month’: {<br>    alias: ‘试验组别’,<br>    type: ‘cat’,<br>    values: [‘1’,’2’,’3’,’4’,’5’,’6’]<br>  },<br>  ‘city’: {<br>    alias: ‘模式’<br>  },<br>  ‘tem’: {<br>    alias: ‘2线程读时间’<br>  }<br>};</p>
-<p>chart.source(data, defs);<br>chart.line().position(‘month*tem’).color(‘city’).size(2);<br>chart.render();<br>var data = [<br>  {“month”:0,”tem”:10652,”city”:”delete”},<br>  {“month”:1,”tem”:17137,”city”:”delete”},<br>  {“month”:2,”tem”:17748,”city”:”delete”},<br>  {“month”:3,”tem”:15414,”city”:”delete”},<br>  {“month”:4,”tem”:17572,”city”:”delete”},<br>  {“month”:5,”tem”:19157,”city”:”delete”},<br>  {“month”:0,”tem”:1624,”city”:”WAL”},<br>  {“month”:1,”tem”:6985,”city”:”WAL”},<br>  {“month”:2,”tem”:4829,”city”:”WAL”},<br>  {“month”:3,”tem”:4879,”city”:”WAL”},<br>  {“month”:4,”tem”:4889,”city”:”WAL”},<br>  {“month”:4,”tem”:4699,”city”:”WAL”},</p>
-<p>];</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/23/多线程读写测试数据/" data-id="cix161xml0001h8kkujb9bc03" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-HT HTTP2 网络框架(1)" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/06/13/HT HTTP2 网络框架(1)/" class="article-date">
-  <time datetime="2016-06-13T03:40:33.000Z" itemprop="datePublished">2016-06-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="HT-HTTP2-网络框架"><a href="#HT-HTTP2-网络框架" class="headerlink" title="HT HTTP2 网络框架"></a>HT HTTP2 网络框架</h1><p><code>HTTP2</code> 是一个灵活的网络请求框架，它对业务层网络请求的参数、数据结果进行一定程度的封装，并支持自定义请求数据结果的转换(可设置全局转换或者是单个请求转换)。</p>
-<h2 id="特色"><a href="#特色" class="headerlink" title="特色"></a>特色</h2><ul>
-<li>框架支持可插装<code>client</code>，默认提供<code>okhttp client</code></li>
-<li>提供业务层请求封装</li>
-<li>支持同步和异步请求，可设置异步请求排队超时</li>
-<li>支持自定义请求结果数据转换</li>
-<li>支持文件下载、多文件上传</li>
-</ul>
-<!--插装httpUrlConnection不支持cache-->
-<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><h4 id="1-定义RequestHttpTask"><a href="#1-定义RequestHttpTask" class="headerlink" title="1. 定义RequestHttpTask"></a>1. 定义RequestHttpTask</h4><p>以<a href="url">demo</a>中的<code>GetItemListRequestHttpTask.java</code>为例</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  商品列表</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetItemListRequestHttpTask</span> <span class="keyword">extends</span> <span class="title">FormBodyRequest</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">GetItemListRequestHttpTask</span><span class="params">(HTConnection connection,Integer itemType, // 商品类型</span></span></div><div class="line">                                      Integer startIndex, // 起始索引</div><div class="line">                                      Integer count) &#123; <span class="comment">// 返回个数</span></div><div class="line">        <span class="keyword">super</span>(connection);</div><div class="line">        bodyMap.put(<span class="string">"itemType"</span>, itemType+<span class="string">""</span>); <span class="comment">// 商品类型</span></div><div class="line">        bodyMap.put(<span class="string">"startIndex"</span>, startIndex+<span class="string">""</span>); <span class="comment">// 起始索引</span></div><div class="line">        bodyMap.put(<span class="string">"count"</span>, count+<span class="string">""</span>); <span class="comment">// 返回个数</span></div><div class="line">        </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isCacheable</span><span class="params">()</span></span>&#123;<span class="comment">//是否缓存</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getApi</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"/item/lists"</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getMethod</span><span class="params">()</span> </span>&#123;<span class="comment">// http method</span></div><div class="line">        <span class="keyword">return</span> HttpMethod.POST;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Class <span class="title">getModelClass</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> ItemListResult.class; <span class="comment">//需要转成的model</span></div><div class="line">    &#125;</div><div class="line">        </div><div class="line">   <span class="comment">/**</span></div><div class="line">     * ResponseConverter用来表示如何将response body转成需要的model</div><div class="line">     * 可以在 整个client 初始化时指定。如果在初始化时指定，那么这里就返回 super.getResponseConverter();</div><div class="line">     * </div><div class="line">     * 也可以根据每个请求指定</div><div class="line">     * <span class="doctag">@return</span> ResponseConverter</div><div class="line">     */</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseConverter <span class="title">getResponseConverter</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//return super.getResponseConverter();</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResultFastJsonConverter(); </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上述示例代码继承<code>FormBodyRequest</code>，用来表示<code>application/x-www-form-urlencoded</code>。</p>
-<p>相应的还有支持<code>text/plain</code>的<code>TextBodyRequest</code>基类，支持<code>multipart/form-data</code>的<code>MultiPartUploadRequest</code>基类。</p>
-<h5 id="1-1-ResponseConverter"><a href="#1-1-ResponseConverter" class="headerlink" title="1.1 ResponseConverter"></a>1.1 ResponseConverter</h5><p><code>Http2</code>默认提供<code>FastJSONResponseConverter</code>，采用<code>FastJson</code>把<code>Response</code>转成<code>Model</code>。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResultFastJsonConverter</span> <span class="keyword">extends</span> <span class="title">FastJSONResponseConverter</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Class <span class="title">getOneLevelModelClass</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> Result.class;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>用户也可以继承<code>ResponseConverter</code>，实现自定义的数据转换来支持其他的数据格式，如<code>xml</code>等</p>
-<h5 id="1-2-Model"><a href="#1-2-Model" class="headerlink" title="1.2 Model"></a>1.2 Model</h5><p> 自定义的<code>Model</code>需要设置为两级，真正持有请求结果数据的<code>Model</code>为第二级，需要使用注解<code>@BusinessModel</code>标出</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  商品详情</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Result</span> </span>&#123; <span class="comment">//一级Model</span></div><div class="line">    <span class="keyword">public</span> Integer code;</div><div class="line">    <span class="keyword">public</span> String message;</div><div class="line">    <span class="meta">@BusinessModel</span></div><div class="line">    <span class="keyword">public</span> Object data; <span class="comment">//二级Model</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="2-配置HTConnection发起请求"><a href="#2-配置HTConnection发起请求" class="headerlink" title="2.配置HTConnection发起请求"></a>2.配置HTConnection发起请求</h4><p>配置HTConnection的时候，可以定义全局的数据结果的转换，并设置排队超时，连接超时</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">HTConnection client = <span class="keyword">new</span> HTConnection.Builder().</div><div class="line">.responseConverter(<span class="keyword">new</span> ResultFastJsonConverter())<span class="comment">//设置全局的ResponseConverter</span></div><div class="line">.asyncQueueTimeOut(<span class="number">1000</span>, TimeUnit.MILLISECONDS)<span class="comment">//异步排队超时</span></div><div class="line">.connectTimeout(<span class="number">1000</span>, TimeUnit.MILLISECONDS)<span class="comment">//连接超时</span></div><div class="line">.endPoint(<span class="string">"http://10.0.2.2:8081"</span>).build();</div><div class="line"></div><div class="line">GetItemListRequestHttpTask task = <span class="keyword">new</span> GetItemListRequestHttpTask(connection, <span class="number">1</span>, <span class="number">0</span>, <span class="number">10</span>);</div><div class="line"></div><div class="line"><span class="comment">//        try &#123;</span></div><div class="line"><span class="comment">//            //同步</span></div><div class="line"><span class="comment">//            ModelResponse&lt;Result,ItemListResult&gt; result  =  task.executeModel();</span></div><div class="line"><span class="comment">//            System.out.println(result.toString());</span></div><div class="line"><span class="comment">//        &#125;catch (IOException e)&#123;</span></div><div class="line"><span class="comment">//            e.printStackTrace();</span></div><div class="line"><span class="comment">//        &#125;</span></div><div class="line">       </div><div class="line">       </div><div class="line">        <span class="comment">//异步</span></div><div class="line">        task.enqueueModel(<span class="keyword">new</span> ModelCallback&lt;Result, ItemListResult&gt;() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(AbstractRequest request, Exception e)</span> </span>&#123;</div><div class="line">                Log.d(TAG, e.getMessage());</div><div class="line"></div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResponse</span><span class="params">(AbstractRequest request, ModelResponse&lt;Result, ItemListResult&gt; modelResponse)</span> </span>&#123;</div><div class="line">                Result result = modelResponse.getResult();</div><div class="line">             </div><div class="line">                Log.d(TAG, modelResponse.getModel().getItems().toString());</div><div class="line">            &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
-<h2 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h2><h3 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h3><p><code>app</code>的<code>build.grade</code>中添加</p>
-<!--<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile &apos;com.netease.hearttouch:ht-universalrouter-dispatch:0.1.0&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>project</code>的<code>build.gradle</code>的<code>dependencies</code>下面添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">classpath &apos;XXX&apos;</div></pre></td></tr></table></figure>
-<p>–&gt;</p>
-<h3 id="maven"><a href="#maven" class="headerlink" title="maven"></a>maven</h3><!--```
-<dependencies>
-  <dependency>
-    <groupId>com.netease.hearttouch</groupId>
-    <artifactId>XXX</artifactId>
-    <version>XXX</version>
-  </dependency>
-  <dependency>
-    <groupId>com.netease.hearttouch</groupId>
-    <artifactId>XXX</artifactId>
-    <version>XXX</version>
-    <optional>true</optional>
-  </dependency>
-</dependencies>
-```-->
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/06/13/HT HTTP2 网络框架(1)/" data-id="cix161xmh0000h8kkw2zihpsq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/12/22/hello-world/" data-id="cix1645hy0000hokk5dfmefu7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -235,7 +126,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li></ul>
     </div>
   </div>
 
@@ -249,14 +140,6 @@
         
           <li>
             <a href="/2016/12/22/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/23/多线程读写测试数据/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2016/06/13/HT HTTP2 网络框架(1)/">(no title)</a>
           </li>
         
       </ul>
