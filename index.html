@@ -52,25 +52,26 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2016-12-22T10:15:43.000Z"><a href="/2016/12/22/hello-world/">2016-12-22</a></time>
+        <time datetime="2016-12-26T04:34:04.000Z"><a href="/2016/12/26/NeteaseFed/README/">2016-12-26</a></time>
       
       
   
-    <h1 class="title"><a href="/2016/12/22/hello-world/">Hello World</a></h1>
+    <h1 class="title"><a href="/2016/12/26/NeteaseFed/README/"></a></h1>
   
 
     </header>
     <div class="entry">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p> 大家在推送微信公众号文章之前先把文章上传到本仓库，这样就可以在微信推文的时候顺便附上我们的博客原文地址了。我们的博客是用<code>gitpages+Hexo</code>生成的静态博客，博客地址：<a href="http://neteasefed.github.io" target="_blank" rel="external">http://neteasefed.github.io</a></p>
+<p>上传文章至本仓库时需要注意以下的几点格式要求：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"> ---</div><div class="line"> title:(空格)文章标题</div><div class="line"> </div><div class="line"> tags:</div><div class="line"> -(空格)tag1</div><div class="line"> -(空格)tag2</div><div class="line"> ... </div><div class="line"></div><div class="line"> --- </div><div class="line"></div><div class="line">（摘要）&lt;!-- more --&gt;</div><div class="line"> 正文 ...</div></pre></td></tr></table></figure>
+<p> 需要注意以下几点：</p>
+<ol>
+<li>至少填写一个<strong>android</strong>或者<strong>ios</strong>的<code>tag</code>，便于文章分类管理</li>
+<li>此处摘要不需额外填写，将引言或背景部分作为摘要就可以了，以<code>&lt;!-- more--&gt;</code>结束</li>
+<li>上面的空格一定不要忘记哈</li>
+</ol>
+<p>最后，欢迎大家补充，多提意见。</p>
 
       
     </div>
@@ -93,11 +94,83 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2016-11-24T03:08:16.000Z"><a href="/2016/11/24/网易 Android 工程模板化实践/">2016-11-24</a></time>
+        <time datetime="2016-12-26T04:34:04.000Z"><a href="/2016/12/26/NeteaseFed/android/Android JS引擎/">2016-12-26</a></time>
       
       
   
-    <h1 class="title"><a href="/2016/11/24/网易 Android 工程模板化实践/">网易Android工程模板化实践</a></h1>
+    <h1 class="title"><a href="/2016/12/26/NeteaseFed/android/Android JS引擎/">Android平台上的JavaScript引擎</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>近期在产品中遇到了这样的一个问题：Web端已经存在一个功能完善的JavaScript库，如果将相关Web嵌入到App中，则WebView将带来一定的性能影响；如果Android端本地开发一个相同的库，则需要消耗大量的资源。考虑到代码复用和跨平台开发，团队调研了JS引擎在Android上的使用，希望解决”不经过WebView，而将JS库拿到Android端运行，并将运行结果交给本地输出”这一需求。
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2016/12/26/NeteaseFed/android/Android JS引擎/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-12-26T04:34:04.000Z"><a href="/2016/12/26/NeteaseFed/android/Jenkins-ci容器化在Android项目构建中的应用（公众号版）/">2016-12-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/12/26/NeteaseFed/android/Jenkins-ci容器化在Android项目构建中的应用（公众号版）/">Jenkins-ci容器化在Android项目构建中的应用</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>随着软件开发复杂度的不断提高，如何能在不断变化的需求中快速适应和保证软件的质量显得尤其的重要，<a href="http://baike.baidu.com/view/5253255.htm">持续集成</a>正是针对这一类问题的一种软件开发实践。
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2016/12/26/NeteaseFed/android/Jenkins-ci容器化在Android项目构建中的应用（公众号版）/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-12-26T04:34:04.000Z"><a href="/2016/12/26/NeteaseFed/android/网易 Android 工程模板化实践/">2016-12-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/12/26/NeteaseFed/android/网易 Android 工程模板化实践/">网易Android工程模板化实践</a></h1>
   
 
     </header>
@@ -110,7 +183,7 @@
       
         
           <div class="alignleft">
-            <a href="/2016/11/24/网易 Android 工程模板化实践/#more" class="more-link">Read More</a>
+            <a href="/2016/12/26/NeteaseFed/android/网易 Android 工程模板化实践/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -153,7 +226,7 @@ function search(formname) {
   <h3 class="title">标签</h3>
   <ul class="entry">
   
-    <li><a href="/tags/android/">android</a><small>1</small></li>
+    <li><a href="/tags/android/">android</a><small>3</small></li>
   
   </ul>
 </div>
