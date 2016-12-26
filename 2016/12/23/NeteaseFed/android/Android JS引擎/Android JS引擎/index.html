@@ -1,0 +1,649 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android平台上的JavaScript引擎 | 网易前端技术部</title>
+  <meta name="author" content="网易前端技术部">
+  
+  <meta name="description" content="网易杭研前端技术部，分享最前沿的技术。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Android平台上的JavaScript引擎"/>
+  <meta property="og:site_name" content="网易前端技术部"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="网易前端技术部" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">网易前端技术部</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-12-22T16:00:00.000Z"><a href="/2016/12/23/NeteaseFed/android/Android JS引擎/Android JS引擎/">2016-12-23</a></time>
+      
+      
+  
+    <h1 class="title">Android平台上的JavaScript引擎</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="&#x4E00;&#x3001;&#x524D;&#x8A00;"><a href="#&#x4E00;&#x3001;&#x524D;&#x8A00;" class="headerlink" title="&#x4E00;&#x3001;&#x524D;&#x8A00;"></a>&#x4E00;&#x3001;&#x524D;&#x8A00;</h3><p>&#x8FD1;&#x671F;&#x5728;&#x4EA7;&#x54C1;&#x4E2D;&#x9047;&#x5230;&#x4E86;&#x8FD9;&#x6837;&#x7684;&#x4E00;&#x4E2A;&#x95EE;&#x9898;&#xFF1A;Web&#x7AEF;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x4E00;&#x4E2A;&#x529F;&#x80FD;&#x5B8C;&#x5584;&#x7684;JavaScript&#x5E93;&#xFF0C;&#x5982;&#x679C;&#x5C06;&#x76F8;&#x5173;Web&#x5D4C;&#x5165;&#x5230;App&#x4E2D;&#xFF0C;&#x5219;WebView&#x5C06;&#x5E26;&#x6765;&#x4E00;&#x5B9A;&#x7684;&#x6027;&#x80FD;&#x5F71;&#x54CD;&#xFF1B;&#x5982;&#x679C;Android&#x7AEF;&#x672C;&#x5730;&#x5F00;&#x53D1;&#x4E00;&#x4E2A;&#x76F8;&#x540C;&#x7684;&#x5E93;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x6D88;&#x8017;&#x5927;&#x91CF;&#x7684;&#x8D44;&#x6E90;&#x3002;&#x8003;&#x8651;&#x5230;&#x4EE3;&#x7801;&#x590D;&#x7528;&#x548C;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#xFF0C;&#x56E2;&#x961F;&#x8C03;&#x7814;&#x4E86;JS&#x5F15;&#x64CE;&#x5728;Android&#x4E0A;&#x7684;&#x4F7F;&#x7528;&#xFF0C;&#x5E0C;&#x671B;&#x89E3;&#x51B3;&#x201D;&#x4E0D;&#x7ECF;&#x8FC7;WebView&#xFF0C;&#x800C;&#x5C06;JS&#x5E93;&#x62FF;&#x5230;Android&#x7AEF;&#x8FD0;&#x884C;&#xFF0C;&#x5E76;&#x5C06;&#x8FD0;&#x884C;&#x7ED3;&#x679C;&#x4EA4;&#x7ED9;&#x672C;&#x5730;&#x8F93;&#x51FA;&#x201D;&#x8FD9;&#x4E00;&#x9700;&#x6C42;&#x3002;<a id="more"></a></p>
+<p>JS&#x5F15;&#x64CE;&#x80FD;&#x591F;&#x89E3;&#x6790;JS&#x811A;&#x672C;&#xFF0C;&#x901A;&#x5E38;&#x88AB;&#x4F9D;&#x9644;&#x4E8E;&#x6D4F;&#x89C8;&#x5668;&#x4E2D;&#xFF0C;&#x4F8B;&#x5982;Safari&#x6240;&#x4F7F;&#x7528;&#x7684;<strong>JavaScriptCore</strong>&#x3001;Google Chrome&#x6240;&#x4F7F;&#x7528;&#x7684;<strong>V8</strong>&#x548C;FireFox&#x6240;&#x4F7F;&#x7528;&#x7684;<strong>SpiderMonkey</strong>&#x7B49;&#x7B49;&#x3002;&#x4E5F;&#x88AB;&#x7528;&#x4F5C;&#x79FB;&#x52A8;&#x7AEF;&#x7684;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#xFF0C;&#x4F8B;&#x5982;<a href="http://developer.telerik.com/featured/nativescript-works/" target="_blank" rel="external">NativeScript</a>&#x5728;iOS&#x7AEF;&#x548C;Android&#x5206;&#x522B;&#x4F7F;&#x7528;&#x4E86;JavaScriptCore&#x548C;V8&#xFF0C;<a href="https://facebook.github.io/react-native/docs/javascript-environment.html" target="_blank" rel="external">ReactNative</a>&#x5219;&#x90FD;&#x4F7F;&#x7528;&#x4E86;JavaScriptCore&#x3002;</p>
+<h3 id="&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;"><a href="#&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;" class="headerlink" title="&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;"></a>&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;</h3><p>&#x5728;Android&#x7CFB;&#x7EDF;&#x4E2D;&#x80FD;&#x8FD0;&#x884C;&#x7684;JS&#x5F15;&#x64CE;&#x6709;&#x5982;&#x4E0B;5&#x79CD;&#xFF1A;</p>
+<h4 id="1-JavaScriptCore"><a href="#1-JavaScriptCore" class="headerlink" title="1. JavaScriptCore"></a>1. <a href="https://trac.webkit.org/wiki/JavaScriptCore" target="_blank" rel="external">JavaScriptCore</a></h4><p>JavaScriptCore&#x662F;&#x4E00;&#x4E2A;&#x5728;WebKit&#x4E2D;&#x63D0;&#x4F9B;JS&#x5F15;&#x64CE;&#x7684;&#x5F00;&#x6E90;&#x6846;&#x67B6;&#xFF0C;&#x6700;&#x8FD1;&#x66F4;&#x65B0;&#x65E5;&#x671F;&#x662F;2016&#x5E74;9&#x6708;26&#x65E5;&#x3002;&#x76EE;&#x524D;&#x8BE5;&#x5F15;&#x64CE;&#x7531;Apple&#x7EF4;&#x62A4;&#xFF0C;&#x4F7F;&#x7528;&#x4E8E;Safari&#x6D4F;&#x89C8;&#x5668;&#xFF0C;iOS7&#x540E;&#x4E5F;&#x96C6;&#x6210;&#x5230;&#x4E86;iPhone&#x5E73;&#x53F0;&#x3002;</p>
+<p>&#x7531;&#x4E8E;&#x5176;&#x4F7F;&#x7528;C&#x8BED;&#x8A00;&#x7F16;&#x5199;&#xFF0C;&#x56E0;&#x6B64;&#x5728;Android&#x5F00;&#x53D1;&#x4E2D;&#x5E76;&#x4E0D;&#x80FD;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#x3002;Github&#x4E0A;&#x7684;&#x5F00;&#x6E90;&#x9879;&#x76EE;<a href="https://github.com/ericwlange/AndroidJSCore" target="_blank" rel="external">AndroidJSCore</a>&#x80FD;&#x591F;&#x5E2E;&#x52A9;&#x5F00;&#x53D1;&#x8005;&#x7ECF;&#x8FC7;&#x8C03;&#x7528;Java&#x63A5;&#x53E3;&#x800C;&#x4F7F;&#x7528;JavaScriptCore&#x3002;&#x8BE5;&#x9879;&#x76EE;&#x7531;<strong>ericwlange</strong>&#x7EF4;&#x62A4;&#xFF0C;&#x6700;&#x65B0;&#x7248;&#x672C;3.0.1&#x53D1;&#x5E03;&#x4E8E;2016&#x5E74;7&#x6708;31&#x65E5;&#xFF0C;&#x6709;API&#x6587;&#x6863;&#x548C;&#x793A;&#x4F8B;&#x4EE3;&#x7801;&#xFF0C;&#x4F46;&#x7F3A;&#x5C11;&#x76F8;&#x5173;&#x6280;&#x672F;&#x6587;&#x7AE0;&#xFF0C;&#x5E76;&#x4ECD;&#x5B58;&#x5728;&#x4E00;&#x4E9B;&#x6027;&#x80FD;&#x95EE;&#x9898;&#x3002;</p>
+<h4 id="2-V8"><a href="#2-V8" class="headerlink" title="2. V8"></a>2. <a href="https://developers.google.com/v8/" target="_blank" rel="external">V8</a></h4><p>V8&#x662F;&#x7531;Google&#x5F00;&#x53D1;&#x5E76;&#x7EF4;&#x62A4;&#x7684;&#x9AD8;&#x6027;&#x80FD;&#x5F00;&#x6E90;JS&#x5F15;&#x64CE;&#xFF0C;&#x91C7;&#x7528;C++&#x7F16;&#x5199;&#xFF0C;&#x4F7F;&#x7528;&#x4E8E;Google Chrome&#x6D4F;&#x89C8;&#x5668;&#x3002;&#x6700;&#x65B0;&#x7248;&#x672C;&#x4E3A;V8 5.5 beta&#xFF0C;&#x66F4;&#x65B0;&#x4E8E;2016&#x5E74;10&#x6708;24&#x65E5;&#x3002;</p>
+<p>&#x540C;JavaScriptCore&#x4E00;&#x6837;&#xFF0C;&#x5728;Android&#x5F00;&#x53D1;&#x4E2D;&#xFF0C;&#x76F8;&#x5173;&#x63A5;&#x53E3;&#x9700;&#x8981;&#x901A;&#x8FC7;&#x4E00;&#x5C42;&#x5305;&#x88C5;&#x8FDB;&#x884C;&#x8C03;&#x7528;&#x3002;Github&#x4E0A;&#x7684;&#x5F00;&#x6E90;&#x9879;&#x76EE;<a href="https://github.com/eclipsesource/J2V8" target="_blank" rel="external">J2V8</a>&#xFF0C;&#x76F8;&#x5173;&#x6587;&#x7AE0;&#x53EF;&#x5728;&#x6B64;&#x5904;<a href="http://eclipsesource.com/blogs/tag/j2v8/" target="_blank" rel="external">http://eclipsesource.com/blogs/tag/j2v8/</a>&#x67E5;&#x9605;&#xFF0C;&#x6700;&#x65B0;&#x7248;&#x672C;4.6.0&#x53D1;&#x5E03;&#x4E8E;2016&#x5E74;9&#x6708;22&#x65E5;&#x3002;</p>
+<p>J2V8&#x662F;&#x4E00;&#x5957;&#x9488;&#x5BF9;V8&#x7684;Java&#x7ED1;&#x5B9A;&#x3002;J2V8&#x7684;&#x5F00;&#x53D1;&#x4E3A;Android&#x5E73;&#x53F0;&#x5E26;&#x6765;&#x4E86;&#x9AD8;&#x6548;&#x7684;Javascript&#x7684;&#x6267;&#x884C;&#x73AF;&#x5883;&#xFF0C;&#x5176;&#x4EE5;&#x6027;&#x80FD;&#x4E0E;&#x5185;&#x5B58;&#x6D88;&#x8017;&#x4E3A;&#x8BBE;&#x8BA1;&#x76EE;&#x6807;&#x3002;&#x5B83;&#x91C7;&#x7528;&#x4E86;&#x201C;&#x57FA;&#x672C;&#x7C7B;&#x578B;&#x4F18;&#x5148;&#x201D;&#x539F;&#x5219;&#xFF0C;&#x610F;&#x5473;&#x7740;&#x4E00;&#x4E2A;&#x6267;&#x884C;&#x7ED3;&#x679C;&#x662F;&#x57FA;&#x672C;&#x7C7B;&#x578B;&#xFF0C;&#x90A3;&#x4E48;&#x6240;&#x8FD4;&#x56DE;&#x7684;&#x503C;&#x4E5F;&#x5C31;&#x662F;&#x8BE5;&#x57FA;&#x672C;&#x7C7B;&#x578B;&#x3002;&#x5B83;&#x8FD8;&#x91C7;&#x7528;&#x4E86;&#x201C;&#x61D2;&#x52A0;&#x8F7D;&#x201D;&#x6280;&#x672F;&#xFF0C;&#x53EA;&#x6709;&#x5F53;JS&#x6267;&#x884C;&#x7ED3;&#x679C;&#x88AB;&#x8BBF;&#x95EE;&#x65F6;&#xFF0C;&#x624D;&#x4F1A;&#x901A;&#x8FC7;JNI&#x590D;&#x5236;&#x5230;Java&#x4E2D;&#x3002;</p>
+<p>&#x6B64;&#x5916;J2V8&#x63D0;&#x4F9B;&#x4E86;<code>release()</code>&#x65B9;&#x6CD5;&#xFF0C;&#x5F00;&#x53D1;&#x8005;&#x5728;&#x67D0;&#x4E00;&#x5BF9;&#x8C61;&#x4E0D;&#x518D;&#x9700;&#x8981;&#x65F6;&#x4E3B;&#x52A8;&#x8C03;&#x7528;&#x8BE5;&#x65B9;&#x6CD5;&#x53BB;&#x91CA;&#x653E;&#x672C;&#x5730;&#x5BF9;&#x8C61;&#x53E5;&#x67C4;&#xFF0C;&#x91CA;&#x653E;&#x89C4;&#x5219;&#x5982;&#x4E0B;&#xFF1A;</p>
+<ul>
+<li>&#x5982;&#x679C;&#x662F;&#x7531;&#x4EE3;&#x7801;&#x521B;&#x5EFA;&#x7684;&#x5BF9;&#x8C61;&#xFF0C;&#x90A3;&#x4E48;&#x5FC5;&#x987B;&#x91CA;&#x653E;&#x5B83;&#xFF1B;&#x5982;&#x679C;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x662F;&#x901A;&#x8FC7;&#x8FD4;&#x56DE;&#x8BED;&#x53E5;&#x4F20;&#x56DE;&#x6765;&#x7684;&#x8BDD;&#xFF0C;&#x7CFB;&#x7EDF;&#x4F1A;&#x66FF;&#x4F60;&#x91CA;&#x653E;&#x5B83;&#xFF1B;</li>
+<li>&#x5982;&#x679C;&#x662F;&#x7531;&#x7CFB;&#x7EDF;&#x521B;&#x5EFA;&#x7684;&#x5BF9;&#x8C61;&#xFF0C;&#x5219;&#x65E0;&#x9700;&#x62C5;&#x5FC3;&#x91CA;&#x653E;&#xFF0C;&#x800C;&#x5982;&#x679C;&#x5BF9;&#x8C61;&#x662F;JS&#x65B9;&#x6CD5;&#x7684;&#x8FD4;&#x56DE;&#x503C;&#xFF0C;&#x5C31;&#x5FC5;&#x987B;&#x624B;&#x52A8;&#x7684;&#x91CA;&#x653E;&#x5B83;&#x3002;</li>
+</ul>
+<h4 id="3-SpiderMonkey"><a href="#3-SpiderMonkey" class="headerlink" title="3. SpiderMonkey"></a>3. <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey" target="_blank" rel="external">SpiderMonkey</a></h4><p>&#x5F00;&#x6E90;JS&#x5F15;&#x64CE;SpiderMonkey&#x6700;&#x521D;&#x7531;Netscape&#x5F00;&#x53D1;&#xFF0C;&#x5982;&#x4ECA;&#x7531;Mozilla&#x5F00;&#x53D1;&#x5E76;&#x7EF4;&#x62A4;&#xFF0C;&#x4E14;&#x88AB;&#x5E7F;&#x6CDB;&#x7528;&#x4E8E;Mozilla&#x4EA7;&#x54C1;&#xFF08;&#x5982;FireFox&#xFF09;&#x3002;&#x6700;&#x65B0;&#x7248;&#x672C;&#x4E3A;SpiderMonkey 45&#xFF0C;&#x66F4;&#x65B0;&#x4E8E;2016&#x5E74;4&#x6708;14&#x65E5;&#x3002;</p>
+<p>SpiderMonkey&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E9B;&#x6838;&#x5FC3;&#x7684;JavaScript&#x6570;&#x636E;&#x7C7B;&#x578B;&#xFF0C;&#x5982;&#x6570;&#x5B57;&#xFF0C;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x6570;&#x7EC4;&#xFF0C;&#x5BF9;&#x8C61;&#x7B49;&#x7B49;&#xFF0C;&#x4EE5;&#x53CA;&#x4E00;&#x4E9B;&#x65B9;&#x6CD5;&#x5982;Array.push&#x3002;&#x5B83;&#x8FD8;&#x4F7F;&#x5F97;&#x6BCF;&#x4E2A;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x90FD;&#x5BB9;&#x6613;&#x5C06;&#x5176;&#x81EA;&#x5DF1;&#x7684;&#x5BF9;&#x8C61;&#x548C;&#x65B9;&#x6CD5;&#x66B4;&#x9732;&#x7ED9;JavaScript&#x4EE3;&#x7801;&#x3002;&#x5E94;&#x7528;&#x5F00;&#x53D1;&#x8005;&#x53EF;&#x4EE5;&#x51B3;&#x5B9A;&#x5E94;&#x7528;&#x5982;&#x4F55;&#x5C06;&#x4E0E;&#x6240;&#x5199;&#x811A;&#x672C;&#x76F8;&#x5173;&#x7684;&#x5BF9;&#x8C61;&#x66B4;&#x9732;&#x51FA;&#x6765;&#x3002;</p>
+<h4 id="4-Rhino"><a href="#4-Rhino" class="headerlink" title="4. Rhino"></a>4. <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino" target="_blank" rel="external">Rhino</a></h4><p>Rhino&#x662F;&#x7531;Mozilla&#x5F00;&#x53D1;&#x7684;&#x5F00;&#x6E90;JS&#x5F15;&#x64CE;&#x3002;&#x91C7;&#x7528;Java&#x7F16;&#x5199;&#xFF0C;&#x56E0;&#x6B64;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x8C03;&#x7528;&#xFF0C;&#x5728;JDK 6&#x3001;JDK 7&#x4E2D;&#x66F4;&#x662F;&#x6346;&#x7ED1;&#x4E86;&#x8BE5;&#x5F15;&#x64CE;&#x3002;&#x6700;&#x65B0;&#x7248;&#x672C;&#x4E3A;Rhino 1.7.7.1&#xFF0C;&#x66F4;&#x65B0;&#x4E8E;2016&#x5E74;2&#x6708;1&#x65E5;&#x3002;</p>
+<p>&#x5176;&#x63D0;&#x4F9B;&#x7684;&#x7279;&#x6027;&#x5305;&#x62EC;&#xFF1A;</p>
+<ul>
+<li>JavaScript 1.7&#x7684;&#x5168;&#x90E8;&#x7279;&#x6027;</li>
+<li>&#x53EF;&#x4EE5;&#x7528;&#x811A;&#x672C;&#x65B9;&#x5F0F;&#x8C03;&#x7528;Java</li>
+<li>&#x7528;&#x4E00;&#x4E2A;JavaScript Shell&#x6765;&#x6267;&#x884C;JavaScript&#x811A;&#x672C;</li>
+<li>&#x7528;&#x4E00;&#x4E2A;JavaScript&#x7F16;&#x8BD1;&#x5668;&#x6765;&#x5C06;JavaScript&#x811A;&#x672C;&#x6587;&#x4EF6;&#x8F6C;&#x6362;&#x6210;Java&#x7C7B;&#x6587;&#x4EF6;</li>
+<li>&#x7528;&#x4E00;&#x4E2A;JavaScript&#x8C03;&#x8BD5;&#x5668;&#x6765;&#x8C03;&#x8BD5;Rhino&#x6267;&#x884C;&#x7684;&#x811A;&#x672C;</li>
+</ul>
+<h4 id="5-Nashorn"><a href="#5-Nashorn" class="headerlink" title="5. Nashorn"></a>5. <a href="http://openjdk.java.net/projects/nashorn/" target="_blank" rel="external">Nashorn</a></h4><p>Nashorn&#x7531;Oracle&#x5F00;&#x53D1;&#x5E76;&#x7EF4;&#x62A4;&#xFF0C;&#x4ECE;JDK 8&#x5F00;&#x59CB;&#xFF0C;Rhino&#x88AB;Nashorn&#x4EE3;&#x66FF;&#xFF0C;&#x6210;&#x4E3A;JDK&#x9ED8;&#x8BA4;JS&#x5F15;&#x64CE;&#x3002;Nashorn&#x540C;JDK 8&#x4E00;&#x540C;&#x53D1;&#x5E03;&#x548C;&#x5F00;&#x6E90;&#xFF0C;&#x8F83;Rhino&#x800C;&#x8A00;&#x6027;&#x80FD;&#x66F4;&#x597D;&#xFF0C;&#x4F46;&#x4E0D;&#x652F;&#x6301;Android Dalvik&#x865A;&#x62DF;&#x673A;&#x3002;</p>
+<h3 id="&#x4E09;&#x3001;JS&#x5F15;&#x64CE;&#x6027;&#x80FD;&#x6BD4;&#x8F83;"><a href="#&#x4E09;&#x3001;JS&#x5F15;&#x64CE;&#x6027;&#x80FD;&#x6BD4;&#x8F83;" class="headerlink" title="&#x4E09;&#x3001;JS&#x5F15;&#x64CE;&#x6027;&#x80FD;&#x6BD4;&#x8F83;"></a>&#x4E09;&#x3001;JS&#x5F15;&#x64CE;&#x6027;&#x80FD;&#x6BD4;&#x8F83;</h3><p>&#x4ECE;&#x53EF;&#x7528;&#x6027;&#x65B9;&#x9762;&#x8003;&#x8651;&#xFF0C;&#x9009;&#x53D6;&#x4E86;JavaScriptCore+AndroidJSCore&#xFF08;&#x4E0B;&#x6587;&#x7531;&#x201C;JSCore&#x201D;&#x6307;&#x4EE3;&#xFF09;&#x3001;V8+J2V8&#xFF08;&#x4E0B;&#x6587;&#x7531;&#x201C;J2V8&#x201D;&#x6307;&#x4EE3;&#xFF09;&#x548C;Rhino&#x4E09;&#x79CD;&#x65B9;&#x6848;&#x8FDB;&#x884C;&#x5B9E;&#x9A8C;&#x3002;</p>
+<h4 id="&#x521B;&#x5EFA;JS&#x73AF;&#x5883;"><a href="#&#x521B;&#x5EFA;JS&#x73AF;&#x5883;" class="headerlink" title="&#x521B;&#x5EFA;JS&#x73AF;&#x5883;"></a>&#x521B;&#x5EFA;JS&#x73AF;&#x5883;</h4><p>&#x90E8;&#x5206;&#x5F15;&#x64CE;&#x5E76;&#x4E0D;&#x652F;&#x6301;&#x76F4;&#x63A5;&#x8FD0;&#x884C;&#x6587;&#x4EF6;&#xFF0C;&#x56E0;&#x6B64;&#x5C06;JS&#x4EE3;&#x7801;&#x4F5C;&#x4E3A;&#x5B57;&#x7B26;&#x4E32;&#x4EA4;&#x7ED9;JS&#x5F15;&#x64CE;&#x6267;&#x884C;&#xFF0C;&#x6267;&#x884C;&#x8FC7;&#x7A0B;&#x4E2D;&#x53EF;&#x4EE5;&#x8C03;&#x7528;&#x5DF2;&#x6CE8;&#x518C;&#x5230;JS&#x4E0A;&#x4E0B;&#x6587;&#x7684;Java&#x65B9;&#x6CD5;&#x3002;</p>
+<h5 id="JSCore"><a href="#JSCore" class="headerlink" title="JSCore"></a>JSCore</h5><pre><code>//&#x521B;&#x5EFA;JS&#x4E0A;&#x4E0B;&#x6587;
+JSContext context = new JSContext();
+//&#x521B;&#x5EFA;Java&#x65B9;&#x6CD5;
+JSFunction func = new JSFunction(context, &quot;func&quot;) {
+    public void func(String msg) {
+        //&#x76F8;&#x5173;&#x5904;&#x7406;
+    }
+};
+//&#x5C06;Java&#x65B9;&#x6CD5;&#x6CE8;&#x518C;&#x5230;JS&#x4E0A;&#x4E0B;&#x6587;
+context.property(&quot;func&quot;, func);
+//&#x6267;&#x884C;JS
+context.evaluateScript(/*JS&#x4EE3;&#x7801;*/);
+</code></pre><h5 id="J2V8"><a href="#J2V8" class="headerlink" title="J2V8"></a>J2V8</h5><pre><code>//&#x521B;&#x5EFA;JS&#x4E0A;&#x4E0B;&#x6587;
+V8 context = V8.createV8Runtime();
+//&#x521B;&#x5EFA;Java&#x65B9;&#x6CD5;&#xFF0C;&#x5E76;&#x6CE8;&#x518C;&#x5230;JS&#x4E0A;&#x4E0B;&#x6587;
+context.registerJavaMethod(new JavaVoidCallback() {
+    public void invoke(final V8Object receiver, final V8Array parameters) {
+        //&#x76F8;&#x5173;&#x5904;&#x7406;
+    }
+}, &quot;func&quot;);
+//&#x6267;&#x884C;JS
+context.executeScript(js);
+//&#x91CA;&#x653E;&#x8D44;&#x6E90;
+context.release();
+</code></pre><h5 id="Rhino"><a href="#Rhino" class="headerlink" title="Rhino"></a>Rhino</h5><pre><code>class Func {
+    void func(String msg) {
+        //&#x76F8;&#x5173;&#x5904;&#x7406;
+    }
+}
+
+//&#x521B;&#x5EFA;JS&#x4E0A;&#x4E0B;&#x6587;
+Context context = Context.enter();
+context.setOptimizationLevel(-1);
+Scriptable scope = context.initStandardObjects();
+try {
+    //&#x6267;&#x884C;JS
+    context.evaluateString(scope, js, &quot;RhinoUtil&quot;, 1, null);
+
+    //&#x5C06;Java&#x65B9;&#x6CD5;&#x5C01;&#x88C5;&#x5230;&#x7C7B;&#x4E2D;&#xFF0C;&#x5E76;&#x4F5C;&#x4E3A;&#x53C2;&#x6570;&#x4F20;&#x9012;&#x7ED9;JS&#x65B9;&#x6CD5;
+    Function function = (Function) scope.get(&quot;rhinofunc&quot;, scope);
+    function.call(context, scope, scope, new Object[]{new Func()});
+} finally {
+    Context.exit();
+}
+</code></pre><h4 id="&#x5B9E;&#x9A8C;&#x3007;&#xFF1A;&#x5305;&#x7684;&#x4F9D;&#x8D56;"><a href="#&#x5B9E;&#x9A8C;&#x3007;&#xFF1A;&#x5305;&#x7684;&#x4F9D;&#x8D56;" class="headerlink" title="&#x5B9E;&#x9A8C;&#x3007;&#xFF1A;&#x5305;&#x7684;&#x4F9D;&#x8D56;"></a>&#x5B9E;&#x9A8C;&#x3007;&#xFF1A;&#x5305;&#x7684;&#x4F9D;&#x8D56;</h4><p>&#x6BD4;&#x8F83;&#x5404;&#x65B9;&#x6848;&#x4F9D;&#x8D56;&#x5305;&#x5F15;&#x5165;&#x540E;&#xFF0C;apk&#x7684;&#x4F53;&#x79EF;&#x589E;&#x91CF;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>&#x4F9D;&#x8D56;&#x5305;&#x5360;&#x7528;(MB)</th>
+<th>&#x4F9D;&#x8D56;&#x65B9;&#x5F0F;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J2V8</td>
+<td>8.2</td>
+<td>compile &#x2018;com.eclipsesource.j2v8:j2v8:4.6.0@aar&#x2019;</td>
+</tr>
+<tr>
+<td>JSCore</td>
+<td>44.9&#x1F633;</td>
+<td>compile &#x2018;com.github.ericwlange:AndroidJSCore:3.0.1&#x2019;</td>
+</tr>
+<tr>
+<td>Rhino</td>
+<td>0.6</td>
+<td>&#x5C06;jar&#x5305;&#x653E;&#x5165;libs&#x6587;&#x4EF6;&#x5939;&#x4E0B;</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>J2V8&#x5F15;&#x5165;&#x7684;&#x662F;&#x5168;&#x5E73;&#x53F0;&#x5305;&#xFF0C;&#x5B9E;&#x9645;&#x4E0A;&#x5B83;&#x6709;&#x9488;&#x5BF9;Linux&#x3001;Windows&#x3001;MacOS&#x3001;Android&#x5404;&#x5E73;&#x53F0;&#x8FDB;&#x884C;&#x6253;&#x5305;&#xFF0C;&#x800C;Android&#x5E73;&#x53F0;&#x6700;&#x65B0;&#x7248;&#x672C;&#x4E3A;3.0.5&#xFF08;&#x7EA6;4MB&#xFF09;&#xFF0C;&#x5E76;&#x4E0D;&#x662F;&#x6700;&#x65B0;&#x7684;4.6.0&#x7248;&#x672C;</li>
+<li>&#x5177;AndroidJsCore&#x4F5C;&#x8005;&#x56DE;&#x7B54;&#xFF0C;&#x7531;&#x4E8E;&#x5FC5;&#x987B;&#x9488;&#x5BF9;&#x5404;CPU&#x67B6;&#x6784;&#x8FDB;&#x884C;&#x6253;&#x5305;&#xFF0C;&#x800C;&#x6709;7&#x79CD;CPU&#x67B6;&#x6784;&#xFF0C;&#x6BCF;&#x79CD;&#x67B6;&#x6784;&#x5305;&#x7EA6;6MB&#xFF0C;&#x56E0;&#x6B64;&#x6574;&#x4E2A;&#x4F9D;&#x8D56;&#x5305;&#x4F53;&#x79EF;&#x76F8;&#x6BD4;&#x4E4B;&#x4E0B;&#x663E;&#x5F97;&#x5E9E;&#x5927;&#xFF0C;&#x4F46;&#x4E5F;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;ABIs Splits&#x8FDB;&#x884C;&#x62C6;&#x5206;&#x3002;</li>
+<li>Rhino&#x7684;jar&#x5305;&#x4EC5;1.2M&#xFF0C;&#x56E0;&#x6B64;apk&#x589E;&#x91CF;&#x5E76;&#x4E0D;&#x663E;&#x8457;&#x3002;</li>
+</ul>
+<h4 id="&#x5B9E;&#x9A8C;&#x4E00;&#xFF1A;&#x7A7A;&#x5FAA;&#x73AF;"><a href="#&#x5B9E;&#x9A8C;&#x4E00;&#xFF1A;&#x7A7A;&#x5FAA;&#x73AF;" class="headerlink" title="&#x5B9E;&#x9A8C;&#x4E00;&#xFF1A;&#x7A7A;&#x5FAA;&#x73AF;"></a>&#x5B9E;&#x9A8C;&#x4E00;&#xFF1A;&#x7A7A;&#x5FAA;&#x73AF;</h4><p>JSCore&#x548C;J2V8&#x6267;&#x884C;JS&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>var i = 0;
+for (;i &lt; /*&#x6B21;&#x6570;*/; i++) {
+}
+</code></pre><p>Rhino&#x6267;&#x884C;JS&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>function rhinofunc(f) {
+    var i = 0;
+    for (;i &lt; /*&#x6B21;&#x6570;*/; i++) {
+    }
+}
+</code></pre><p>&#x5FAA;&#x73AF;&#x6B21;&#x6570;&#x5206;&#x522B;&#x8BBE;&#x7F6E;&#x4E3A;100&#x4E07;&#x3001;1000&#x4E07;&#x3001;1&#x4EBF;&#x6B21;&#xFF0C;&#x5728;Java&#x4EE3;&#x7801;&#x4E2D;&#x6267;&#x884C;JS&#x524D;&#x8F93;&#x51FA;&#x5F00;&#x59CB;&#x65F6;&#x95F4;&#xFF0C;&#x5728;JS&#x6267;&#x884C;&#x540E;&#x8F93;&#x51FA;&#x7ED3;&#x675F;&#x65F6;&#x95F4;&#xFF0C;&#x76F8;&#x51CF;&#x5F97;&#x51FA;&#x6267;&#x884C;&#x65F6;&#x95F4;&#x8BB0;&#x5F55;&#x5982;&#x4E0B;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th>&#x6267;&#x884C;&#x65F6;&#x95F4;(ms)</th>
+<th>100&#x4E07;&#x6B21;</th>
+<th>1000&#x4E07;&#x6B21;</th>
+<th>1&#x4EBF;&#x6B21;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J2V8</td>
+<td>17.6</td>
+<td>122.8</td>
+<td>1116.6</td>
+</tr>
+<tr>
+<td>JSCore</td>
+<td>22</td>
+<td>173.2</td>
+<td>1551</td>
+</tr>
+<tr>
+<td>Rhino</td>
+<td>2078.4</td>
+<td>22358.4</td>
+<td>198600&#x1F633;</td>
+</tr>
+</tbody>
+</table>
+<p>&#x7531;&#x5B9E;&#x9A8C;&#x7ED3;&#x679C;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#xFF1A;J2V8&#x548C;JSCore&#x76F8;&#x6BD4;&#xFF0C;J2V8&#x6267;&#x884C;&#x65F6;&#x95F4;&#x66F4;&#x77ED;&#xFF0C;&#x4F46;&#x4E24;&#x8005;&#x65F6;&#x95F4;&#x90FD;&#x5728;&#x540C;&#x4E00;&#x6570;&#x91CF;&#x7EA7;&#x4E0A;&#x3002;&#x800C;Rhino&#x6267;&#x884C;&#x65F6;&#x95F4;&#x8FDC;&#x5927;&#x4E8E;&#x524D;&#x4E24;&#x8005;&#xFF0C;&#x6839;&#x672C;&#x539F;&#x56E0;&#x5728;&#x4E8E;Java&#x7A0B;&#x5E8F;&#x8FD0;&#x884C;&#x8F83;C/C++&#x6162;&#x3002;</p>
+<h4 id="&#x5B9E;&#x9A8C;&#x4E8C;&#xFF1A;JS&#x8C03;&#x7528;Java&#x65B9;&#x6CD5;"><a href="#&#x5B9E;&#x9A8C;&#x4E8C;&#xFF1A;JS&#x8C03;&#x7528;Java&#x65B9;&#x6CD5;" class="headerlink" title="&#x5B9E;&#x9A8C;&#x4E8C;&#xFF1A;JS&#x8C03;&#x7528;Java&#x65B9;&#x6CD5;"></a>&#x5B9E;&#x9A8C;&#x4E8C;&#xFF1A;JS&#x8C03;&#x7528;Java&#x65B9;&#x6CD5;</h4><p>JSCore&#x548C;J2V8&#x6267;&#x884C;JS&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>var i = 0;
+for (;i &lt; /*&#x6B21;&#x6570;*/; i++) {
+    func();
+}
+</code></pre><p>Rhino&#x6267;&#x884C;JS&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>function rhinofunc(f) {
+    var i = 0;
+    for (;i &lt; /*&#x6B21;&#x6570;*/; i++) {
+        f.func();
+    }
+}
+</code></pre><p>&#x8C03;&#x7528;&#x6B21;&#x6570;&#x5206;&#x522B;&#x8BBE;&#x7F6E;&#x4E3A;1&#x4E07;&#x3001;10&#x4E07;&#x3001;100&#x4E07;&#x6B21;&#xFF0C;&#x8BB0;&#x5F55;&#x6267;&#x884C;&#x65F6;&#x95F4;&#x5982;&#x4E0B;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th>&#x6267;&#x884C;&#x65F6;&#x95F4;(ms)</th>
+<th>1&#x4E07;&#x6B21;</th>
+<th>10&#x4E07;&#x6B21;</th>
+<th>100&#x4E07;&#x6B21;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J2V8</td>
+<td>490.2</td>
+<td>4855.8</td>
+<td>47527</td>
+</tr>
+<tr>
+<td>JSCore</td>
+<td>1287.6</td>
+<td>13448.2</td>
+<td>121586.8&#x1F633;</td>
+</tr>
+<tr>
+<td>Rhino</td>
+<td>408.2</td>
+<td>4007.2</td>
+<td>36752.4</td>
+</tr>
+</tbody>
+</table>
+<p>&#x542F;&#x52A8;App&#x65F6;&#x8BB0;&#x5F55;&#x5360;&#x7528;&#x5185;&#x5B58;&#xFF0C;JS&#x6267;&#x884C;&#x8FC7;&#x7A0B;&#x4E2D;&#x8BB0;&#x5F55;&#x6700;&#x9AD8;&#x5360;&#x7528;&#x5185;&#x5B58;&#xFF0C;&#x76F8;&#x51CF;&#x5F97;&#x51FA;&#x5360;&#x7528;&#x5185;&#x5B58;&#x3002;</p>
+<table>
+<thead>
+<tr>
+<th>&#x5360;&#x7528;&#x5185;&#x5B58;(KB)</th>
+<th>1&#x4E07;&#x6B21;</th>
+<th>10&#x4E07;&#x6B21;</th>
+<th>100&#x4E07;&#x6B21;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J2V8</td>
+<td>7264</td>
+<td>14004</td>
+<td>17328</td>
+</tr>
+<tr>
+<td>JSCore</td>
+<td>15368</td>
+<td>15140</td>
+<td>16720</td>
+</tr>
+<tr>
+<td>Rhino</td>
+<td>2776</td>
+<td>9084</td>
+<td>9116</td>
+</tr>
+</tbody>
+</table>
+<p>&#x540C;&#x6837;&#x4E5F;&#x662F;&#x7531;&#x4E8E;&#x5F00;&#x53D1;&#x8BED;&#x8A00;&#x7684;&#x5DEE;&#x5F02;&#xFF0C;&#x5728;JS&#x8C03;&#x7528;Java&#x4E0A;Rhino&#x6027;&#x80FD;&#x66F4;&#x4F18;&#x3002;&#x6267;&#x884C;&#x65F6;&#x95F4;&#x65B9;&#x9762;&#xFF0C;J2V8&#x63A5;&#x8FD1;Rhino&#xFF0C;&#x800C;JSCore&#x5219;&#x8FDC;&#x843D;&#x540E;&#x4E8E;&#x524D;&#x4E24;&#x79CD;&#x65B9;&#x6848;&#xFF0C;&#x8FD9;&#x53EF;&#x80FD;&#x4E0E;&#x5176;Java&#x7ED1;&#x5B9A;&#x5C42;&#x6709;&#x5F88;&#x5927;&#x5173;&#x7CFB;&#x3002;&#x5BF9;&#x4E8E;J2V8&#x548C;JSCore&#x5219;&#x9700;&#x8981;&#x5148;&#x7ECF;&#x8FC7;JNI&#x5305;&#x88C5;&#x5C42;&#x624D;&#x80FD;&#x8C03;&#x7528;&#x5230;Java&#x65B9;&#x6CD5;&#xFF0C;&#x800C;&#x5927;&#x91CF;&#x7684;JNI&#x8C03;&#x7528;&#x662F;&#x975E;&#x5E38;&#x8017;&#x65F6;&#x3001;&#x8017;&#x5185;&#x5B58;&#x7684;&#x3002;</p>
+<h4 id="&#x5B9E;&#x9A8C;&#x4E09;&#xFF1A;JS&#x9012;&#x5F52;&#x8BA1;&#x7B97;&#x6590;&#x6CE2;&#x90A3;&#x5951;"><a href="#&#x5B9E;&#x9A8C;&#x4E09;&#xFF1A;JS&#x9012;&#x5F52;&#x8BA1;&#x7B97;&#x6590;&#x6CE2;&#x90A3;&#x5951;" class="headerlink" title="&#x5B9E;&#x9A8C;&#x4E09;&#xFF1A;JS&#x9012;&#x5F52;&#x8BA1;&#x7B97;&#x6590;&#x6CE2;&#x90A3;&#x5951;"></a>&#x5B9E;&#x9A8C;&#x4E09;&#xFF1A;JS&#x9012;&#x5F52;&#x8BA1;&#x7B97;&#x6590;&#x6CE2;&#x90A3;&#x5951;</h4><p>JS&#x4EE3;&#x7801;&#x6590;&#x6CE2;&#x90A3;&#x5951;&#x51FD;&#x6570;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>function fibo(n) {
+    if (n == 1 || n == 2) {
+        return 1;
+    }
+    else {
+        return fibo(n - 1) + fibo(n - 2);
+    }
+}
+</code></pre><table>
+<thead>
+<tr>
+<th>&#x6267;&#x884C;&#x65F6;&#x95F4;(ms)</th>
+<th>fibo(20)</th>
+<th>fibo(30)</th>
+<th>fibo(40)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J2V8</td>
+<td>4</td>
+<td>67.6</td>
+<td>8158.6</td>
+</tr>
+<tr>
+<td>JSCore</td>
+<td>6.6</td>
+<td>76.2</td>
+<td>7884.4</td>
+</tr>
+<tr>
+<td>Rhino</td>
+<td>248.4</td>
+<td>26898</td>
+<td>???&#x1F633;</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>&#x5360;&#x7528;&#x5185;&#x5B58;(KB)</th>
+<th>fibo(20)</th>
+<th>fibo(30)</th>
+<th>fibo(40)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J2V8</td>
+<td>6148</td>
+<td>6120</td>
+<td>17328</td>
+</tr>
+<tr>
+<td>JSCore</td>
+<td>6204</td>
+<td>6200</td>
+<td>16720</td>
+</tr>
+<tr>
+<td>Rhino</td>
+<td>5284</td>
+<td>9052</td>
+<td>9116</td>
+</tr>
+</tbody>
+</table>
+<p>Rhino&#x8FD0;&#x884C;JS&#x65F6;&#x9891;&#x7E41;GC&#xFF0C;&#x867D;&#x7136;&#x4F7F;&#x5176;&#x6240;&#x5360;&#x5185;&#x5B58;&#x8F83;&#x5C11;&#xFF0C;&#x4F46;&#x6267;&#x884C;&#x901F;&#x5EA6;&#x975E;&#x5E38;&#x7F13;&#x6162;&#xFF0C;&#x76F8;&#x6BD4;&#x4E4B;&#x4E0B;J2V8&#x548C;JSCore&#x65B9;&#x6848;&#x6548;&#x7387;&#x66F4;&#x9AD8;&#x3002;</p>
+<h4 id="&#x5B9E;&#x9A8C;&#x603B;&#x7ED3;"><a href="#&#x5B9E;&#x9A8C;&#x603B;&#x7ED3;" class="headerlink" title="&#x5B9E;&#x9A8C;&#x603B;&#x7ED3;"></a>&#x5B9E;&#x9A8C;&#x603B;&#x7ED3;</h4><p>&#x5355;&#x4ECE;JS&#x5F15;&#x64CE;&#x6765;&#x8BF4;&#xFF1A;Rhino&#x6267;&#x884C;&#x4E0D;&#x9700;&#x8981;&#x901A;&#x8FC7;JNI&#x4E14;&#x5360;&#x7528;&#x66F4;&#x5C11;&#x7684;&#x5185;&#x5B58;&#xFF0C;&#x4F46;&#x6267;&#x884C;&#x6548;&#x7387;&#x5F88;&#x4F4E;&#xFF1B;V8&#x548C;JavaScriptCore&#x7B49;C&#x8BED;&#x8A00;&#x5F00;&#x53D1;&#x7684;&#x5F15;&#x64CE;&#x8FDC;&#x80DC;&#x4E8E;Rhino&#x7B49;Java&#x5F00;&#x53D1;&#x7684;&#x5F15;&#x64CE;&#xFF0C;&#x4F46;&#x9700;&#x8981;&#x4E00;&#x5C42;Java&#x5305;&#x88C5;&#x5C42;&#xFF0C;&#x5E76;&#x5B58;&#x5728;JNI&#x8C03;&#x7528;&#x6027;&#x80FD;&#x95EE;&#x9898;&#x3002;&#x5C31;J2V8&#x548C;AndroidJSCore&#x4E24;&#x4E2A;&#x5305;&#x88C5;&#x5C42;&#x800C;&#x8A00;&#xFF1A;J2V8&#x7684;&#x53EF;&#x7528;&#x6027;&#x3001;&#x53EF;&#x9760;&#x6027;&#x3001;&#x5065;&#x58EE;&#x6027;&#x66F4;&#x4F18;&#xFF1B;AndroidJSCore&#x8FD8;&#x5B58;&#x5728;&#x7740;&#x4E0D;&#x5C11;&#x7684;&#x6027;&#x80FD;&#x95EE;&#x9898;&#xFF0C;&#x5728;&#x4E0A;&#x8FF0;&#x5B9E;&#x9A8C;&#x4E2D;&#x51FA;&#x73B0;&#x8F83;&#x5C11;&#xFF0C;&#x4F46;&#x5B9E;&#x9645;&#x5F00;&#x53D1;&#x4E2D;&#x8FD8;&#x5B58;&#x5728;&#x5F88;&#x591A;&#x5751;&#x3002;</p>
+<p>&#x4EE5;&#x4E0A;&#x4E09;&#x79CD;&#x5B9E;&#x73B0;&#x65B9;&#x6848;&#x4E2D;&#x66F4;&#x63A8;&#x8350;J2V8&#x65B9;&#x6848;&#x3002;&#x5BF9;&#x4E8E;&#x5185;&#x5B58;&#x95EE;&#x9898;&#xFF0C;J2V8&#x7684;&#x5185;&#x5B58;&#x91CA;&#x653E;&#x673A;&#x5236;&#x8F83;&#x4E3A;&#x5B8C;&#x5584;&#xFF0C;&#x5728;&#x5B9E;&#x9645;&#x5F00;&#x53D1;&#x4E2D;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x4E3B;&#x52A8;release&#x6765;&#x91CA;&#x653E;&#x5185;&#x5B58;&#xFF1B;&#x5BF9;&#x4E8E;JNI&#x8C03;&#x7528;&#x6027;&#x80FD;&#x95EE;&#x9898;&#xFF0C;J2V8&#x56E2;&#x961F;&#x4E5F;&#x5728;&#x5C1D;&#x8BD5;&#x901A;&#x8FC7;&#x6279;&#x5904;&#x7406;&#x56DE;&#x8C03;&#x6765;&#x8FDB;&#x884C;&#x4F18;&#x5316;&#xFF0C;&#x5728;&#x5C06;&#x6765;&#x7684;&#x7248;&#x672C;&#x4E2D;&#x4F1A;&#x5F97;&#x5230;&#x6539;&#x5584;&#x3002;</p>
+<h3 id="&#x56DB;&#x3001;J2V8&#x7684;Android&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;"><a href="#&#x56DB;&#x3001;J2V8&#x7684;Android&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;" class="headerlink" title="&#x56DB;&#x3001;J2V8&#x7684;Android&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;"></a>&#x56DB;&#x3001;J2V8&#x7684;Android&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;</h3><p>&#x6709;&#x4EE5;&#x4E0B;&#x4E00;&#x6BB5;JS&#x4EE3;&#x7801;&#xFF0C;&#x5176;&#x4E2D;Canvas&#x7ED8;&#x5236;&#x4E86;&#x4E00;&#x4E9B;&#x7B80;&#x5355;&#x7684;&#x56FE;&#x5F62;&#xFF1A;</p>
+<pre><code>var c=document.getElementById(&quot;myCanvas&quot;);
+var ctx=c.getContext(&quot;2d&quot;);
+
+ctx.beginPath();
+ctx.arc(100, 100, 25, 0, 360, false);
+ctx.moveTo(20,20);
+ctx.lineTo(20,100);
+ctx.lineTo(70,100);
+ctx.moveTo(100, 100);
+ctx.setLineWidth(15);
+ctx.setStrokeColor(&quot;#188ffc&quot;);
+ctx.stroke();
+
+ctx.setFillColor(&quot;#188ffc&quot;);
+ctx.fillText(&quot;Hello World!&quot;,150,50);
+</code></pre><p>&#x5176;&#x5728;Web&#x7AEF;&#x7ED8;&#x5236;&#x6548;&#x679C;&#x5982;&#x4E0B;&#xFF1A;</p>
+<p><img src="/2016/12/23/NeteaseFed/android/Android JS&#x5F15;&#x64CE;/Android JS&#x5F15;&#x64CE;/web_shape.png" alt="HelloWorld"></p>
+<p>&#x5B9E;&#x4F8B;&#x4E2D;&#xFF0C;&#x501F;&#x52A9;J2V8&#x5728;Android&#x7AEF;&#x8FD0;&#x884C;&#x540C;&#x6837;&#x4E00;&#x6BB5;&#x811A;&#x672C;&#xFF0C;&#x4F7F;&#x56FE;&#x5F62;&#x7ED8;&#x5236;&#x5230;Android Canvas&#x4E2D;&#x3002;&#x4E0B;&#x9762;&#x7ED9;&#x51FA;&#x7B80;&#x5355;&#x5B9E;&#x73B0;&#xFF0C;&#x4E3B;&#x8981;&#x601D;&#x8DEF;&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;View&#xFF0C;JS&#x4E2D;&#x5C06;&#x8981;&#x7ED8;&#x5236;&#x7684;&#x56FE;&#x5F62;&#x5148;&#x5B58;&#x50A8;&#x5230;&#x5728;List&#x4E2D;&#xFF0C;&#x5F85;&#x6574;&#x4E2A;JS&#x811A;&#x672C;&#x6267;&#x884C;&#x5B8C;&#x6BD5;&#xFF0C;&#x518D;&#x5C06;&#x6240;&#x6709;&#x56FE;&#x5F62;&#x5728;<code>View.onDraw(Canvas canvas)</code>&#x4E2D;&#x901A;&#x8FC7;Android Canvas&#x7ED8;&#x5236;&#x3002;</p>
+<ol>
+<li><p>&#x5C06;ctx&#x5C01;&#x88C5;&#x4E3A;V8Object&#xFF0C;&#x5E76;&#x5728;&#x5176;&#x4E2D;&#x5BF9;&#x5E94;&#x5B9E;&#x73B0;JS Canvas&#x7684;&#x65B9;&#x6CD5;</p>
+<pre><code>public class JustContext {
+    protected V8 mRuntime;
+    protected V8Object mCtx;
+    private ArrayList&lt;AbstractDraw&gt; mShapeList = new ArrayList&lt;&gt;();
+
+    public JustContext(V8 v8Runtime) {
+        mRuntime = v8Runtime;
+        initCtx();
+    }
+
+    public V8Object getCtx() {
+        return mCtx;
+    }
+
+    public ArrayList&lt;AbstractDraw&gt; getShapeList() {
+        return mShapeList;
+    }
+
+    protected void initCtx() {
+        mCtx = new V8Object(mRuntime);
+
+        //&#x5C06;Java&#x65B9;&#x6CD5;&#x6CE8;&#x518C;&#x5230;&#x8BE5;V8Object&#x4E2D;
+        mCtx.registerJavaMethod(this, &quot;beginPath&quot;, &quot;beginPath&quot;, null);
+        mCtx.registerJavaMethod(this, &quot;closePath&quot;, &quot;closePath&quot;, null);
+
+        ...
+    }
+
+    public void clean() {
+        mCtx.release();
+    }
+
+    public void beginPath() {...}
+
+    public void closePath() {...}
+
+    ...
+}
+</code></pre></li>
+</ol>
+<ol>
+<li><p>&#x81EA;&#x5B9A;&#x4E49;View&#xFF0C;&#x5728;View&#x7684;<code>onDraw(Canvas canvas)</code>&#x65B9;&#x6CD5;&#x4E2D;&#x5C06;&#x4F20;&#x5165;&#x7684;&#x56FE;&#x5F62;List&#x7ED8;&#x5236;&#x51FA;&#x6765;</p>
+<pre><code>public class JustView extends View implements Serializable {
+    ...
+
+    private ArrayList&lt;AbstractDraw&gt; mShapeList = new ArrayList&lt;&gt;();
+
+    public void setShapeList(ArrayList&lt;AbstractDraw&gt; shapeList) {
+        this.mShapeList = shapeList;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        for (AbstractDraw abstractDraw : mShapeList) {
+            abstractDraw.draw(canvas);
+        }
+    }
+
+    ...
+}
+</code></pre></li>
+<li><p>&#x5C06;ctx&#x6CE8;&#x518C;&#x5230;JS&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;&#x5E76;&#x6267;&#x884C;JS&#x4EE3;&#x7801;&#xFF0C;&#x6267;&#x884C;&#x5B8C;&#x6BD5;&#x540E;&#x5C06;&#x7ED8;&#x5236;&#x56FE;&#x5F62;List&#x4F20;&#x9012;&#x7ED9;View</p>
+<pre><code>JustView mJustView;
+...
+
+public void runJs(String js) {
+    V8 context = V8.createV8Runtime();
+    JustContext ctx = new JustContext(context);
+    context.add(&quot;ctx&quot;, ctx.getCtx());
+    context.executeScript(js);
+
+    //&#x91CA;&#x653E;&#x5185;&#x5B58;
+    ctx.clean();
+    context.release();
+
+    mJustView.setShapeList(ctx.getShapeList());
+}
+
+...
+</code></pre></li>
+</ol>
+<ol>
+<li><p>&#x56E0;&#x4E3A;&#x5DF2;&#x5C06;ctx&#x6CE8;&#x518C;&#x5230;JS&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;&#x56E0;&#x6B64;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x4F7F;&#x7528;<code>ctx</code>&#x53D8;&#x91CF;&#xFF0C;&#x5E76;&#x8FD0;&#x884C;&#x5982;&#x4E0B;JS&#x4EE3;&#x7801;</p>
+<pre><code>ctx.beginPath();
+ctx.arc(100, 100, 25, 0, 360, false);
+ctx.moveTo(20,20);
+ctx.lineTo(20,100);
+ctx.lineTo(70,100);
+ctx.moveTo(100, 100);
+ctx.setLineWidth(15);
+ctx.setStrokeColor(&quot;#188ffc&quot;);
+ctx.stroke();        
+ctx.setFillColor(&quot;#188ffc&quot;);
+ctx.fillText(&quot;Hello World!&quot;,150,50);
+</code></pre><p> &#x7ED8;&#x5236;&#x7ED3;&#x679C;&#x5982;&#x4E0B;&#xFF1A;</p>
+<p> <img src="/2016/12/23/NeteaseFed/android/Android JS&#x5F15;&#x64CE;/Android JS&#x5F15;&#x64CE;/android_shape.png" alt="HelloWorld"></p>
+</li>
+</ol>
+<p>&#x4EE5;&#x4E0A;&#x4EC5;&#x662F;&#x8BE5;&#x5B9E;&#x4F8B;&#x7684;&#x7B80;&#x5355;&#x5B9E;&#x73B0;&#xFF0C;&#x8BE6;&#x7EC6;&#x7684;&#x4EE3;&#x7801;&#x548C;&#x8BBE;&#x8BA1;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x9700;&#x6C42;&#x7684;&#x4E0D;&#x540C;&#x800C;&#x8FDB;&#x884C;&#x7EC6;&#x5316;&#xFF0C;&#x6B64;&#x5904;<a href="https://github.com/LiuHongtao/JustDraw" target="_blank" rel="external">https://github.com/LiuHongtao/JustDraw</a>&#x63D0;&#x4F9B;&#x4E00;&#x4EFD;&#x5177;&#x4F53;&#x5B9E;&#x73B0;&#x7684;&#x53C2;&#x8003;&#x3002;&#x7531;&#x4E8E;&#x6BCF;&#x6267;&#x884C;&#x4E00;&#x4E2A;Canvas&#x65B9;&#x6CD5;&#x90FD;&#x5C06;&#x8C03;&#x7528;&#x4E00;&#x6B21;Java&#x65B9;&#x6CD5;&#xFF0C;&#x8BE5;&#x65B9;&#x6848;&#x5F53;&#x7ED8;&#x5236;&#x91CF;&#x8FC7;&#x5927;&#x7684;&#x65F6;&#x5019;&#x4F1A;&#x51FA;&#x73B0;JNI&#x8C03;&#x7528;&#x7684;&#x6027;&#x80FD;&#x95EE;&#x9898;&#xFF0C;&#x5728;&#x6027;&#x80FD;&#x65B9;&#x9762;&#x4E5F;&#x5B58;&#x5728;&#x4F18;&#x5316;&#x7684;&#x7A7A;&#x95F4;&#xFF0C;&#x540E;&#x7EED;&#x5DE5;&#x4F5C;&#x4E2D;&#x5C06;&#x8FDB;&#x884C;&#x8C03;&#x7528;&#x7684;&#x4F18;&#x5316;&#xFF0C;&#x51CF;&#x5C11;JNI&#x8C03;&#x7528;&#x6B21;&#x6570;&#x3002;</p>
+<p>J2V8&#x7684;&#x56E2;&#x961F;&#x5F00;&#x53D1;&#x7684;&#x4E00;&#x5957;&#x79FB;&#x52A8;&#x7AEF;&#x8DE8;&#x5E73;&#x53F0;&#x6846;&#x67B6;<strong>Tabris.js</strong>(<a href="https://tabrisjs.com/)&#xFF0C;&#x652F;&#x6301;Android&#x548C;iOS&#x5E73;&#x53F0;&#xFF0C;&#x53C8;&#x4E8E;&#x8FD1;&#x671F;&#x5BA3;&#x5E03;&#x652F;&#x6301;Windows" target="_blank" rel="external">https://tabrisjs.com/)&#xFF0C;&#x652F;&#x6301;Android&#x548C;iOS&#x5E73;&#x53F0;&#xFF0C;&#x53C8;&#x4E8E;&#x8FD1;&#x671F;&#x5BA3;&#x5E03;&#x652F;&#x6301;Windows</a> 10&#x3002;&#x8BE5;&#x6846;&#x67B6;&#x65E8;&#x5728;&#x7F16;&#x5199;&#x4E00;&#x4EFD;JavaScript&#x4EE3;&#x7801;&#xFF0C;&#x800C;&#x80FD;&#x751F;&#x6210;Android&#x548C;iOS&#x4E24;&#x4E2A;&#x5E73;&#x53F0;&#x7684;&#x672C;&#x5730;&#x5E94;&#x7528;&#x3002;&#x5B83;&#x5728;Android&#x4E0A;&#x4F7F;&#x7528;&#x4E86;J2V8&#x4F5C;&#x4E3A;JS&#x5F15;&#x64CE;&#x65B9;&#x6848;&#xFF0C;&#x5728;iOS&#x4E0A;&#x4F7F;&#x7528;&#x7CFB;&#x7EDF;&#x81EA;&#x5E26;&#x7684;JSCore&#x3002;</p>
+<p>&#x4E0D;&#x540C;&#x4E8E;ReactNative&#x3001;Weex&#x4E4B;&#x7C7B;&#x7684;&#x6846;&#x67B6;&#xFF0C;&#x5B83;&#x7684;&#x4EAE;&#x70B9;&#x5728;&#x4E8E;&#x4E0D;&#x901A;&#x8FC7;WebView&#xFF0C;&#x4F46;&#x5374;&#x80FD;&#x4F7F;&#x7528;Web APIs&#xFF0C;&#x5982;Canvas 2d context&#xFF08;&#x636E;&#x4E86;&#x89E3;&#xFF0C;Weex&#x4E5F;&#x6B63;&#x5728;&#x6D4B;&#x8BD5;Canvas&#x7EC4;&#x4EF6;&#x5E76;&#x5373;&#x5C06;&#x5F00;&#x6E90;&#xFF09;&#x3001;XMLHttpRequest&#x3001;localStorage&#x3002;&#x8BE5;&#x6846;&#x67B6;&#x901A;&#x8FC7;&#x6279;&#x5904;&#x7406;&#x56DE;&#x8C03;&#x51CF;&#x5C11;&#x4E86;JNI&#x7684;&#x8C03;&#x7528;&#xFF0C;&#x5728;&#x4E00;&#x5B9A;&#x7A0B;&#x5EA6;&#x4E0A;&#x89E3;&#x51B3;&#x4E86;JNI&#x6027;&#x80FD;&#x95EE;&#x9898;&#xFF0C;&#x4F8B;&#x5982;&#x5176;Canvas&#x76F8;&#x5173;&#x4EE3;&#x7801;<code>tabris.CanvasContext</code>&#x4E2D;&#xFF0C;&#x5148;&#x5C06;&#x6BCF;&#x6B21;&#x8C03;&#x7528;&#x7684;Canvas&#x65B9;&#x6CD5;&#x548C;&#x53C2;&#x6570;&#x5B58;&#x50A8;&#x8D77;&#x6765;&#xFF0C;&#x5E76;&#x5728;&#x9002;&#x5F53;&#x7684;&#x65F6;&#x5019;&#x901A;&#x8FC7;&#x4E00;&#x6B21;JNI&#x8C03;&#x7528;&#x6765;&#x4F20;&#x9012;&#x8981;&#x6267;&#x884C;&#x7684;Canvas&#x65B9;&#x6CD5;&#xFF0C;&#x76F8;&#x5173;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>defineMethod(&quot;fillText&quot;, 3, function(text, x, y /* , maxWidth */) {
+    this._strings.push(text);
+    this._booleans.push(false, false, false);
+    this._doubles.push(x, y);
+});
+
+function defineMethod(name, reqArgCount, fn) {
+    tabris.CanvasContext.prototype[name] = function() {
+        if (reqArgCount &amp;&amp; arguments.length &lt; reqArgCount) {
+            throw new Error(&quot;Not enough arguments to CanvasContext.&quot; + name);
+        }
+        this._pushOperation(name);
+        if (fn) {
+            fn.apply(this, arguments);
+        }
+    };
+}
+
+_pushOperation: function(operation) {
+    if (this._opCodes.indexOf(operation) &lt; 0) {
+        this._newOpCodes.push(operation);
+        this._opCodes.push(operation);
+    }
+    this._operations.push(this._opCodes.indexOf(operation));
+}
+
+_flush: function() {
+    if (this._operations.length &gt; 0) {
+        this._gc._nativeCall(&quot;draw&quot;, {packedOperations: [
+          this._newOpCodes,
+          this._operations,
+          this._doubles,
+          this._booleans,
+          this._strings,
+          this._ints]});
+        this._newOpCodes = [];
+      this._operations = [];
+      this._doubles = [];
+      this._booleans = [];
+      this._strings = [];
+      this._ints = [];
+    }
+}
+</code></pre><p>&#x4E5F;&#x5C31;&#x662F;&#x8BF4;Tabris.js&#x66F4;&#x5B8C;&#x6574;&#x7684;&#x7684;&#x5B9E;&#x73B0;&#x4E86;&#x672C;&#x8282;&#x4E2D;&#x7684;&#x65B9;&#x6848;&#xFF0C;&#x8FD9;&#x4E5F;&#x4F7F;&#x5F97;&#x201C;&#x5C06;Web&#x7AEF;JS&#x5E93;&#x76F4;&#x63A5;&#x62FF;&#x5230;&#x79FB;&#x52A8;&#x7AEF;&#x6267;&#x884C;&#xFF0C;&#x5E76;&#x7531;&#x672C;&#x5730;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#x201D;&#x53D8;&#x5F97;&#x66F4;&#x52A0;&#x5BB9;&#x6613;&#x3002;</p>
+<p>&#x76F8;&#x5173;&#x6587;&#x7AE0;</p>
+<ul>
+<li><p><a href="https://www.skyscanner.net/blogs/developing-mobile-cross-platform-library-part-3-javascript" target="_blank" rel="external">Developing a mobile cross-platform library - Part 3. JavaScript</a></p>
+</li>
+<li><p><a href="http://openaphid.github.io/blog/2013/01/17/part-i-how-to-choose-a-javascript-engine-for-ios-and-android-apps/" target="_blank" rel="external">Part I: How to Choose a JavaScript Engine for iOS and Android Development</a></p>
+</li>
+<li><p><a href="http://eclipsesource.com/blogs/getting-started-with-j2v8/" target="_blank" rel="external">Getting Started With J2V8</a></p>
+</li>
+<li><p><a href="https://www.eclipsecon.org/na2015/sites/default/files/slides/J2V8_0.pdf" target="_blank" rel="external">J2V8-A Highly Efficient JS Runtime For Java</a></p>
+</li>
+<li><p><a href="http://eclipsesource.com/blogs/2016/08/10/smile-deploying-a-mobile-app-has-never-been-so-easy/" target="_blank" rel="external">Smile: Deploying a mobile app has never been so easy</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/android/">android</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://hellojql.github.io/2016/12/23/NeteaseFed/android/Android JS引擎/Android JS引擎/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <SCRIPT language=javascript>
+function search(formname) {
+    formname.method = "get";
+    formname.action = "http://www.baidu.com/baidu";
+    document.search_form.word.value = document.search_form.word.value + " site:hellojql.github.io”;
+    return true;
+}
+</SCRIPT>
+
+<div class="search">
+    <form name="search_form" target="_blank" onsubmit="search(this)">
+        <input type="search" name="word" results="0" placeholder="" onblur="this.value=''">
+        <!-- <input type="submit" value="搜索"> -->
+    </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/android/">android</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2016 网易前端技术部
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
