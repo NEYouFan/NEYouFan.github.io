@@ -1,0 +1,356 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>网易Android工程模板化实践 | 网易前端技术部</title>
+  <meta name="author" content="网易前端技术部">
+  
+  <meta name="description" content="网易杭研前端技术部，分享最前沿的技术。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="网易Android工程模板化实践"/>
+  <meta property="og:site_name" content="网易前端技术部"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="网易前端技术部" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">网易前端技术部</a></h1>
+  <h2><a href="/">网易杭研前端技术部，分享最前沿的技术。</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      
+        <img src="http://p1.bpimg.com/574381/af37bc8f7a18c791s.png">
+      
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-11-24T03:08:16.000Z"><a href="/2016/11/24/网易 Android 工程模板化实践/">2016-11-24</a></time>
+      
+      
+  
+    <h1 class="title">网易Android工程模板化实践</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>我们网易前端技术部 - 移动技术组作为公司的移动端基础技术部门，主要为其他部门提供解决方案、技术支持和产品孵化。在几年的积累过程中，我们拥有一些自己的框架和 SDK，如轻应用框架、热更新 SDK、网络请求库、本地存储库、页面管理等。服务过网易新闻、云音乐、考拉、易信等亿级产品，先后孵化过青果摄像头、二次元Gacha、严选等重要产品。<a id="more"></a></p>
+<p>在多年的Android开发中，对于 Android 端产品开发，我们有如下几点体会：</p>
+<ol>
+<li><p>产品孵化排期紧张</p>
+</li>
+<li><p>基础模块的需求具有相似性</p>
+</li>
+<li><p>基础模块的选型和工具类具有可重用性</p>
+</li>
+<li><p>网络请求的代码具有机械性</p>
+</li>
+</ol>
+<p>对于各个基础模块，我们团队封装了自己的 SDK，如网络库、本地存储库、页面管理库、图片库等。使用我们的Activity模板生成的初始工程，就已经包含了我们提供的基础模块，产品团队的开发不需要再花费重复的时间做技术调研、选型、SDK封装集成等工作，而只需要关心自己的业务逻辑编写。我们期望产品团队只需 1 分钟就能得到自己的初始工程，并能马上投入业务逻辑开发，既能缩短开发周期，也能保证工程代码质量。</p>
+<h1 id="Android-模板简介"><a href="#Android-模板简介" class="headerlink" title="Android 模板简介"></a>Android 模板简介</h1><p>Android Studio 提供遵循 Android 设计和开发最佳实践的代码模板，以帮助我们快速并正确地创造出漂亮的、功能齐全的应用程序代码模板。Android Studio 中提供的模板列表在不断增加，按照它们添加的组件类型（如Activity或XML文件）可对模板进行如下分组：</p>
+<p><img src="http://i1.piimg.com/574381/beec462952f97623s.png" alt="template menu"></p>
+<blockquote>
+<p>可通过文件-&gt;新建菜单或在项目窗口中右键单击调出上述模板菜单。</p>
+</blockquote>
+<p>Android Studio 模板位置：</p>
+<p>Windows 的路径在 <code>${android studio 安装路径}/plugins/android/lib/templates/</code></p>
+<p>MacOS 的路径在 <code>${Android Studio.app 存放路径}/Contents/plugins/android/lib/templates/</code></p>
+<p>该文件夹具体内容如下：</p>
+<ul>
+<li><p>activities：Activity模板相关，如 EmptyActivity 文件夹用于创建一个空页面的模板，GoogleMapsActivity 文件夹对应创建一个地图页面的模板等</p>
+</li>
+<li><p>gradle：放置了 gradle 模板，用于在新建工程的根目录下生成 gradle 文件夹，支持用户不用安装 gradle 就能使用 gradlew 命令</p>
+</li>
+<li><p>gradle-project：工程模板相关，用于构建 module，Android Project，Java Library 等</p>
+</li>
+<li><p>other：构建文件模板等</p>
+</li>
+</ul>
+<p>模板最常见的用途之一是向现有应用程序模块添加新的 Activity。 activities 文件夹正是 Android Studio 默认提供的 Activity 模板，涵盖了手机和平板电脑应用中常用的 Activiy 模板。用户也可以参照已有模板自定义符合特定需求的 Activity 模板。</p>
+<h2 id="1-Activity-模板的文件结构"><a href="#1-Activity-模板的文件结构" class="headerlink" title="1. Activity 模板的文件结构"></a>1. Activity 模板的文件结构</h2><p>下面我们分析最简单的一个模板 EmptyActivity，我们首先查看下 EmtpyActivity (空白页面模板) 里面的内容</p>
+<p><img src="http://p1.bpimg.com/574381/8d1ddec0941bfe72.png" alt="EmptyActivity Structrue"></p>
+<blockquote>
+<p>Android Studio 使用的是 FreeMarker 模板引擎，所以文件后缀都是 .ftl</p>
+</blockquote>
+<ul>
+<li><p>globals.xml.ftl: 全局变量文件，保存一些全局变量，当中可以引用其他文件的全局变量</p>
+</li>
+<li><p>recipe.xml.ftl: 配置要引用的模板路径以及文件的生成规则</p>
+</li>
+<li><p>template.xml: 模板的配置信息，包括模板的显示图标，界面的表现，全局变量文件和执行文件的指定等</p>
+</li>
+<li><p>template_blank_activity.png: 显示的缩略图</p>
+</li>
+<li><p>SimpleActivity.java.ftl: Activity 模板文件</p>
+</li>
+</ul>
+<h2 id="2-代码生成流程"><a href="#2-代码生成流程" class="headerlink" title="2. 代码生成流程"></a>2. 代码生成流程</h2><p>目前我们已经基本了解了一个Activity模板的文件结构了，以及每个文件大致包含的东西，简单总结如下：</p>
+<ul>
+<li><p>template 中parameter标签，主要用于提供参数</p>
+</li>
+<li><p>global.xml.ftl 主要用于提供参数</p>
+</li>
+<li><p>recipe.xml.ftl 主要用于生成我们实际需要的代码，资源文件等</p>
+<blockquote>
+<p>例如，利用参数 + MainActivity.java.ftl -&gt; MainActivity.java，其实就是利用参数将ftl中的变量进行替换</p>
+</blockquote>
+</li>
+</ul>
+<p>代码生成过程如下图所示：</p>
+<p><img src="http://p1.bqimg.com/574381/c29d60650ace6c90.jpg" alt="13_code_generation_process.jpg"></p>
+<blockquote>
+<p>图片摘自 <a href="http://robusttechhouse.com/tutorial-how-to-create-custom-android-code-templates/" target="_blank" rel="external">Tutorial How To Create Custom Android Code Templates</a></p>
+</blockquote>
+<h1 id="HTTemplate-Activity-模板实现"><a href="#HTTemplate-Activity-模板实现" class="headerlink" title="HTTemplate Activity 模板实现"></a>HTTemplate Activity 模板实现</h1><p>我们编写一个Activity模板叫作：HTTemplate，内容如下：</p>
+<p><img src="http://i1.piimg.com/574381/0fa65436eccbb6ce.png" alt="HTTemplate Structrue"></p>
+<h2 id="1-template-xml"><a href="#1-template-xml" class="headerlink" title="1. template.xml"></a>1. template.xml</h2><p>指定模板名、描述、最低支持 sdk 版本、类别等，输入界面要求指定包名和 Application 类名</p>
+<h2 id="2-globals-xml-ftl"><a href="#2-globals-xml-ftl" class="headerlink" title="2. globals.xml.ftl"></a>2. globals.xml.ftl</h2><p>引用公共文件内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</div><div class="line">&lt;globals&gt;</div><div class="line">    &lt;global id=&quot;hasNoActionBar&quot; type=&quot;boolean&quot; value=&quot;false&quot; /&gt;</div><div class="line">    &lt;#include &quot;../common/common_globals.xml.ftl&quot; /&gt;</div><div class="line">&lt;/globals&gt;</div></pre></td></tr></table></figure>
+<h2 id="3-recipe-xml-ftl"><a href="#3-recipe-xml-ftl" class="headerlink" title="3. recipe.xml.ftl"></a>3. recipe.xml.ftl</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</div><div class="line">&lt;recipe&gt;</div><div class="line"></div><div class="line">    &lt;!-- nei.json --&gt;</div><div class="line">    &lt;instantiate from=&quot;root/nei.json.ftl&quot;</div><div class="line">             to=&quot;$&#123;escapeXmlAttribute(topOut)&#125;/nei.json&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;!-- manifest --&gt;</div><div class="line">    &lt;merge from=&quot;root/AndroidManifest.xml.ftl&quot;</div><div class="line">             to=&quot;$&#123;escapeXmlAttribute(manifestOut)&#125;/AndroidManifest.xml&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;merge from=&quot;root/AndroidManifestPermissions.xml&quot;</div><div class="line">             to=&quot;$&#123;escapeXmlAttribute(manifestOut)&#125;/AndroidManifest.xml&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;!-- 全部资源 --&gt;</div><div class="line">    &lt;copy from=&quot;root/res&quot;</div><div class="line">             to=&quot;$&#123;escapeXmlAttribute(resOut)&#125;&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;!-- libs 库 --&gt;</div><div class="line">    &lt;copy from=&quot;root/libs&quot;</div><div class="line">             to=&quot;$&#123;escapeXmlAttribute(projectOut)&#125;/libs&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;!-- gradle --&gt;</div><div class="line">    &lt;merge from=&quot;root/project_build.gradle.ftl&quot;</div><div class="line">             to=&quot;$&#123;escapeXmlAttribute(topOut)&#125;/build.gradle&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;merge from=&quot;root/app_build.gradle.ftl&quot;</div><div class="line">             to=&quot;$&#123;escapeXmlAttribute(projectOut)&#125;/build.gradle&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;!-- README --&gt;</div><div class="line">    &lt;instantiate from=&quot;root/README.md.ftl&quot;</div><div class="line">             to=&quot;$&#123;escapeXmlAttribute(topOut)&#125;/README.md&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;!-- proguard-rules.pro.ftl --&gt;</div><div class="line">    &lt;copy from=&quot;root/proguard-rules.pro.ftl&quot;</div><div class="line">             to=&quot;$&#123;escapeXmlAttribute(projectOut)&#125;/proguard-rules.pro.template&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;!-- java 代码 --&gt;</div><div class="line">    &lt;!-- application 文件夹 --&gt;</div><div class="line">    &lt;instantiate from=&quot;root/src/app_package/application/AppProfile.java.ftl&quot;</div><div class="line">                   to=&quot;$&#123;escapeXmlAttribute(srcOut)&#125;/application/AppProfile.java&quot; /&gt;</div><div class="line"></div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">    &lt;!-- attrs.xml --&gt;</div><div class="line">    &lt;merge from=&quot;root/res/values/attrs.xml&quot;</div><div class="line">             to=&quot;$&#123;escapeXmlAttribute(resOut)&#125;/values/attrs.xml&quot; /&gt;</div><div class="line">             </div><div class="line">    ...</div><div class="line"></div><div class="line">&lt;/recipe&gt;</div></pre></td></tr></table></figure>
+<p>省略部分代码，主要的工作是</p>
+<ul>
+<li><p>merge AndroidManifest.xml 文件</p>
+</li>
+<li><p>copy 或者 merge 资源文件</p>
+</li>
+<li><p>copy 或 instantiate java 代码</p>
+</li>
+<li><p>merge build.gradle 文件</p>
+</li>
+<li><p>merge settings.gradle 文件</p>
+</li>
+<li><p>copy lib 文件夹里面的全部内容</p>
+</li>
+<li><p>copy proguard-rules.pro 文件</p>
+</li>
+</ul>
+<h2 id="4-root-文件夹"><a href="#4-root-文件夹" class="headerlink" title="4. root 文件夹"></a>4. root 文件夹</h2><p><img src="http://i1.piimg.com/574381/134add19853d8905.png" alt="root Structure"></p>
+<p>放置相关模板源文件，包括一些Activity、自定义View、通用工具类等。将其中以<code>.ftl</code>为后缀的源代码，按照 FreeMarker 语法进行替换。例如，使用了包名的地方，需要替换成 ${packageName}：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">package $&#123;packageName&#125;.application;</div><div class="line">import $&#123;packageName&#125;.R;</div></pre></td></tr></table></figure>
+<p>在gradle文件中配置私有maven库的地址、增加公用的依赖库、关闭lint的严格检查、配置APK多渠道打包等。</p>
+<h2 id="5-模板图标"><a href="#5-模板图标" class="headerlink" title="5. 模板图标"></a>5. 模板图标</h2><p>添加 Activity 模板图标，并在 template.xml 中添加引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;thumbs&gt;</div><div class="line">    &lt;thumb&gt;template_thumb.png&lt;/thumb&gt;</div><div class="line">&lt;/thumbs&gt;</div></pre></td></tr></table></figure>
+<h2 id="6-使用-Activity-模板生成初始工程"><a href="#6-使用-Activity-模板生成初始工程" class="headerlink" title="6. 使用 Activity 模板生成初始工程"></a>6. 使用 Activity 模板生成初始工程</h2><p>将上述 HTTemplate 文件夹拷贝至 Android Studio 的 Activity 模板目录下：</p>
+<p>Windows 的路径在 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$&#123;android studio 安装路径&#125;/plugins/android/lib/templates/activities</div></pre></td></tr></table></figure>
+<p>MacOS 的路径在 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$&#123;Android Studio.app 存放路径&#125;/Contents/plugins/android/lib/templates/activities</div></pre></td></tr></table></figure>
+<p>重启 Android Studio，在新建工程过程中可以看到，出现了我们自定义的 Activity 模板项：</p>
+<p><img src="http://p1.bpimg.com/574381/af37bc8f7a18c791s.png" alt="新建项目流程之选择Activity"></p>
+<p>直接运行生成的项目，效果如下：</p>
+<p><img src="http://p1.bpimg.com/574381/cbe2f56ec299f5ee.gif" alt="工程运行效果图"></p>
+<p>到这里，使用我们的 Activity 模板生成的初始工程，就已经包含了我们提供的网络库、本地存储库、页面管理库、图片库等基础模块，开发人员接下来只需专注于业务逻辑的开发。</p>
+<h1 id="遇到的问题及解决方案"><a href="#遇到的问题及解决方案" class="headerlink" title="遇到的问题及解决方案"></a>遇到的问题及解决方案</h1><p>为分析问题的原因，我们找到了 Android 模板相关源码：</p>
+<p>Mac 平台：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$&#123;android studio安装路径&#125;/Contents/plugins/android/lib/android.jar</div></pre></td></tr></table></figure>
+<p>Windows 平台：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$&#123;android studio安装路径&#125;/plugins/android/lib/android.jar</div></pre></td></tr></table></figure>
+<p>以下问题的解答将涉及到部分源码。</p>
+<h2 id="1-通配符冲突"><a href="#1-通配符冲突" class="headerlink" title="1. ${} 通配符冲突"></a>1. ${} 通配符冲突</h2><p>当工程模板实例化时，${} 会被 FreeMarker 语法处理，导致错误。</p>
+<p>解决办法：定义 FreeMarker 转义字符如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ==&gt; $&#123;&quot;$&quot;&#125;</div></pre></td></tr></table></figure>
+<h2 id="2-Java-代码实例化问题"><a href="#2-Java-代码实例化问题" class="headerlink" title="2. Java 代码实例化问题"></a>2. Java 代码实例化问题</h2><p>模板中 java 代码较多，我们统一放在 root/src/ 文件夹下，里面有部分文件含有 FreeMarker 标签，有部分只是纯粹的 java 代码。而使用 instantiate 命令对整个文件夹进行实例化操作，并不会触发 FreeMarker 语法执行。</p>
+<p>解决办法：因 java 文件比较多，手写 recipe.xml 标签命令繁琐且容易出错。我们通过程序递归遍历 root/src/ 下的全部代码文件，并生成相应的 instantiate 或 copy 命令。</p>
+<h2 id="3-copy-和-instantiate-问题"><a href="#3-copy-和-instantiate-问题" class="headerlink" title="3. copy 和 instantiate 问题"></a>3. copy 和 instantiate 问题</h2><h3 id="1-gradle-properties-文件执行-copy-或者-instantiate-操作无效"><a href="#1-gradle-properties-文件执行-copy-或者-instantiate-操作无效" class="headerlink" title="(1) gradle.properties 文件执行 copy 或者 instantiate 操作无效"></a>(1) gradle.properties 文件执行 copy 或者 instantiate 操作无效</h3><p>分析结果：查看 DefaultRecipeExecutor.copy 与 DefaultRecipeExecutor.instantiate 源码处理逻辑，得知执行 copy 和 instantiate 命令时，如果 from 指定一个非文件夹，且目标文件存在，则不执行拷贝。而在执行我们的 Activity 模板之前，已经执行了 gradle-projects/NewAndroidProject 工程模板，并生成了 gradle.properties 文件，因此执行 copy 或 instantiate 都因目标文件已经存在而不再执行。</p>
+<h3 id="2-copy-和-instantiate-对文件夹操作的区别"><a href="#2-copy-和-instantiate-对文件夹操作的区别" class="headerlink" title="(2) copy 和 instantiate 对文件夹操作的区别"></a>(2) copy 和 instantiate 对文件夹操作的区别</h3><ul>
+<li><p>相同点：如果 from 指定一个文件夹，都是执行 copyTemplateResource 方法，二者没有区别；如果 from 指定一个非文件夹，且目标文件存在，则不执行文件操作。</p>
+</li>
+<li><p>不同点：copy 命令不使用 FreemarkerUtils 对 FreeMarker 语法进行处理，而 instantiate 命令先执行 FreemarkerUtils 的静态方法 processFreemarkerTemplate 来处理 FreeMarker 语法，之后再执行文件拷贝操作。</p>
+</li>
+</ul>
+<h2 id="4-merge-问题"><a href="#4-merge-问题" class="headerlink" title="4. merge 问题"></a>4. merge 问题</h2><h3 id="1-proguard-rules-pro、gradle-properties-文件执行-merge-操作失败"><a href="#1-proguard-rules-pro、gradle-properties-文件执行-merge-操作失败" class="headerlink" title="(1) proguard-rules.pro、gradle.properties 文件执行 merge 操作失败"></a>(1) proguard-rules.pro、gradle.properties 文件执行 merge 操作失败</h3><p>分析结果：根据 DefaultRecipeExecutor.merge 源码的逻辑，我们得知当 to 文件不存在，则执行 copy 或 instantiate 命令；如果 to 文件存在且可读，则仅对 xml 或 gradle 才能执行 merge 操作。</p>
+<p>解决办法：</p>
+<ul>
+<li><p>暂时生成 proguard-rules.pro.template 文件</p>
+</li>
+<li><p>将定义在 gradle.properties 中的常量移动到 project_build.gradle.ftl 的 ext{ } 内</p>
+</li>
+</ul>
+<h3 id="2-settings-gradle-文件合并，指定-module-路径错误"><a href="#2-settings-gradle-文件合并，指定-module-路径错误" class="headerlink" title="(2) settings.gradle 文件合并，指定 module 路径错误"></a>(2) settings.gradle 文件合并，指定 module 路径错误</h3><p>执行前：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">include &apos;:hteventbus&apos;, &apos;:htrefreshrecyclerview&apos;, &apos;:htrecycleview&apos;, &apos;:hthttp&apos;</div><div class="line"></div><div class="line">project(&apos;:hteventbus&apos;).projectDir = new File(&apos;module/hteventbus&apos;)</div><div class="line">project(&apos;:hthttp&apos;).projectDir = new File(&apos;module/hthttp&apos;)</div><div class="line">project(&apos;:htrefreshrecyclerview&apos;).projectDir = new File(&apos;module/htrefreshrecyclerview&apos;)</div><div class="line">project(&apos;:htrecycleview&apos;).projectDir = new File(&apos;module/htrecycleview&apos;)</div></pre></td></tr></table></figure>
+<p>执行后报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RuntimeException: java.lang.RuntimeException: When merging settings.gradle files, only include directives can be merged.</div></pre></td></tr></table></figure>
+<p>分析结果：查看 RecipeMergeUtils.mergeGradleSettingsFile 源码，得知当 settings.gradle 文件合并时，只允许每行开头是 include 命令，其他情况抛出异常。</p>
+<p>解决办法：去掉非 include 的操作代码，改用远程依赖引用这些 module，即在 dependencies{ } 中添加相应的依赖。</p>
+<h3 id="3-build-gradle-文件合并，apply-语句合并错误"><a href="#3-build-gradle-文件合并，apply-语句合并错误" class="headerlink" title="(3) build.gradle 文件合并，apply 语句合并错误"></a>(3) build.gradle 文件合并，apply 语句合并错误</h3><p>执行前：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apply plugin: &apos;com.neenbedankt.android-apt&apos;</div></pre></td></tr></table></figure>
+<p>执行后：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apply plugin: &apos;com.neenbedankt.android-apt&apos; plugin: &apos;com.android.application&apos;</div></pre></td></tr></table></figure>
+<p>分析结果：查看 GradleFileMerger 中的 mergeGradleFiles 方法，实际执行的是 mergePsi 方法，根据 mergePsi 合并逻辑，apply 不是 call 语句，且 apply 的第一个子元素不是 dependencies，因此添加 plugin: ‘com.neenbedankt.android-apt’ 到 toRoot 的 apply 子元素前面。</p>
+<p>解决办法：根据上面的分析，看起来 apply 的这个合成结果是 Android 模板的 bug，我们目前只能采用手工添加 apply 语句的方法。</p>
+<h3 id="4-build-gradle-文件合并，dependencies-内的-apt-语句消失"><a href="#4-build-gradle-文件合并，dependencies-内的-apt-语句消失" class="headerlink" title="(4) build.gradle 文件合并，dependencies{ } 内的 apt 语句消失"></a>(4) build.gradle 文件合并，dependencies{ } 内的 apt 语句消失</h3><p>执行前：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    compile &quot;com.netease.hearttouch:ht-universalrouter-dispatch:$HEARTTOUCH_HTROUTER_DISPATCH_VERSION&quot;</div><div class="line">    apt &quot;com.netease.hearttouch:ht-universalrouter-dispatch-process:$HEARTTOUCH_HTROUTER_DISPATCH_PROCESS_VERSION&quot;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>执行后：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    compile &quot;com.netease.hearttouch:ht-universalrouter-dispatch:$HEARTTOUCH_HTROUTER_DISPATCH_VERSION&quot;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>分析结果：查看 GradleFileMerger.mergeDependencies 源码，得知当 dependencies 合并时，仅处理 dependencies 中的 compile 子元素，其他如 apt、provided 命令都会被忽略掉。</p>
+<p>解决办法：由于源码并未提供非 compile 子元素的合并方案，我们目前只能采用手工添加 apt 语句的方法。</p>
+<h1 id="5-小结和后续工作"><a href="#5-小结和后续工作" class="headerlink" title="5. 小结和后续工作"></a>5. 小结和后续工作</h1><p>到此，基本上完成了我们原先期望实现的初始工程：</p>
+<ol>
+<li><p>提供 ht-template 支持生成我们的模板工程</p>
+</li>
+<li><p>提供 Android Studio 插件 (NEIPlugin)</p>
+</li>
+</ol>
+<ul>
+<li><p>支持 ht-template 的下载安装</p>
+</li>
+<li><p>nei-toolkit 和 Node.js 的下载安装</p>
+</li>
+<li><p>nei-toolkit 和 Node.js 的使用，生成网络请求代码</p>
+</li>
+</ul>
+<p>这里还是有一些因为 Android 模板自身的限制而无法完成的内容点：</p>
+<ol>
+<li><p>无法在 settings.gradle 指定 module 路径</p>
+</li>
+<li><p>无法合并 proguard-rules.pro 文件，暂时生成 proguard-rules.pro.template 文件</p>
+</li>
+<li><p>由于 build.gradle 对 apply 命令合并会出错和无法合并 dependencies 中的 apt 命令，所以无法在 build.gradle 中集成 ht-universalrouter</p>
+</li>
+</ol>
+<p>此外，除了网络请求的代码编写是机械性的，基于我们的 Activity 模板生成的初始工程，在其他方面也存在代码编写的机械性：初始页面代码生成、RecycleView 中的各个 ViewHolder 类、本地数据读取保存等，而这些工作将会是我们的后续工作。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/android/">android</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://yoursite.com/2016/11/24/网易 Android 工程模板化实践/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/android/">android</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2016 网易前端技术部
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
