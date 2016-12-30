@@ -39,9 +39,9 @@
 }
 
 .fancybox-opened .fancybox-skin {
-	-webkit-box-shadow: none;
-	   -moz-box-shadow: none;
-	        box-shadow: none;
+	-webkit-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+	   -moz-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+	        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
 .fancybox-outer, .fancybox-inner {
@@ -183,7 +183,7 @@
 	overflow: hidden;
 	display: none;
 	z-index: 8010;
-	background: rgba(0,0,0,.85);
+	background: url(fancybox_overlay.png);
 }
 
 .fancybox-overlay-fixed {
