@@ -1,67 +1,107 @@
-<!DOCTYPE HTML>
-<html>
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   
-  <title>Android平台上的JavaScript引擎 | 网易前端技术部</title>
-  
-  
-  <meta name="description" content="网易杭研前端技术部，分享最前沿的技术。">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Android平台上的JavaScript引擎 | 网易前端技术部</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
 
-  <meta property="og:title" content="Android平台上的JavaScript引擎"/>
-  <meta property="og:site_name" content="网易前端技术部"/>
+    
+    <meta name="description" content="&amp;#x4E00;&amp;#x3001;&amp;#x524D;&amp;#x8A00;&amp;#x8FD1;&amp;#x671F;&amp;#x5728;&amp;#x4EA7;&amp;#x54C1;&amp;#x4E2D;&amp;#x9047;&amp;#x5230;&amp;#x4E86;&amp;#x8FD9;&amp;#x6837;&amp;#x7684;&amp;#x4E00;&amp;#x4E2A;&amp;#x95EE;&amp;#x9898;&amp;#xFF1A;Web&amp;#x7AEF;&amp;#x5DF2;&amp;#x7ECF;&amp;#x5B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android平台上的JavaScript引擎">
+<meta property="og:url" content="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/index.html">
+<meta property="og:site_name" content="网易前端技术部">
+<meta property="og:description" content="&amp;#x4E00;&amp;#x3001;&amp;#x524D;&amp;#x8A00;&amp;#x8FD1;&amp;#x671F;&amp;#x5728;&amp;#x4EA7;&amp;#x54C1;&amp;#x4E2D;&amp;#x9047;&amp;#x5230;&amp;#x4E86;&amp;#x8FD9;&amp;#x6837;&amp;#x7684;&amp;#x4E00;&amp;#x4E2A;&amp;#x95EE;&amp;#x9898;&amp;#xFF1A;Web&amp;#x7AEF;&amp;#x5DF2;&amp;#x7ECF;&amp;#x5B">
+<meta property="og:image" content="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/web_shape.png">
+<meta property="og:image" content="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/android_shape.png">
+<meta property="og:updated_time" content="2016-12-30T04:19:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android平台上的JavaScript引擎">
+<meta name="twitter:description" content="&amp;#x4E00;&amp;#x3001;&amp;#x524D;&amp;#x8A00;&amp;#x8FD1;&amp;#x671F;&amp;#x5728;&amp;#x4EA7;&amp;#x54C1;&amp;#x4E2D;&amp;#x9047;&amp;#x5230;&amp;#x4E86;&amp;#x8FD9;&amp;#x6837;&amp;#x7684;&amp;#x4E00;&amp;#x4E2A;&amp;#x95EE;&amp;#x9898;&amp;#xFF1A;Web&amp;#x7AEF;&amp;#x5DF2;&amp;#x7ECF;&amp;#x5B">
+<meta name="twitter:image" content="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/web_shape.png">
 
-  
-    <meta property="og:image" content="undefined"/>
-  
-
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="网易前端技术部" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
-
+    
+    <link rel="alternative" href="/atom.xml" title="网易前端技术部" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
-
-<body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">网易前端技术部</a></h1>
-  <h2><a href="/"></a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">主页</a></li>
-    
-      <li><a href="/archives">归档</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div>
-</header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
-  
-  <div class="post-content">
+  <body>
     <header>
       
-        <div class="icon"></div>
-        <time datetime="2016-12-22T16:00:00.000Z"><a href="/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/">2016-12-23</a></time>
-      
-      
-  
-    <h1 class="title">Android平台上的JavaScript引擎</h1>
-  
-
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="网易前端技术部" title="网易前端技术部"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="网易前端技术部">网易前端技术部</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:NEYouFan.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
     </header>
-    <div class="entry">
-      
-        <h3 id="&#x4E00;&#x3001;&#x524D;&#x8A00;"><a href="#&#x4E00;&#x3001;&#x524D;&#x8A00;" class="headerlink" title="&#x4E00;&#x3001;&#x524D;&#x8A00;"></a>&#x4E00;&#x3001;&#x524D;&#x8A00;</h3><p>&#x8FD1;&#x671F;&#x5728;&#x4EA7;&#x54C1;&#x4E2D;&#x9047;&#x5230;&#x4E86;&#x8FD9;&#x6837;&#x7684;&#x4E00;&#x4E2A;&#x95EE;&#x9898;&#xFF1A;Web&#x7AEF;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x4E00;&#x4E2A;&#x529F;&#x80FD;&#x5B8C;&#x5584;&#x7684;JavaScript&#x5E93;&#xFF0C;&#x5982;&#x679C;&#x5C06;&#x76F8;&#x5173;Web&#x5D4C;&#x5165;&#x5230;App&#x4E2D;&#xFF0C;&#x5219;WebView&#x5C06;&#x5E26;&#x6765;&#x4E00;&#x5B9A;&#x7684;&#x6027;&#x80FD;&#x5F71;&#x54CD;&#xFF1B;&#x5982;&#x679C;Android&#x7AEF;&#x672C;&#x5730;&#x5F00;&#x53D1;&#x4E00;&#x4E2A;&#x76F8;&#x540C;&#x7684;&#x5E93;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x6D88;&#x8017;&#x5927;&#x91CF;&#x7684;&#x8D44;&#x6E90;&#x3002;&#x8003;&#x8651;&#x5230;&#x4EE3;&#x7801;&#x590D;&#x7528;&#x548C;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#xFF0C;&#x56E2;&#x961F;&#x8C03;&#x7814;&#x4E86;JS&#x5F15;&#x64CE;&#x5728;Android&#x4E0A;&#x7684;&#x4F7F;&#x7528;&#xFF0C;&#x5E0C;&#x671B;&#x89E3;&#x51B3;&#x201D;&#x4E0D;&#x7ECF;&#x8FC7;WebView&#xFF0C;&#x800C;&#x5C06;JS&#x5E93;&#x62FF;&#x5230;Android&#x7AEF;&#x8FD0;&#x884C;&#xFF0C;&#x5E76;&#x5C06;&#x8FD0;&#x884C;&#x7ED3;&#x679C;&#x4EA4;&#x7ED9;&#x672C;&#x5730;&#x8F93;&#x51FA;&#x201D;&#x8FD9;&#x4E00;&#x9700;&#x6C42;&#x3002;<a id="more"></a></p>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/" title="Android平台上的JavaScript引擎" itemprop="url">Android平台上的JavaScript引擎</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="null" target="_blank" itemprop="author">null</a>
+		
+  <p class="article-time">
+    <time datetime="2016-12-22T16:00:00.000Z" itemprop="datePublished"> 发表于 2016-12-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、前言"><span class="toc-number">1.</span> <span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、JS引擎介绍"><span class="toc-number">2.</span> <span class="toc-text">二、JS引擎介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-JavaScriptCore"><span class="toc-number">2.1.</span> <span class="toc-text">1. JavaScriptCore</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-V8"><span class="toc-number">2.2.</span> <span class="toc-text">2. V8</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-SpiderMonkey"><span class="toc-number">2.3.</span> <span class="toc-text">3. SpiderMonkey</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Rhino"><span class="toc-number">2.4.</span> <span class="toc-text">4. Rhino</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Nashorn"><span class="toc-number">2.5.</span> <span class="toc-text">5. Nashorn</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、JS引擎性能比较"><span class="toc-number">3.</span> <span class="toc-text">三、JS引擎性能比较</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建JS环境"><span class="toc-number">3.1.</span> <span class="toc-text">创建JS环境</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#JSCore"><span class="toc-number">3.1.1.</span> <span class="toc-text">JSCore</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#J2V8"><span class="toc-number">3.1.2.</span> <span class="toc-text">J2V8</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Rhino"><span class="toc-number">3.1.3.</span> <span class="toc-text">Rhino</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验〇：包的依赖"><span class="toc-number">3.2.</span> <span class="toc-text">实验〇：包的依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验一：空循环"><span class="toc-number">3.3.</span> <span class="toc-text">实验一：空循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验二：JS调用Java方法"><span class="toc-number">3.4.</span> <span class="toc-text">实验二：JS调用Java方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验三：JS递归计算斐波那契"><span class="toc-number">3.5.</span> <span class="toc-text">实验三：JS递归计算斐波那契</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验总结"><span class="toc-number">3.6.</span> <span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、J2V8的Android开发实例"><span class="toc-number">4.</span> <span class="toc-text">四、J2V8的Android开发实例</span></a></li></ol>
+		
+		</div>
+		
+		<h3 id="&#x4E00;&#x3001;&#x524D;&#x8A00;"><a href="#&#x4E00;&#x3001;&#x524D;&#x8A00;" class="headerlink" title="&#x4E00;&#x3001;&#x524D;&#x8A00;"></a>&#x4E00;&#x3001;&#x524D;&#x8A00;</h3><p>&#x8FD1;&#x671F;&#x5728;&#x4EA7;&#x54C1;&#x4E2D;&#x9047;&#x5230;&#x4E86;&#x8FD9;&#x6837;&#x7684;&#x4E00;&#x4E2A;&#x95EE;&#x9898;&#xFF1A;Web&#x7AEF;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x4E00;&#x4E2A;&#x529F;&#x80FD;&#x5B8C;&#x5584;&#x7684;JavaScript&#x5E93;&#xFF0C;&#x5982;&#x679C;&#x5C06;&#x76F8;&#x5173;Web&#x5D4C;&#x5165;&#x5230;App&#x4E2D;&#xFF0C;&#x5219;WebView&#x5C06;&#x5E26;&#x6765;&#x4E00;&#x5B9A;&#x7684;&#x6027;&#x80FD;&#x5F71;&#x54CD;&#xFF1B;&#x5982;&#x679C;Android&#x7AEF;&#x672C;&#x5730;&#x5F00;&#x53D1;&#x4E00;&#x4E2A;&#x76F8;&#x540C;&#x7684;&#x5E93;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x6D88;&#x8017;&#x5927;&#x91CF;&#x7684;&#x8D44;&#x6E90;&#x3002;&#x8003;&#x8651;&#x5230;&#x4EE3;&#x7801;&#x590D;&#x7528;&#x548C;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#xFF0C;&#x56E2;&#x961F;&#x8C03;&#x7814;&#x4E86;JS&#x5F15;&#x64CE;&#x5728;Android&#x4E0A;&#x7684;&#x4F7F;&#x7528;&#xFF0C;&#x5E0C;&#x671B;&#x89E3;&#x51B3;&#x201D;&#x4E0D;&#x7ECF;&#x8FC7;WebView&#xFF0C;&#x800C;&#x5C06;JS&#x5E93;&#x62FF;&#x5230;Android&#x7AEF;&#x8FD0;&#x884C;&#xFF0C;&#x5E76;&#x5C06;&#x8FD0;&#x884C;&#x7ED3;&#x679C;&#x4EA4;&#x7ED9;&#x672C;&#x5730;&#x8F93;&#x51FA;&#x201D;&#x8FD9;&#x4E00;&#x9700;&#x6C42;&#x3002;<a id="more"></a></p>
 <p>JS&#x5F15;&#x64CE;&#x80FD;&#x591F;&#x89E3;&#x6790;JS&#x811A;&#x672C;&#xFF0C;&#x901A;&#x5E38;&#x88AB;&#x4F9D;&#x9644;&#x4E8E;&#x6D4F;&#x89C8;&#x5668;&#x4E2D;&#xFF0C;&#x4F8B;&#x5982;Safari&#x6240;&#x4F7F;&#x7528;&#x7684;<strong>JavaScriptCore</strong>&#x3001;Google Chrome&#x6240;&#x4F7F;&#x7528;&#x7684;<strong>V8</strong>&#x548C;FireFox&#x6240;&#x4F7F;&#x7528;&#x7684;<strong>SpiderMonkey</strong>&#x7B49;&#x7B49;&#x3002;&#x4E5F;&#x88AB;&#x7528;&#x4F5C;&#x79FB;&#x52A8;&#x7AEF;&#x7684;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#xFF0C;&#x4F8B;&#x5982;<a href="http://developer.telerik.com/featured/nativescript-works/" target="_blank" rel="external">NativeScript</a>&#x5728;iOS&#x7AEF;&#x548C;Android&#x5206;&#x522B;&#x4F7F;&#x7528;&#x4E86;JavaScriptCore&#x548C;V8&#xFF0C;<a href="https://facebook.github.io/react-native/docs/javascript-environment.html" target="_blank" rel="external">ReactNative</a>&#x5219;&#x90FD;&#x4F7F;&#x7528;&#x4E86;JavaScriptCore&#x3002;</p>
 <h3 id="&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;"><a href="#&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;" class="headerlink" title="&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;"></a>&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;</h3><p>&#x5728;Android&#x7CFB;&#x7EDF;&#x4E2D;&#x80FD;&#x8FD0;&#x884C;&#x7684;JS&#x5F15;&#x64CE;&#x6709;&#x5982;&#x4E0B;5&#x79CD;&#xFF1A;</p>
 <h4 id="1-JavaScriptCore"><a href="#1-JavaScriptCore" class="headerlink" title="1. JavaScriptCore"></a>1. <a href="https://trac.webkit.org/wiki/JavaScriptCore" target="_blank" rel="external">JavaScriptCore</a></h4><p>JavaScriptCore&#x662F;&#x4E00;&#x4E2A;&#x5728;WebKit&#x4E2D;&#x63D0;&#x4F9B;JS&#x5F15;&#x64CE;&#x7684;&#x5F00;&#x6E90;&#x6846;&#x67B6;&#xFF0C;&#x6700;&#x8FD1;&#x66F4;&#x65B0;&#x65E5;&#x671F;&#x662F;2016&#x5E74;9&#x6708;26&#x65E5;&#x3002;&#x76EE;&#x524D;&#x8BE5;&#x5F15;&#x64CE;&#x7531;Apple&#x7EF4;&#x62A4;&#xFF0C;&#x4F7F;&#x7528;&#x4E8E;Safari&#x6D4F;&#x89C8;&#x5668;&#xFF0C;iOS7&#x540E;&#x4E5F;&#x96C6;&#x6210;&#x5230;&#x4E86;iPhone&#x5E73;&#x53F0;&#x3002;</p>
@@ -525,125 +565,315 @@ _flush: function() {
 <li><p><a href="http://eclipsesource.com/blogs/2016/08/10/smile-deploying-a-mobile-app-has-never-been-so-easy/" target="_blank" rel="external">Smile: Deploying a mobile app has never been so easy</a></p>
 </li>
 </ul>
-
-      
-    </div>
-    <footer>
-      
-        
   
-  <div class="categories">
-    <a href="/categories/android/">android</a>
-  </div>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
 
-        
-  
-  <div class="tags">
-    <a href="/tags/Js引擎/">Js引擎</a>
-  </div>
-
-        
-  <div class="addthis addthis_toolbox addthis_default_style">
-    
-      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-    
-    
-      <a class="addthis_button_tweet"></a>
-    
-    
-      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-    
-    
-      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
-    
-    <a class="addthis_counter addthis_pill_style"></a>
-  </div>
-  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
-
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-
-</article>
-
-
-<section id="comment">
-<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key=“2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/” data-title="Android平台上的JavaScript引擎" data-url="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/"></div>
-<!-- 多说评论框 end -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"neyoufan"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- 多说公共JS代码 end -->
-</section>
-
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <SCRIPT language=javascript>
-function search(formname) {
-    formname.method = "get";
-    formname.action = "http://www.baidu.com/baidu";
-    document.search_form.word.value = document.search_form.word.value + " site:hellojql.github.io”;
-    return true;
-}
-</SCRIPT>
-
-<div class="search">
-    <form name="search_form" target="_blank" onsubmit="search(this)">
-        <input type="search" name="word" results="0" placeholder="" onblur="this.value=''">
-        <!-- <input type="submit" value="搜索"> -->
-    </form>
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
 </div>
 
+
+  <div class="article-tags">
   
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
+  <span></span> <a href="/tags/Js引擎/">Js引擎</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/" data-title="Android平台上的JavaScript引擎 | 网易前端技术部" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/12/09/android/Jenkins-ci容器化在Android项目构建中的应用（公众号版）/"  title="Jenkins-ci容器化在Android项目构建中的应用">
+ <strong>下一篇：</strong><br/> 
+ <span>Jenkins-ci容器化在Android项目构建中的应用
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、前言"><span class="toc-number">1.</span> <span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、JS引擎介绍"><span class="toc-number">2.</span> <span class="toc-text">二、JS引擎介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-JavaScriptCore"><span class="toc-number">2.1.</span> <span class="toc-text">1. JavaScriptCore</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-V8"><span class="toc-number">2.2.</span> <span class="toc-text">2. V8</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-SpiderMonkey"><span class="toc-number">2.3.</span> <span class="toc-text">3. SpiderMonkey</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Rhino"><span class="toc-number">2.4.</span> <span class="toc-text">4. Rhino</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Nashorn"><span class="toc-number">2.5.</span> <span class="toc-text">5. Nashorn</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、JS引擎性能比较"><span class="toc-number">3.</span> <span class="toc-text">三、JS引擎性能比较</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建JS环境"><span class="toc-number">3.1.</span> <span class="toc-text">创建JS环境</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#JSCore"><span class="toc-number">3.1.1.</span> <span class="toc-text">JSCore</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#J2V8"><span class="toc-number">3.1.2.</span> <span class="toc-text">J2V8</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Rhino"><span class="toc-number">3.1.3.</span> <span class="toc-text">Rhino</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验〇：包的依赖"><span class="toc-number">3.2.</span> <span class="toc-text">实验〇：包的依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验一：空循环"><span class="toc-number">3.3.</span> <span class="toc-text">实验一：空循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验二：JS调用Java方法"><span class="toc-number">3.4.</span> <span class="toc-text">实验二：JS调用Java方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验三：JS递归计算斐波那契"><span class="toc-number">3.5.</span> <span class="toc-text">实验三：JS递归计算斐波那契</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验总结"><span class="toc-number">3.6.</span> <span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、J2V8的Android开发实例"><span class="toc-number">4.</span> <span class="toc-text">四、J2V8的Android开发实例</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
   
-    <li><a href="/categories/android/">android</a><small>3</small></li>
+
+
   
-  </ul>
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>3</sup></a></li>
+		  
+		
+		</ul>
 </div>
 
 
   
-<div class="widget tag">
-  <h3 class="title">标签</h3>
-  <ul class="entry">
-  
-    <li><a href="/tags/Jenkins/">Jenkins</a><small>1</small></li>
-  
-    <li><a href="/tags/Js引擎/">Js引擎</a><small>1</small></li>
-  
-    <li><a href="/tags/android工程模板/">android工程模板</a><small>1</small></li>
-  
-    <li><a href="/tags/ci容器/">ci容器</a><small>1</small></li>
-  
-  </ul>
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ci容器/" title="ci容器">ci容器<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Js引擎/" title="Js引擎">Js引擎<sup>1</sup></a></li>
+			
+		
+		</ul>
 </div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
 
 </aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"><div class="alignleft">
-  
-  &copy; 2016 网易前端技术部
-  
 </div>
-<div class="clearfix"></div></footer>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="http://NEYouFan.github.io" title="网易前端技术部">网易前端技术部</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
 
 
 
@@ -651,10 +881,62 @@ function search(formname) {
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
 <script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
 </script>
 
-</body>
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
 </html>
