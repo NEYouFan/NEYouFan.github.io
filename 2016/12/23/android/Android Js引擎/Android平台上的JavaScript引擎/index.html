@@ -11,18 +11,18 @@
     
 
     
-    <meta name="description" content="&amp;#x4E00;&amp;#x3001;&amp;#x524D;&amp;#x8A00;&amp;#x8FD1;&amp;#x671F;&amp;#x5728;&amp;#x4EA7;&amp;#x54C1;&amp;#x4E2D;&amp;#x9047;&amp;#x5230;&amp;#x4E86;&amp;#x8FD9;&amp;#x6837;&amp;#x7684;&amp;#x4E00;&amp;#x4E2A;&amp;#x95EE;&amp;#x9898;&amp;#xFF1A;Web&amp;#x7AEF;&amp;#x5DF2;&amp;#x7ECF;&amp;#x5B">
+    <meta name="description" content="JavaScript&amp;#x5F15;&amp;#x64CE;&amp;#x80FD;&amp;#x591F;&amp;#x89E3;&amp;#x6790;&amp;#x548C;&amp;#x6267;&amp;#x884C;JS&amp;#x811A;&amp;#x672C;&amp;#xFF0C;&amp;#x5E2E;&amp;#x52A9;&amp;#x79FB;&amp;#x52A8;&amp;#x7AEF;&amp;#x8FDB;&amp;#x884C;&amp;#x8DE8;&amp;#x5E73;&amp;#x53F0;&amp;#x5F00;&amp;#x5">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android平台上的JavaScript引擎">
 <meta property="og:url" content="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/index.html">
 <meta property="og:site_name" content="网易前端技术部">
-<meta property="og:description" content="&amp;#x4E00;&amp;#x3001;&amp;#x524D;&amp;#x8A00;&amp;#x8FD1;&amp;#x671F;&amp;#x5728;&amp;#x4EA7;&amp;#x54C1;&amp;#x4E2D;&amp;#x9047;&amp;#x5230;&amp;#x4E86;&amp;#x8FD9;&amp;#x6837;&amp;#x7684;&amp;#x4E00;&amp;#x4E2A;&amp;#x95EE;&amp;#x9898;&amp;#xFF1A;Web&amp;#x7AEF;&amp;#x5DF2;&amp;#x7ECF;&amp;#x5B">
+<meta property="og:description" content="JavaScript&amp;#x5F15;&amp;#x64CE;&amp;#x80FD;&amp;#x591F;&amp;#x89E3;&amp;#x6790;&amp;#x548C;&amp;#x6267;&amp;#x884C;JS&amp;#x811A;&amp;#x672C;&amp;#xFF0C;&amp;#x5E2E;&amp;#x52A9;&amp;#x79FB;&amp;#x52A8;&amp;#x7AEF;&amp;#x8FDB;&amp;#x884C;&amp;#x8DE8;&amp;#x5E73;&amp;#x53F0;&amp;#x5F00;&amp;#x5">
 <meta property="og:image" content="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/web_shape.png">
 <meta property="og:image" content="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/android_shape.png">
-<meta property="og:updated_time" content="2016-12-30T05:35:22.000Z">
+<meta property="og:updated_time" content="2016-12-30T11:28:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android平台上的JavaScript引擎">
-<meta name="twitter:description" content="&amp;#x4E00;&amp;#x3001;&amp;#x524D;&amp;#x8A00;&amp;#x8FD1;&amp;#x671F;&amp;#x5728;&amp;#x4EA7;&amp;#x54C1;&amp;#x4E2D;&amp;#x9047;&amp;#x5230;&amp;#x4E86;&amp;#x8FD9;&amp;#x6837;&amp;#x7684;&amp;#x4E00;&amp;#x4E2A;&amp;#x95EE;&amp;#x9898;&amp;#xFF1A;Web&amp;#x7AEF;&amp;#x5DF2;&amp;#x7ECF;&amp;#x5B">
+<meta name="twitter:description" content="JavaScript&amp;#x5F15;&amp;#x64CE;&amp;#x80FD;&amp;#x591F;&amp;#x89E3;&amp;#x6790;&amp;#x548C;&amp;#x6267;&amp;#x884C;JS&amp;#x811A;&amp;#x672C;&amp;#xFF0C;&amp;#x5E2E;&amp;#x52A9;&amp;#x79FB;&amp;#x52A8;&amp;#x7AEF;&amp;#x8FDB;&amp;#x884C;&amp;#x8DE8;&amp;#x5E73;&amp;#x53F0;&amp;#x5F00;&amp;#x5">
 <meta name="twitter:image" content="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/web_shape.png">
 
     
@@ -103,7 +103,8 @@
 		
 		</div>
 		
-		<h3 id="&#x4E00;&#x3001;&#x524D;&#x8A00;"><a href="#&#x4E00;&#x3001;&#x524D;&#x8A00;" class="headerlink" title="&#x4E00;&#x3001;&#x524D;&#x8A00;"></a>&#x4E00;&#x3001;&#x524D;&#x8A00;</h3><p>&#x8FD1;&#x671F;&#x5728;&#x4EA7;&#x54C1;&#x4E2D;&#x9047;&#x5230;&#x4E86;&#x8FD9;&#x6837;&#x7684;&#x4E00;&#x4E2A;&#x95EE;&#x9898;&#xFF1A;Web&#x7AEF;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x4E00;&#x4E2A;&#x529F;&#x80FD;&#x5B8C;&#x5584;&#x7684;JavaScript&#x5E93;&#xFF0C;&#x5982;&#x679C;&#x5C06;&#x76F8;&#x5173;Web&#x5D4C;&#x5165;&#x5230;App&#x4E2D;&#xFF0C;&#x5219;WebView&#x5C06;&#x5E26;&#x6765;&#x4E00;&#x5B9A;&#x7684;&#x6027;&#x80FD;&#x5F71;&#x54CD;&#xFF1B;&#x5982;&#x679C;Android&#x7AEF;&#x672C;&#x5730;&#x5F00;&#x53D1;&#x4E00;&#x4E2A;&#x76F8;&#x540C;&#x7684;&#x5E93;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x6D88;&#x8017;&#x5927;&#x91CF;&#x7684;&#x8D44;&#x6E90;&#x3002;&#x8003;&#x8651;&#x5230;&#x4EE3;&#x7801;&#x590D;&#x7528;&#x548C;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#xFF0C;&#x56E2;&#x961F;&#x8C03;&#x7814;&#x4E86;JS&#x5F15;&#x64CE;&#x5728;Android&#x4E0A;&#x7684;&#x4F7F;&#x7528;&#xFF0C;&#x5E0C;&#x671B;&#x89E3;&#x51B3;&#x201D;&#x4E0D;&#x7ECF;&#x8FC7;WebView&#xFF0C;&#x800C;&#x5C06;JS&#x5E93;&#x62FF;&#x5230;Android&#x7AEF;&#x8FD0;&#x884C;&#xFF0C;&#x5E76;&#x5C06;&#x8FD0;&#x884C;&#x7ED3;&#x679C;&#x4EA4;&#x7ED9;&#x672C;&#x5730;&#x8F93;&#x51FA;&#x201D;&#x8FD9;&#x4E00;&#x9700;&#x6C42;&#x3002;<a id="more"></a></p>
+		<p>JavaScript&#x5F15;&#x64CE;&#x80FD;&#x591F;&#x89E3;&#x6790;&#x548C;&#x6267;&#x884C;JS&#x811A;&#x672C;&#xFF0C;&#x5E2E;&#x52A9;&#x79FB;&#x52A8;&#x7AEF;&#x8FDB;&#x884C;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#x3002;&#x672C;&#x6587;&#x4E3B;&#x8981;&#x4ECB;&#x7ECD;&#x548C;&#x8BA8;&#x8BBA;JS&#x5F15;&#x64CE;&#x5728;Android&#x7CFB;&#x7EDF;&#x4E0A;&#x7684;&#x4F7F;&#x7528;&#x548C;&#x6027;&#x80FD;&#x6BD4;&#x8F83;&#xFF0C;&#x5E76;&#x9488;&#x5BF9;JS&#x7ED8;&#x5236;&#x672C;&#x5730;&#x5316;&#x95EE;&#x9898;&#x7ED9;&#x51FA;&#x4E86;&#x57FA;&#x4E8E;V8&#x7684;&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;&#x3002;<a id="more"></a></p>
+<h3 id="&#x4E00;&#x3001;&#x524D;&#x8A00;"><a href="#&#x4E00;&#x3001;&#x524D;&#x8A00;" class="headerlink" title="&#x4E00;&#x3001;&#x524D;&#x8A00;"></a>&#x4E00;&#x3001;&#x524D;&#x8A00;</h3><p>&#x8FD1;&#x671F;&#x5728;&#x4EA7;&#x54C1;&#x4E2D;&#x9047;&#x5230;&#x4E86;&#x8FD9;&#x6837;&#x7684;&#x4E00;&#x4E2A;&#x95EE;&#x9898;&#xFF1A;Web&#x7AEF;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x4E00;&#x4E2A;&#x529F;&#x80FD;&#x5B8C;&#x5584;&#x7684;JavaScript&#x5E93;&#xFF0C;&#x5982;&#x679C;&#x5C06;&#x76F8;&#x5173;Web&#x5D4C;&#x5165;&#x5230;App&#x4E2D;&#xFF0C;&#x5219;WebView&#x5C06;&#x5E26;&#x6765;&#x4E00;&#x5B9A;&#x7684;&#x6027;&#x80FD;&#x5F71;&#x54CD;&#xFF1B;&#x5982;&#x679C;Android&#x7AEF;&#x672C;&#x5730;&#x5F00;&#x53D1;&#x4E00;&#x4E2A;&#x76F8;&#x540C;&#x7684;&#x5E93;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x6D88;&#x8017;&#x5927;&#x91CF;&#x7684;&#x8D44;&#x6E90;&#x3002;&#x8003;&#x8651;&#x5230;&#x4EE3;&#x7801;&#x590D;&#x7528;&#x548C;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#xFF0C;&#x56E2;&#x961F;&#x8C03;&#x7814;&#x4E86;JS&#x5F15;&#x64CE;&#x5728;Android&#x4E0A;&#x7684;&#x4F7F;&#x7528;&#xFF0C;&#x5E0C;&#x671B;&#x89E3;&#x51B3;&#x201D;&#x4E0D;&#x7ECF;&#x8FC7;WebView&#xFF0C;&#x800C;&#x5C06;JS&#x5E93;&#x62FF;&#x5230;Android&#x7AEF;&#x8FD0;&#x884C;&#xFF0C;&#x5E76;&#x5C06;&#x8FD0;&#x884C;&#x7ED3;&#x679C;&#x4EA4;&#x7ED9;&#x672C;&#x5730;&#x8F93;&#x51FA;&#x201D;&#x8FD9;&#x4E00;&#x9700;&#x6C42;&#x3002;</p>
 <p>JS&#x5F15;&#x64CE;&#x80FD;&#x591F;&#x89E3;&#x6790;JS&#x811A;&#x672C;&#xFF0C;&#x901A;&#x5E38;&#x88AB;&#x4F9D;&#x9644;&#x4E8E;&#x6D4F;&#x89C8;&#x5668;&#x4E2D;&#xFF0C;&#x4F8B;&#x5982;Safari&#x6240;&#x4F7F;&#x7528;&#x7684;<strong>JavaScriptCore</strong>&#x3001;Google Chrome&#x6240;&#x4F7F;&#x7528;&#x7684;<strong>V8</strong>&#x548C;FireFox&#x6240;&#x4F7F;&#x7528;&#x7684;<strong>SpiderMonkey</strong>&#x7B49;&#x7B49;&#x3002;&#x4E5F;&#x88AB;&#x7528;&#x4F5C;&#x79FB;&#x52A8;&#x7AEF;&#x7684;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#xFF0C;&#x4F8B;&#x5982;<a href="http://developer.telerik.com/featured/nativescript-works/" target="_blank" rel="external">NativeScript</a>&#x5728;iOS&#x7AEF;&#x548C;Android&#x5206;&#x522B;&#x4F7F;&#x7528;&#x4E86;JavaScriptCore&#x548C;V8&#xFF0C;<a href="https://facebook.github.io/react-native/docs/javascript-environment.html" target="_blank" rel="external">ReactNative</a>&#x5219;&#x90FD;&#x4F7F;&#x7528;&#x4E86;JavaScriptCore&#x3002;</p>
 <h3 id="&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;"><a href="#&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;" class="headerlink" title="&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;"></a>&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;</h3><p>&#x5728;Android&#x7CFB;&#x7EDF;&#x4E2D;&#x80FD;&#x8FD0;&#x884C;&#x7684;JS&#x5F15;&#x64CE;&#x6709;&#x5982;&#x4E0B;5&#x79CD;&#xFF1A;</p>
 <h4 id="1-JavaScriptCore"><a href="#1-JavaScriptCore" class="headerlink" title="1. JavaScriptCore"></a>1. <a href="https://trac.webkit.org/wiki/JavaScriptCore" target="_blank" rel="external">JavaScriptCore</a></h4><p>JavaScriptCore&#x662F;&#x4E00;&#x4E2A;&#x5728;WebKit&#x4E2D;&#x63D0;&#x4F9B;JS&#x5F15;&#x64CE;&#x7684;&#x5F00;&#x6E90;&#x6846;&#x67B6;&#xFF0C;&#x6700;&#x8FD1;&#x66F4;&#x65B0;&#x65E5;&#x671F;&#x662F;2016&#x5E74;9&#x6708;26&#x65E5;&#x3002;&#x76EE;&#x524D;&#x8BE5;&#x5F15;&#x64CE;&#x7531;Apple&#x7EF4;&#x62A4;&#xFF0C;&#x4F7F;&#x7528;&#x4E8E;Safari&#x6D4F;&#x89C8;&#x5668;&#xFF0C;iOS7&#x540E;&#x4E5F;&#x96C6;&#x6210;&#x5230;&#x4E86;iPhone&#x5E73;&#x53F0;&#x3002;</p>
@@ -653,6 +654,10 @@ _flush: function() {
 			<li><a href="/categories/android/" title="android">android<sup>3</sup></a></li>
 		  
 		
+		  
+			<li><a href="/categories/ios/" title="ios">ios<sup>3</sup></a></li>
+		  
+		
 		</ul>
 </div>
 
@@ -663,11 +668,7 @@ _flush: function() {
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/iOS/" title="iOS">iOS<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
+				<li><a href="/tags/LLVM/" title="LLVM">LLVM<sup>1</sup></a></li>
 			
 		
 			
@@ -679,7 +680,19 @@ _flush: function() {
 			
 		
 			
+				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Js引擎/" title="Js引擎">Js引擎<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NeteaseAPM/" title="NeteaseAPM">NeteaseAPM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/混合开发框架/" title="混合开发框架">混合开发框架<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -721,7 +734,7 @@ _flush: function() {
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
 		
 		<a href="/about" target="_blank" title="网易前端技术部">网易前端技术部</a>
 		
