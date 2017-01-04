@@ -5,10 +5,10 @@
       <a href="<%- config.root %><%- item.path %>" title="<%= item.title %>" itemprop="url"><%= item.title %></a><% } %>
   </h1>
   <p class="article-author">By
-       <% if(theme.author.google_plus){ %>
-		<a href="https://plus.google.com/<%=theme.author.google_plus %>?rel=author" title="<%= config.author %>" target="_blank" itemprop="author"><%= config.author %></a>
+       <% if(item.url){ %>
+		<a href="<%= item.url %>" title="<%= config.author %>" target="_blank" itemprop="author"><%= item.author %></a>
 		<% }else{ %>
-		<a href="<%= config.root %>about" title="<%= config.author %>" target="_blank" itemprop="author"><%= config.author %></a>
+		<span style="color: rgb(44, 166, 203);" ><%= item.author %></span>
 		<% } %>
   <p class="article-time">
     <time datetime="<%= date_xml(item.date) %>" itemprop="datePublished"> <%= __('datepublished') %> <%= item.date.format(config.date_format) %></time>
