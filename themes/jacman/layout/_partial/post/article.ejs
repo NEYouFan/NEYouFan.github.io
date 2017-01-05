@@ -8,10 +8,10 @@
 		<% if( table&&(item.toc !== false) && theme.toc.article){ %>
 		<div id="toc" class="toc-article">
 			<strong class="toc-title"><%= __('contents') %></strong>
-		<% if(item.list_number == false) {%>
-		<%- toc(item.content,{list_number:false}) %>
-		<% }else{ %>
+		<% if(item.list_number == true) {%>
 			<%- toc(item.content) %>
+		<% }else{ %>
+			<%- toc(item.content,{list_number:false}) %>
 		<% } %>
 		</div>
 		<% } %>
