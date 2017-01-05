@@ -1,0 +1,638 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>关于LLVM，这些东西你必须要知道 | 网易杭州前端技术部</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="网易前端技术部">
+    
+
+    
+    <meta name="description" content="只要你和代码打交道，了解编译器的工作流程和原理定会让你受益无穷，无论是分析程序，还是基于它写自己的插件，甚至学习一门全新的语音。通过本文，将带你了解LLVM，并使用LLVM来完成一些有意思的事情。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于LLVM，这些东西你必须要知道">
+<meta property="og:url" content="http://NEYouFan.github.io/2016/12/29/ios/关于LLVM这些东西你必须要知道 /index.html">
+<meta property="og:site_name" content="网易杭州前端技术部">
+<meta property="og:description" content="只要你和代码打交道，了解编译器的工作流程和原理定会让你受益无穷，无论是分析程序，还是基于它写自己的插件，甚至学习一门全新的语音。通过本文，将带你了解LLVM，并使用LLVM来完成一些有意思的事情。">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482136450962.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482136601642.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994028068.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994071651.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482150626825.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994093995.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482218230417.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994171109.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482218636504.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482219005958.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994195691.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994863704.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994879267.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482320827975.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994222169.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482318703701.png">
+<meta property="og:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482320959711.png">
+<meta property="og:updated_time" content="2017-01-05T06:15:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于LLVM，这些东西你必须要知道">
+<meta name="twitter:description" content="只要你和代码打交道，了解编译器的工作流程和原理定会让你受益无穷，无论是分析程序，还是基于它写自己的插件，甚至学习一门全新的语音。通过本文，将带你了解LLVM，并使用LLVM来完成一些有意思的事情。">
+<meta name="twitter:image" content="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482136450962.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="网易杭州前端技术部" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="网易杭州前端技术部" title="网易杭州前端技术部"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="网易杭州前端技术部">网易杭州前端技术部</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:NEYouFan.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/12/29/ios/关于LLVM这些东西你必须要知道 /" title="关于LLVM，这些东西你必须要知道" itemprop="url">关于LLVM，这些东西你必须要知道</a>
+  </h1>
+  <p class="article-author">By
+       
+		<span style="color: rgb(44, 166, 203);" >刘培庆</span>
+		
+  <p class="article-time">
+    <time datetime="2016-12-28T16:00:00.000Z" itemprop="datePublished"> 发表于 2016-12-29</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是LLVM？"><span class="toc-text">1. 什么是LLVM？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-安装编译LLVM"><span class="toc-text">2. 安装编译LLVM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-从源码到可执行文件"><span class="toc-text">3. 从源码到可执行文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-预处理（Preprocess）"><span class="toc-text">3.1 预处理（Preprocess）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-词法分析-Lexical-Analysis"><span class="toc-text">3.2 词法分析 (Lexical Analysis)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-语法分析-Semantic-Analysis"><span class="toc-text">3.3 语法分析 (Semantic Analysis)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-IR代码生成-CodeGen"><span class="toc-text">3.4 IR代码生成 (CodeGen)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-生成字节码-LLVM-Bitcode"><span class="toc-text">3.5 生成字节码 (LLVM Bitcode)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-生成相关汇编"><span class="toc-text">3.6 生成相关汇编</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-生成目标文件"><span class="toc-text">3.7 生成目标文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-8-生成可执行文件"><span class="toc-text">3.8 生成可执行文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-9-整体流程"><span class="toc-text">3.9 整体流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-可以用Clang做什么？"><span class="toc-text">4. 可以用Clang做什么？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-libclang进行语法分析"><span class="toc-text">4.1 libclang进行语法分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-LibTooling"><span class="toc-text">4.2 LibTooling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-ClangPlugin"><span class="toc-text">4.3 ClangPlugin</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-动手写Pass"><span class="toc-text">5. 动手写Pass</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-一个简单的Pass"><span class="toc-text">5.1 一个简单的Pass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-将Pass加入PassManager管理"><span class="toc-text">5.2 将Pass加入PassManager管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-总结"><span class="toc-text">6. 总结</span></a></li></ol>
+		
+		</div>
+		
+		<p>只要你和代码打交道，了解编译器的工作流程和原理定会让你受益无穷，无论是分析程序，还是基于它写自己的插件，甚至学习一门全新的语音。通过本文，将带你了解LLVM，并使用LLVM来完成一些有意思的事情。<a id="more"></a></p>
+<h2 id="1-什么是LLVM？"><a href="#1-什么是LLVM？" class="headerlink" title="1. 什么是LLVM？"></a>1. 什么是LLVM？</h2><blockquote>
+<p>The LLVM Project is a collection of modular and reusable compiler and toolchain technologies.</p>
+</blockquote>
+<p>简单来说，LLVM项目是一系列分模块、可重用的编译工具链。它提供了一种代码编写良好的中间表示(IR)，可以作为多种语言的后端，还可以提供与变成语言无关的优化和针对多种cpu的代码生成功能。</p>
+<p>先来看下LLVM架构的主要组成部分：</p>
+<ul>
+<li>前端：前端用来获取源代码然后将它转变为某种中间表示，我们可以选择不同的编译器来作为LLVM的前端，如gcc，clang。</li>
+<li>Pass(通常翻译为“流程”)：Pass用来将程序的中间表示之间相互变换。一般情况下，Pass可以用来优化代码，这部分通常是我们关注的部分。</li>
+<li>后端：后端用来生成实际的机器码。</li>
+</ul>
+<p>虽然如今大多数编译器都采用的是这种架构，但是LLVM不同的就是对于不同的语言它都提供了同一种中间表示。传统的编译器的架构如下:</p>
+<center><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482136450962.png"></center>
+
+<p>LLVM的架构如下：</p>
+<center><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482136601642.png"></center>
+
+<p>当编译器需要支持多种源代码和目标架构时，基于LLVM的架构，设计一门新的语言只需要去实现一个新的前端就行了，支持新的后端架构也只需要实现一个新的后端就行了。其它部分完成可以复用，就不用再重新设计一次了。</p>
+<h2 id="2-安装编译LLVM"><a href="#2-安装编译LLVM" class="headerlink" title="2. 安装编译LLVM"></a>2. 安装编译LLVM</h2><p>这里使用clang作为前端:</p>
+<ol>
+<li><p>直接从官网下载:<a href="http://releases.llvm.org/download.html" target="_blank" rel="external">http://releases.llvm.org/download.html
+</a></p>
+</li>
+<li><p>svn获取</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm</div><div class="line">cd llvm/tools</div><div class="line">svn co http://llvm.org/svn/llvm-project/cfe/trunk clang</div><div class="line">cd ../projects</div><div class="line">svn co http://llvm.org/svn/llvm-project/compiler-rt/trunk compiler-rt</div><div class="line">cd ../tools/clang/tools</div><div class="line">svn co http://llvm.org/svn/llvm-project/clang-tools-extra/trunk extra</div></pre></td></tr></table></figure>
+<ol>
+<li>git获取</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">git clone http://llvm.org/git/llvm.git</div><div class="line">cd llvm/tools</div><div class="line">git clone http://llvm.org/git/clang.git</div><div class="line">cd ../projects</div><div class="line">git clone http://llvm.org/git/compiler-rt.git</div><div class="line">cd ../tools/clang/tools</div><div class="line">git clone http://llvm.org/git/clang-tools-extra.git</div></pre></td></tr></table></figure>
+<p>最新的LLVM只支持cmake来编译了，首先安装cmake。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install cmake</div></pre></td></tr></table></figure>
+<p>编译：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir build</div><div class="line">cmake /path/to/llvm/source</div><div class="line">cmake --build .</div></pre></td></tr></table></figure>
+<p>编译时间比较长，而且编译结果会生成20G左右的文件。</p>
+<p>编译完成后，就能在<code>build/bin/</code>目录下面找到生成的工具了。</p>
+<h2 id="3-从源码到可执行文件"><a href="#3-从源码到可执行文件" class="headerlink" title="3. 从源码到可执行文件"></a>3. 从源码到可执行文件</h2><p>我们在开发的时候的时候，如果想要生成一个可执行文件或应用，我们点击run就完事了，那么在点击run之后编译器背后又做了哪些事情呢？</p>
+<p>我们先来一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#import &lt;Foundation/Foundation.h&gt;</div><div class="line"></div><div class="line">#define TEN 10</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">    @autoreleasepool &#123;</div><div class="line">        int numberOne = TEN;</div><div class="line">        int numberTwo = 8;</div><div class="line">        NSString* name = [[NSString alloc] initWithUTF8String:&quot;AloneMonkey&quot;];</div><div class="line">        int age = numberOne + numberTwo;</div><div class="line">        NSLog(@&quot;Hello, %@, Age: %d&quot;, name, age);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面这个文件，我们可以通过命令行直接编译，然后链接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">xcrun -sdk iphoneos clang -arch armv7 -F Foundation -fobjc-arc -c main.m -o main.o</div><div class="line">xcrun -sdk iphoneos clang main.o -arch armv7 -fobjc-arc -framework Foundation -o main</div></pre></td></tr></table></figure>
+<p>拷贝到手机运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">monkeyde-iPhone:/tmp root# ./main</div><div class="line">2016-12-19 17:16:34.654 main[2164:213100] Hello, AloneMonkey, Age: 18</div></pre></td></tr></table></figure>
+<p>大家不会以为就这样就完了吧，当然不是，我们要继续深入剖析。</p>
+<h3 id="3-1-预处理（Preprocess）"><a href="#3-1-预处理（Preprocess）" class="headerlink" title="3.1 预处理（Preprocess）"></a>3.1 预处理（Preprocess）</h3><p>这部分包括macro宏的展开，import/include头文件的导入，以及#if等处理。</p>
+<p>可以通过执行以下命令，来告诉clang只执行到预处理这一步：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clang -E main.m</div></pre></td></tr></table></figure>
+<p>执行完这个命令之后，我们会发现导入了很多的头文件内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">......</div><div class="line"># 1 &quot;/System/Library/Frameworks/Foundation.framework/Headers/FoundationLegacySwiftCompatibility.h&quot; 1 3</div><div class="line"># 185 &quot;/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h&quot; 2 3</div><div class="line"># 2 &quot;main.m&quot; 2</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">    @autoreleasepool &#123;</div><div class="line">        int numberOne = 10;</div><div class="line">        int numberTwo = 8;</div><div class="line">        NSString* name = [[NSString alloc] initWithUTF8String:&quot;AloneMonkey&quot;];</div><div class="line">        int age = numberOne + numberTwo;</div><div class="line">        NSLog(@&quot;Hello, %@, Age: %d&quot;, name, age);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到上面的预处理已经把宏替换了，并且导入了头文件。但是这样的话会引入很多不会去改变的系统库比如Foundation，所以有了pch预处理文件，可以在这里去引入一些通用的头文件。</p>
+<p>后来Xcode新建的项目里面去掉了pch文件，引入了moduels的概念，把一些通用的库打成modules的形式，然后导入，默认会加上-fmodules参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clang -E -fmodules main.m</div></pre></td></tr></table></figure>
+<p>这样的话，只需要@import一下就能导入对应库的modules模块了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">@import Foundation; </div><div class="line">int main()&#123;</div><div class="line">    @autoreleasepool &#123;</div><div class="line">        int numberOne = 10;</div><div class="line">        int numberTwo = 8;</div><div class="line">        NSString* name = [[NSString alloc] initWithUTF8String:&quot;AloneMonkey&quot;];</div><div class="line">        int age = numberOne + numberTwo;</div><div class="line">        NSLog(@&quot;Hello, %@, Age: %d&quot;, name, age);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="3-2-词法分析-Lexical-Analysis"><a href="#3-2-词法分析-Lexical-Analysis" class="headerlink" title="3.2 词法分析 (Lexical Analysis)"></a>3.2 词法分析 (Lexical Analysis)</h3><p>在预处理之后，就要进行词法分析了，将预处理过的代码转化成一个个Token，比如左括号、右括号、等于、字符串等等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clang -fmodules -fsyntax-only -Xclang -dump-tokens main.m</div></pre></td></tr></table></figure>
+<p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994028068.png" alt="image"></p>
+<h3 id="3-3-语法分析-Semantic-Analysis"><a href="#3-3-语法分析-Semantic-Analysis" class="headerlink" title="3.3 语法分析 (Semantic Analysis)"></a>3.3 语法分析 (Semantic Analysis)</h3><p>根据当前语言的语法，验证语法是否正确，并将所有节点组合成抽象语法树(AST)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clang -fmodules -fsyntax-only -Xclang -ast-dump main.m</div></pre></td></tr></table></figure>
+<p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994071651.png" alt="image"></p>
+<p>语法树直观图:</p>
+<p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482150626825.png" alt="image"></p>
+<h3 id="3-4-IR代码生成-CodeGen"><a href="#3-4-IR代码生成-CodeGen" class="headerlink" title="3.4 IR代码生成 (CodeGen)"></a>3.4 IR代码生成 (CodeGen)</h3><p>CodeGen负责将语法树从顶至下遍历，翻译成LLVM IR，LLVM IR是Frontend的输出，也是LLVM Backerend的输入，桥接前后端。</p>
+<p>可以在中间代码层次去做一些优化工作，我们在Xcode的编译设置里面也可以设置优化级别<code>-O1</code>,<code>-O3</code>,<code>-Os</code>。 还可以去写一些自己的Pass，这里需要解释一下什么是Pass。</p>
+<p>Pass就是LLVM系统转化和优化的工作的一个节点，每个节点做一些工作，这些工作加起来就构成了LLVM整个系统的优化和转化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clang -S -fobjc-arc -emit-llvm main.m -o main.ll</div></pre></td></tr></table></figure>
+<p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994093995.png" alt="image"></p>
+<h3 id="3-5-生成字节码-LLVM-Bitcode"><a href="#3-5-生成字节码-LLVM-Bitcode" class="headerlink" title="3.5 生成字节码 (LLVM Bitcode)"></a>3.5 生成字节码 (LLVM Bitcode)</h3><p>我们在Xcode7中默认生成bitcode就是这种的中间形式存在， 开启了bitcode，那么苹果后台拿到的就是这种中间代码，苹果可以对bitcode做一个进一步的优化，如果有新的后端架构，仍然可以用这份bitcode去生成。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clang -emit-llvm -c main.m -o main.bc</div></pre></td></tr></table></figure>
+<p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482218230417.png" alt="image"></p>
+<h3 id="3-6-生成相关汇编"><a href="#3-6-生成相关汇编" class="headerlink" title="3.6 生成相关汇编"></a>3.6 生成相关汇编</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clang -S -fobjc-arc main.m -o main.s</div></pre></td></tr></table></figure>
+<p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994171109.png" alt="image"></p>
+<h3 id="3-7-生成目标文件"><a href="#3-7-生成目标文件" class="headerlink" title="3.7 生成目标文件"></a>3.7 生成目标文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clang -fmodules -c main.m -o main.o</div></pre></td></tr></table></figure>
+<p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482218636504.png" alt="image"></p>
+<h3 id="3-8-生成可执行文件"><a href="#3-8-生成可执行文件" class="headerlink" title="3.8 生成可执行文件"></a>3.8 生成可执行文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">clang main.o -o main</div><div class="line">./main</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2016-12-20 15:25:42.299 main[8941:327306] Hello, AloneMonkey, Age: 18</div></pre></td></tr></table></figure>
+<h3 id="3-9-整体流程"><a href="#3-9-整体流程" class="headerlink" title="3.9 整体流程"></a>3.9 整体流程</h3><p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482219005958.png" alt="image"></p>
+<h2 id="4-可以用Clang做什么？"><a href="#4-可以用Clang做什么？" class="headerlink" title="4. 可以用Clang做什么？"></a>4. 可以用Clang做什么？</h2><h3 id="4-1-libclang进行语法分析"><a href="#4-1-libclang进行语法分析" class="headerlink" title="4.1 libclang进行语法分析"></a>4.1 libclang进行语法分析</h3><p>可以使用libclang里面提供的方法对源文件进行语法分析，分析它的语法树，遍历语法树上面的每一个节点。可以用于检查拼写错误，或者做字符串加密。</p>
+<p>来看一段代码的使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">void *hand = dlopen(&quot;/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib&quot;,RTLD_LAZY);</div><div class="line">        </div><div class="line">//初始化函数指针</div><div class="line">initlibfunclist(hand);</div><div class="line"></div><div class="line">CXIndex cxindex = myclang_createIndex(1, 1);</div><div class="line"></div><div class="line">const char *filename = &quot;/path/to/filename&quot;;</div><div class="line"></div><div class="line">int index = 0;</div><div class="line"></div><div class="line">const char ** new_command = malloc(10240);</div><div class="line"></div><div class="line">NSMutableString *mus = [NSMutableString stringWithString:@&quot;/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch armv7 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk&quot;]; </div><div class="line"></div><div class="line">NSArray *arr = [mus componentsSeparatedByString:@&quot; &quot;];</div><div class="line"></div><div class="line">for (NSString *tmp in arr) &#123;</div><div class="line">    new_command[index++] = [tmp UTF8String];</div><div class="line">&#125;</div><div class="line"></div><div class="line">nameArr = [[NSMutableArray alloc] initWithCapacity:10];</div><div class="line"></div><div class="line">TU = myclang_parseTranslationUnit(cxindex, filename, new_command, index, NULL, 0, myclang_defaultEditingTranslationUnitOptions());</div><div class="line"></div><div class="line">CXCursor rootCursor = myclang_getTranslationUnitCursor(TU);</div><div class="line"></div><div class="line">myclang_visitChildren(rootCursor, printVisitor, NULL);</div><div class="line"></div><div class="line">myclang_disposeTranslationUnit(TU);</div><div class="line">myclang_disposeIndex(cxindex);</div><div class="line">free(new_command);</div><div class="line"></div><div class="line">dlclose(hand);</div></pre></td></tr></table></figure>
+<p>然后我们就可以在<code>printVisitor</code>这个函数里面去遍历输入文件的语法树了。</p>
+<p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994195691.png" alt="image"></p>
+<p>我们也通过通过python去调用用clang：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install clang</div></pre></td></tr></table></figure>
+<p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994863704.png" alt="image"></p>
+<p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994879267.png" alt="image"></p>
+<p>那么基于语法树的分析，我们可以针对字符串做加密：</p>
+<center><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482320827975.png"></center>
+
+<p>从左上角的明文字符串，处理成右下角的介个样子~</p>
+<h3 id="4-2-LibTooling"><a href="#4-2-LibTooling" class="headerlink" title="4.2 LibTooling"></a>4.2 LibTooling</h3><p>对语法树有完全的控制权，可以作为一个单独的命令使用，如：<code>clang-format</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clang-format main.m</div></pre></td></tr></table></figure>
+<p>我们也可以自己写一个这样的工具去遍历、访问、甚至修改语法树。 目录:<code>llvm/tools/clang/tools</code></p>
+<p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482994222169.png" alt="image"></p>
+<p>上面的代码通过遍历语法树，去修改里面的方法名和返回变量名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">before:</div><div class="line">void do_math(int *x) &#123;</div><div class="line">    *x += 5;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main(void) &#123;</div><div class="line">    int result = -1, val = 4;</div><div class="line">    do_math(&amp;val);</div><div class="line">    return result;</div><div class="line">&#125;</div><div class="line"></div><div class="line">after:</div><div class="line">** Rewrote function def: do_math</div><div class="line">** Rewrote function call</div><div class="line">** Rewrote ReturnStmt</div><div class="line"></div><div class="line">Found 2 functions.</div><div class="line"></div><div class="line">void add5(int *x) &#123;</div><div class="line">    *x += 5;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main(void) &#123;</div><div class="line">    int result = -1, val = 4;</div><div class="line">    add5(&amp;val);</div><div class="line">    return val;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那么，我们看到<code>LibTooling</code>对代码的语法树有完全的控制，那么我们可以基于它去检查命名的规范，甚至做一个代码的转换，比如实现OC转Swift。</p>
+<h3 id="4-3-ClangPlugin"><a href="#4-3-ClangPlugin" class="headerlink" title="4.3 ClangPlugin"></a>4.3 ClangPlugin</h3><p>对语法树有完全的控制权，作为插件注入到编译流程中，可以影响build和决定编译过程。目录:<code>llvm/tools/clang/examples</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line">#include &quot;clang/Driver/Options.h&quot;</div><div class="line">#include &quot;clang/AST/AST.h&quot;</div><div class="line">#include &quot;clang/AST/ASTContext.h&quot;</div><div class="line">#include &quot;clang/AST/ASTConsumer.h&quot;</div><div class="line">#include &quot;clang/AST/RecursiveASTVisitor.h&quot;</div><div class="line">#include &quot;clang/Frontend/ASTConsumers.h&quot;</div><div class="line">#include &quot;clang/Frontend/FrontendActions.h&quot;</div><div class="line">#include &quot;clang/Frontend/CompilerInstance.h&quot;</div><div class="line">#include &quot;clang/Frontend/FrontendPluginRegistry.h&quot;</div><div class="line">#include &quot;clang/Rewrite/Core/Rewriter.h&quot;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line">using namespace clang;</div><div class="line">using namespace llvm;</div><div class="line"></div><div class="line">Rewriter rewriter;</div><div class="line">int numFunctions = 0;</div><div class="line"></div><div class="line"></div><div class="line">class ExampleVisitor : public RecursiveASTVisitor&lt;ExampleVisitor&gt; &#123;</div><div class="line">private:</div><div class="line">    ASTContext *astContext; // used for getting additional AST info</div><div class="line"></div><div class="line">public:</div><div class="line">    explicit ExampleVisitor(CompilerInstance *CI) </div><div class="line">      : astContext(&amp;(CI-&gt;getASTContext())) // initialize private members</div><div class="line">    &#123;</div><div class="line">        rewriter.setSourceMgr(astContext-&gt;getSourceManager(), astContext-&gt;getLangOpts());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    virtual bool VisitFunctionDecl(FunctionDecl *func) &#123;</div><div class="line">        numFunctions++;</div><div class="line">        string funcName = func-&gt;getNameInfo().getName().getAsString();</div><div class="line">        if (funcName == &quot;do_math&quot;) &#123;</div><div class="line">            rewriter.ReplaceText(func-&gt;getLocation(), funcName.length(), &quot;add5&quot;);</div><div class="line">            errs() &lt;&lt; &quot;** Rewrote function def: &quot; &lt;&lt; funcName &lt;&lt; &quot;\n&quot;;</div><div class="line">        &#125;    </div><div class="line">        return true;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    virtual bool VisitStmt(Stmt *st) &#123;</div><div class="line">        if (ReturnStmt *ret = dyn_cast&lt;ReturnStmt&gt;(st)) &#123;</div><div class="line">            rewriter.ReplaceText(ret-&gt;getRetValue()-&gt;getLocStart(), 6, &quot;val&quot;);</div><div class="line">            errs() &lt;&lt; &quot;** Rewrote ReturnStmt\n&quot;;</div><div class="line">        &#125;        </div><div class="line">        if (CallExpr *call = dyn_cast&lt;CallExpr&gt;(st)) &#123;</div><div class="line">            rewriter.ReplaceText(call-&gt;getLocStart(), 7, &quot;add5&quot;);</div><div class="line">            errs() &lt;&lt; &quot;** Rewrote function call\n&quot;;</div><div class="line">        &#125;</div><div class="line">        return true;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">class ExampleASTConsumer : public ASTConsumer &#123;</div><div class="line">private:</div><div class="line">    ExampleVisitor *visitor; // doesn&apos;t have to be private</div><div class="line"></div><div class="line">public:</div><div class="line">    // override the constructor in order to pass CI</div><div class="line">    explicit ExampleASTConsumer(CompilerInstance *CI):</div><div class="line">        visitor(new ExampleVisitor(CI)) &#123; &#125; // initialize the visitor</div><div class="line"></div><div class="line">    // override this to call our ExampleVisitor on the entire source file</div><div class="line">    virtual void HandleTranslationUnit(ASTContext &amp;Context) &#123;</div><div class="line">        /* we can use ASTContext to get the TranslationUnitDecl, which is</div><div class="line">             a single Decl that collectively represents the entire source file */</div><div class="line">        visitor-&gt;TraverseDecl(Context.getTranslationUnitDecl());</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">class PluginExampleAction : public PluginASTAction &#123;</div><div class="line">protected:</div><div class="line">    // this gets called by Clang when it invokes our Plugin</div><div class="line">    // Note that unique pointer is used here.</div><div class="line">    std::unique_ptr&lt;ASTConsumer&gt; CreateASTConsumer(CompilerInstance &amp;CI, StringRef file) &#123;</div><div class="line">        return llvm::make_unique&lt;ExampleASTConsumer&gt;(&amp;CI);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // implement this function if you want to parse custom cmd-line args</div><div class="line">    bool ParseArgs(const CompilerInstance &amp;CI, const vector&lt;string&gt; &amp;args) &#123;</div><div class="line">        return true;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line">static FrontendPluginRegistry::Add&lt;PluginExampleAction&gt; X(&quot;-example-plugin&quot;, &quot;simple Plugin example&quot;);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">clang -Xclang -load -Xclang ../build/lib/PluginExample.dylib -Xclang -plugin -Xclang -example-plugin -c testPlugin.c</div><div class="line"></div><div class="line">** Rewrote function def: do_math</div><div class="line">** Rewrote function call</div><div class="line">** Rewrote ReturnStmt</div></pre></td></tr></table></figure>
+<p>我们可以基于ClangPlugin做些什么事情呢？我们可以用来定义一些编码规范，比如代码风格检查，命名检查等等。下面是我写的判断类名前两个字母是不是大写的例子，如果不是报错。(当然这只是一个例子而已。。。)</p>
+<p><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482318703701.png" alt="image"></p>
+<h2 id="5-动手写Pass"><a href="#5-动手写Pass" class="headerlink" title="5. 动手写Pass"></a>5. 动手写Pass</h2><h3 id="5-1-一个简单的Pass"><a href="#5-1-一个简单的Pass" class="headerlink" title="5.1 一个简单的Pass"></a>5.1 一个简单的Pass</h3><p>前面我们说到，Pass就是LLVM系统转化和优化的工作的一个节点，当然我们也可以写一个这样的节点去做一些自己的优化工作或者其它的操作。下面我们来看一下一个简单Pass的编写流程：</p>
+<p>1.创建头文件  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd llvm/include/llvm/Transforms/</div><div class="line">mkdir Obfuscation</div><div class="line">cd Obfuscation</div><div class="line">touch SimplePass.h</div></pre></td></tr></table></figure>
+<p>写入内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#include &quot;llvm/IR/Function.h&quot;</div><div class="line">#include &quot;llvm/Pass.h&quot;</div><div class="line">#include &quot;llvm/Support/raw_ostream.h&quot;</div><div class="line">#include &quot;llvm/IR/Intrinsics.h&quot;</div><div class="line">#include &quot;llvm/IR/Instructions.h&quot;</div><div class="line">#include &quot;llvm/IR/LegacyPassManager.h&quot;</div><div class="line">#include &quot;llvm/Transforms/IPO/PassManagerBuilder.h&quot;</div><div class="line"></div><div class="line">// Namespace</div><div class="line">using namespace std;</div><div class="line"></div><div class="line">namespace llvm &#123;</div><div class="line">	Pass *createSimplePass(bool flag);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>2.创建源文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">cd llvm/lib/Transforms/</div><div class="line">mkdir Obfuscation</div><div class="line">cd Obfuscation</div><div class="line"></div><div class="line">touch CMakeLists.txt</div><div class="line">touch LLVMBuild.txt</div><div class="line">touch SimplePass.cpp</div></pre></td></tr></table></figure>
+<p>CMakeLists.txt:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">add_llvm_loadable_module(LLVMObfuscation</div><div class="line">  SimplePass.cpp</div><div class="line">  </div><div class="line">  )</div><div class="line"></div><div class="line">  add_dependencies(LLVMObfuscation intrinsics_gen)</div></pre></td></tr></table></figure>
+<p>LLVMBuild.txt:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[component_0]</div><div class="line">type = Library</div><div class="line">name = Obfuscation</div><div class="line">parent = Transforms</div><div class="line">library_name = Obfuscation</div></pre></td></tr></table></figure>
+<p>SimplePass.cpp:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line">#include &quot;llvm/Transforms/Obfuscation/SimplePass.h&quot;</div><div class="line"></div><div class="line">using namespace llvm;</div><div class="line"></div><div class="line">namespace &#123;</div><div class="line">    struct SimplePass : public FunctionPass &#123;</div><div class="line">        static char ID; // Pass identification, replacement for typeid</div><div class="line">        bool flag;</div><div class="line">         </div><div class="line">        SimplePass() : FunctionPass(ID) &#123;&#125;</div><div class="line">        SimplePass(bool flag) : FunctionPass(ID) &#123;</div><div class="line">        	this-&gt;flag = flag;</div><div class="line">        &#125;</div><div class="line">         </div><div class="line">        bool runOnFunction(Function &amp;F) override &#123;</div><div class="line">        	if(this-&gt;flag)&#123;</div><div class="line">                Function *tmp = &amp;F;</div><div class="line">                // 遍历函数中的所有基本块</div><div class="line">                for (Function::iterator bb = tmp-&gt;begin(); bb != tmp-&gt;end(); ++bb) &#123;</div><div class="line">                    // 遍历基本块中的每条指令</div><div class="line">                    for (BasicBlock::iterator inst = bb-&gt;begin(); inst != bb-&gt;end(); ++inst) &#123;</div><div class="line">                        // 是否是add指令</div><div class="line">                        if (inst-&gt;isBinaryOp()) &#123;</div><div class="line">                            if (inst-&gt;getOpcode() == Instruction::Add) &#123;</div><div class="line">                                ob_add(cast&lt;BinaryOperator&gt;(inst));</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">         </div><div class="line">        // a+b === a-(-b)</div><div class="line">        void ob_add(BinaryOperator *bo) &#123;</div><div class="line">            BinaryOperator *op = NULL;</div><div class="line">             </div><div class="line">            if (bo-&gt;getOpcode() == Instruction::Add) &#123;</div><div class="line">                // 生成 (－b)</div><div class="line">                op = BinaryOperator::CreateNeg(bo-&gt;getOperand(1), &quot;&quot;, bo);</div><div class="line">                // 生成 a-(-b)</div><div class="line">                op = BinaryOperator::Create(Instruction::Sub, bo-&gt;getOperand(0), op, &quot;&quot;, bo);</div><div class="line">                 </div><div class="line">                op-&gt;setHasNoSignedWrap(bo-&gt;hasNoSignedWrap());</div><div class="line">                op-&gt;setHasNoUnsignedWrap(bo-&gt;hasNoUnsignedWrap());</div><div class="line">            &#125;</div><div class="line">             </div><div class="line">            // 替换所有出现该指令的地方</div><div class="line">            bo-&gt;replaceAllUsesWith(op);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">char SimplePass::ID = 0;</div><div class="line"> </div><div class="line">// 注册pass 命令行选项显示为simplepass</div><div class="line">static RegisterPass&lt;SimplePass&gt; X(&quot;simplepass&quot;, &quot;this is a Simple Pass&quot;);</div><div class="line">Pass *llvm::createSimplePass() &#123; return new SimplePass(); &#125;</div></pre></td></tr></table></figure>
+<p>修改<code>.../Transforms/LLVMBuild.txt</code>, 加上刚刚写的模块<code>Obfuscation</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subdirectories = Coroutines IPO InstCombine Instrumentation Scalar Utils Vectorize ObjCARC Obfuscation</div></pre></td></tr></table></figure>
+<p>修改<code>.../Transforms/CMakeLists.txt</code>,  加上刚刚写的模块<code>Obfuscation</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">add_subdirectory(Obfuscation)</div></pre></td></tr></table></figure>
+<p>编译生成：<code>LLVMSimplePass.dylib</code></p>
+<p>因为Pass是作用于中间代码，所以我们首先要生成一份中间代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clang -emit-llvm -c test.c -o test.bc</div></pre></td></tr></table></figure>
+<p>然后加载Pass优化：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">../build/bin/opt -load ../build/lib/LLVMSimplePass.dylib -test &lt; test.bc &gt; after_test.bc</div></pre></td></tr></table></figure>
+<p>对比中间代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">llvm-dis test.bc -o test.ll</div><div class="line">llvm-dis after_test.bc -o after_test.ll</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">test.ll</div><div class="line">......</div><div class="line">entry:</div><div class="line">  %retval = alloca i32, align 4</div><div class="line">  %a = alloca i32, align 4</div><div class="line">  %b = alloca i32, align 4</div><div class="line">  %c = alloca i32, align 4</div><div class="line">  store i32 0, i32* %retval, align 4</div><div class="line">  store i32 3, i32* %a, align 4</div><div class="line">  store i32 4, i32* %b, align 4</div><div class="line">  %0 = load i32, i32* %a, align 4</div><div class="line">  %1 = load i32, i32* %b, align 4</div><div class="line">  %add = add nsw i32 %0, %1</div><div class="line">  store i32 %add, i32* %c, align 4</div><div class="line">  %2 = load i32, i32* %c, align 4</div><div class="line">  %call = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str, i32 0, i32 0), i32 %2)</div><div class="line">  ret i32 0</div><div class="line">&#125;</div><div class="line">......</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">after_test.ll</div><div class="line">......</div><div class="line">entry:</div><div class="line">  %retval = alloca i32, align 4</div><div class="line">  %a = alloca i32, align 4</div><div class="line">  %b = alloca i32, align 4</div><div class="line">  %c = alloca i32, align 4</div><div class="line">  store i32 0, i32* %retval, align 4</div><div class="line">  store i32 3, i32* %a, align 4</div><div class="line">  store i32 4, i32* %b, align 4</div><div class="line">  %0 = load i32, i32* %a, align 4</div><div class="line">  %1 = load i32, i32* %b, align 4</div><div class="line">  %2 = sub i32 0, %1</div><div class="line">  %3 = sub nsw i32 %0, %2</div><div class="line">  %add = add nsw i32 %0, %1</div><div class="line">  store i32 %3, i32* %c, align 4</div><div class="line">  %4 = load i32, i32* %c, align 4</div><div class="line">  %call = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str, i32 0, i32 0), i32 %4)</div><div class="line">  ret i32 0</div><div class="line">&#125;</div><div class="line">......</div></pre></td></tr></table></figure>
+<p>这里写的Pass只是把a+b简单的替换成了a-(-b),只是一个演示，怎么去写自己的Pass，并且作用于代码。</p>
+<h3 id="5-2-将Pass加入PassManager管理"><a href="#5-2-将Pass加入PassManager管理" class="headerlink" title="5.2 将Pass加入PassManager管理"></a>5.2 将Pass加入PassManager管理</h3><p>上面我们是单独去加载Pass动态库，这里我们将Pass加入PassManager，这样我们就可以直接通过clang的参数去加载我们的Pass了。</p>
+<p>首先在<code>llvm/lib/Transforms/IPO/PassManagerBuilder.cpp</code>添加头文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#include &quot;llvm/Transforms/Obfuscation/SimplePass.h&quot;</div></pre></td></tr></table></figure>
+<p>然后添加如下语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">static cl::opt&lt;bool&gt; SimplePass(&quot;simplepass&quot;, cl::init(false),</div><div class="line">                           cl::desc(&quot;Enable simple pass&quot;));</div></pre></td></tr></table></figure>
+<p>然后在<code>populateModulePassManager</code>这个函数中添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">MPM.add(createSimplePass(SimplePass));</div></pre></td></tr></table></figure>
+<p>最后在IPO这个目录的<code>LLVMBuild.txt</code>中添加库的支持，否则在编译的时候会提示链接错误。具体内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">required_libraries = Analysis Core InstCombine IRReader Linker Object ProfileData Scalar Support TransformUtils Vectorize Obfuscation</div></pre></td></tr></table></figure>
+<p>修改Pass的CMakeLists.txt为静态库形式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">add_llvm_library(LLVMObfuscation</div><div class="line">  SimplePass.cpp</div><div class="line">  )</div><div class="line"></div><div class="line">add_dependencies(LLVMObfuscation intrinsics_gen)</div></pre></td></tr></table></figure>
+<p>最后再编译一次。</p>
+<p>那么我们可以这么去调用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">../build/bin/clang -mllvm -simplepass test.c -o after_test</div></pre></td></tr></table></figure>
+<p>基于Pass，我们可以做什么？ 我们可以编写自己的Pass去混淆代码，以增加他人反编译的难度。</p>
+<center><img src="http://7xtdl4.com1.z0.glb.clouddn.com/script_1482320959711.png"></center>
+
+<p>我们可以把代码左上角的样子，变成右下角的样子，甚至更加复杂~ </p>
+<h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h2><p>上面说了那么说，来总结一下：</p>
+<p>1.LLVM编译一个源文件的过程：</p>
+<p>预处理 -&gt; 词法分析 -&gt; Token -&gt; 语法分析 -&gt; AST -&gt; 代码生成 -&gt; LLVM IR -&gt; 优化 -&gt; 生成汇编代码 -&gt; Link -&gt; 目标文件</p>
+<p>2.基于LLVM，我们可以做什么？</p>
+<ol>
+<li>做语法树分析，实现语言转换OC转Swift、JS or 其它语言，字符串加密。</li>
+<li>编写ClangPlugin，命名规范，代码规范，扩展功能。</li>
+<li>编写Pass，代码混淆优化。</li>
+</ol>
+<p>这篇只是一个简单的入门介绍，个人还需要深入去学习LLVM，再给大家分享，如有问题，欢迎拍砖~  </p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/ios/">ios</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/LLVM/">LLVM</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://NEYouFan.github.io/2016/12/29/ios/关于LLVM这些东西你必须要知道 /" data-title="关于LLVM，这些东西你必须要知道 | 网易杭州前端技术部" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/"  title="Android平台上的JavaScript引擎">
+ <strong>下一篇：</strong><br/> 
+ <span>Android平台上的JavaScript引擎
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/12/29/ios/关于LLVM这些东西你必须要知道 /" data-title="关于LLVM，这些东西你必须要知道" data-url="http://NEYouFan.github.io/2016/12/29/ios/关于LLVM这些东西你必须要知道 /"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是LLVM？"><span class="toc-number">1.</span> <span class="toc-text">1. 什么是LLVM？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-安装编译LLVM"><span class="toc-number">2.</span> <span class="toc-text">2. 安装编译LLVM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-从源码到可执行文件"><span class="toc-number">3.</span> <span class="toc-text">3. 从源码到可执行文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-预处理（Preprocess）"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 预处理（Preprocess）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-词法分析-Lexical-Analysis"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 词法分析 (Lexical Analysis)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-语法分析-Semantic-Analysis"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 语法分析 (Semantic Analysis)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-IR代码生成-CodeGen"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 IR代码生成 (CodeGen)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-生成字节码-LLVM-Bitcode"><span class="toc-number">3.5.</span> <span class="toc-text">3.5 生成字节码 (LLVM Bitcode)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-生成相关汇编"><span class="toc-number">3.6.</span> <span class="toc-text">3.6 生成相关汇编</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-生成目标文件"><span class="toc-number">3.7.</span> <span class="toc-text">3.7 生成目标文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-8-生成可执行文件"><span class="toc-number">3.8.</span> <span class="toc-text">3.8 生成可执行文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-9-整体流程"><span class="toc-number">3.9.</span> <span class="toc-text">3.9 整体流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-可以用Clang做什么？"><span class="toc-number">4.</span> <span class="toc-text">4. 可以用Clang做什么？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-libclang进行语法分析"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 libclang进行语法分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-LibTooling"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 LibTooling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-ClangPlugin"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 ClangPlugin</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-动手写Pass"><span class="toc-number">5.</span> <span class="toc-text">5. 动手写Pass</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-一个简单的Pass"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 一个简单的Pass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-将Pass加入PassManager管理"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 将Pass加入PassManager管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-总结"><span class="toc-number">6.</span> <span class="toc-text">6. 总结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ios/" title="ios">ios<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ci容器/" title="ci容器">ci容器<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/LLVM/" title="LLVM">LLVM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Js引擎/" title="Js引擎">Js引擎<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NeteaseAPM/" title="NeteaseAPM">NeteaseAPM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/混合开发框架/" title="混合开发框架">混合开发框架<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">微信共众号</p>
+  <div class="barcode">
+    <img src="/img/barcode.jpg" alt="">
+  </div>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+		<p class="copyright">
+		cpryright © 2017
+		
+		<a href="/about" target="_blank" title="网易前端技术部">网易前端技术部</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"neyoufan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1635,6 +1635,12 @@ section.comment {
   -ms-transition: color 0.5s;
   transition: color 0.5s;
 }
+.barcode {
+  padding-top: 20px;
+}
+.barcode img {
+  width: 100%;
+}
 @media only screen and (min-width: 768px) {
   .categorieslist {
     width: 45%;
@@ -2066,6 +2072,7 @@ footer {
   font-family: "covered_by_your_graceregular";
   width: 100%;
   color: #fff;
+  padding: 30px 0px;
   text-align: center;
 }
 @media only screen and (min-width: 768px) {

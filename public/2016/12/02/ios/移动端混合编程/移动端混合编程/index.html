@@ -1,0 +1,791 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>聊聊移动端那些混合开发框架们 | 网易杭州前端技术部</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="网易前端技术部">
+    
+
+    
+    <meta name="description" content="本文主要介绍笔者前些日子对市面上一些移动端混合编程方案的实现方式上的调研，读者可以据此了解移动端目前常见的一些混合开发框架的实现原理，欢迎读者在本文基础上做更深入的探索和调研，如有纰漏，欢迎指正。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊聊移动端那些混合开发框架们">
+<meta property="og:url" content="http://NEYouFan.github.io/2016/12/02/ios/移动端混合编程/移动端混合编程/index.html">
+<meta property="og:site_name" content="网易杭州前端技术部">
+<meta property="og:description" content="本文主要介绍笔者前些日子对市面上一些移动端混合编程方案的实现方式上的调研，读者可以据此了解移动端目前常见的一些混合开发框架的实现原理，欢迎读者在本文基础上做更深入的探索和调研，如有纰漏，欢迎指正。">
+<meta property="og:image" content="http://NEYouFan.github.io/移动端混合编程/Cordova.png">
+<meta property="og:image" content="http://NEYouFan.github.io/移动端混合编程/superwebview.png">
+<meta property="og:image" content="http://NEYouFan.github.io/移动端混合编程/superwebview.gif">
+<meta property="og:image" content="http://NEYouFan.github.io/移动端混合编程/superwebview2.png">
+<meta property="og:image" content="http://NEYouFan.github.io/./superwebview3.png">
+<meta property="og:image" content="http://NEYouFan.github.io/5+.png">
+<meta property="og:image" content="http://NEYouFan.github.io/移动端混合编程/reactnative.png">
+<meta property="og:image" content="http://NEYouFan.github.io/移动端混合编程/reactnative2.png">
+<meta property="og:image" content="http://NEYouFan.github.io/移动端混合编程/p-native.gif">
+<meta property="og:image" content="http://NEYouFan.github.io/移动端混合编程/p-rn.gif">
+<meta property="og:image" content="http://NEYouFan.github.io/移动端混合编程/reactnative-scrollview.png">
+<meta property="og:updated_time" content="2017-01-05T05:42:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="聊聊移动端那些混合开发框架们">
+<meta name="twitter:description" content="本文主要介绍笔者前些日子对市面上一些移动端混合编程方案的实现方式上的调研，读者可以据此了解移动端目前常见的一些混合开发框架的实现原理，欢迎读者在本文基础上做更深入的探索和调研，如有纰漏，欢迎指正。">
+<meta name="twitter:image" content="http://NEYouFan.github.io/移动端混合编程/Cordova.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="网易杭州前端技术部" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="网易杭州前端技术部" title="网易杭州前端技术部"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="网易杭州前端技术部">网易杭州前端技术部</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:NEYouFan.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/12/02/ios/移动端混合编程/移动端混合编程/" title="聊聊移动端那些混合开发框架们" itemprop="url">聊聊移动端那些混合开发框架们</a>
+  </h1>
+  <p class="article-author">By
+       
+		<span style="color: rgb(44, 166, 203);" >张建伟</span>
+		
+  <p class="article-time">
+    <time datetime="2016-12-01T16:00:00.000Z" itemprop="datePublished"> 发表于 2016-12-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web-amp-Native"><span class="toc-number">2.</span> <span class="toc-text">Web & Native</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#那些混合编程们"><span class="toc-number">3.</span> <span class="toc-text">那些混合编程们</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PhoneGap-Cordova"><span class="toc-number">3.1.</span> <span class="toc-text">PhoneGap/Cordova</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SuperWebView"><span class="toc-number">3.2.</span> <span class="toc-text">SuperWebView</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SuperWebView中JS与Native通信的实现原理"><span class="toc-number">3.2.1.</span> <span class="toc-text">SuperWebView中JS与Native通信的实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于SuperWebView所指的混合渲染的说明"><span class="toc-number">3.2.2.</span> <span class="toc-text">关于SuperWebView所指的混合渲染的说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Runtime-amp-Native-js"><span class="toc-number">3.3.</span> <span class="toc-text">5+Runtime & Native.js</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Native-js通信方式实现分析"><span class="toc-number">3.3.1.</span> <span class="toc-text">Native.js通信方式实现分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Titanium"><span class="toc-number">3.4.</span> <span class="toc-text">Titanium</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#React-Native"><span class="toc-number">3.5.</span> <span class="toc-text">React Native</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#React-Native通信机制源码分析"><span class="toc-number">3.5.1.</span> <span class="toc-text">React Native通信机制源码分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性能测试"><span class="toc-number">3.5.2.</span> <span class="toc-text">性能测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#samurai-native"><span class="toc-number">3.6.</span> <span class="toc-text">samurai-native</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>本文主要介绍笔者前些日子对市面上一些移动端混合编程方案的实现方式上的调研，读者可以据此了解移动端目前常见的一些混合开发框架的实现原理，欢迎读者在本文基础上做更深入的探索和调研，如有纰漏，欢迎指正。<a id="more"></a></p>
+<p>本文示例代码链接: <a href="https://github.com/jackwee/hybrid-demos" target="_blank" rel="external">https://github.com/jackwee/hybrid-demos</a></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><ul>
+<li><p>2008年，HTML5发布首个版本。</p>
+</li>
+<li><p>2011年，Facebook开展<a href="http://techcrunch.com/2011/06/15/facebook-project-spartan/" target="_blank" rel="external">Spartan</a>项目，企图用HTML5的思想武装自己，占领iOS的浏览器，以此来与苹果抗衡。因为浏览器是相对开放的，Apple总不可能在浏览器端设置一个开关对网页内容进行限制。</p>
+</li>
+<li><p>2012年，Mark Zuckerberg:”the biggest mistake that we made as a company is betting too much on HTML5 as opposed to native.”Facebook放弃HTML5，转投Native。</p>
+</li>
+<li>2015年，Facebook发布react-native。</li>
+</ul>
+<p>如今，混合开发的呼声越来越高，世面上也有很多混合开发框架，采用混合开发的应用也是越来越多。</p>
+<p>以下将从什么是混合开发、为什么要做混合开发、移动端都在怎么做混合开发来做逐步介绍。</p>
+<hr>
+<font color="#CC0033" size="6px">What?</font>
+
+<p>两种或两种以上的程序设计语言的邂逅。</p>
+<ul>
+<li>JNI:Java与C/C++的混合开发</li>
+<li>iOS中Objective-C与C、Swift与C的混合开发</li>
+<li>ReactNative中JavaScript与Native语言的混合开发</li>
+</ul>
+<p>本文介绍和调研的主要是移动平台上WEB(WebView、JavaScript)与Native语言的混合开发。</p>
+<font color="#CC0033" size="6px">Why?</font>
+
+<h1 id="Web-amp-Native"><a href="#Web-amp-Native" class="headerlink" title="Web &amp; Native"></a>Web &amp; Native</h1><table>
+<thead>
+<tr>
+<th style="text-align:center">对比</th>
+<th style="text-align:center">Web</th>
+<th style="text-align:center">Native</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">优势</td>
+<td style="text-align:center">跨平台、开发效率高、方便调试、方便部署</td>
+<td style="text-align:center">性能体验好、访问Low API、强大的IDE、原生的动画、系统手势</td>
+</tr>
+<tr>
+<td style="text-align:center">存在问题</td>
+<td style="text-align:center">性能问题、浏览器兼容性问题、访问Low API受限、需要模拟原生动画和手势</td>
+<td style="text-align:center">平台依赖性强、调试不便、应用更新周期长、开发效率低</td>
+</tr>
+</tbody>
+</table>
+<p>混合编程就是为了将两者的优点结合起来，做到“兼得🐟和🐻👐”。</p>
+<font color="#CC0033" size="6px">How?</font>
+
+<h1 id="那些混合编程们"><a href="#那些混合编程们" class="headerlink" title="那些混合编程们"></a>那些混合编程们</h1><p>目前移动端主流的混合开发有两个流派，一个是基于WebView做混合开发的Hybrid流派，一个是基于虚拟机做混合开发的’JavaSciptBridge’流派。</p>
+<ol>
+<li>WebViewBridge流派(Hybrid流派):基于WebView做与Native语言的混合开发<ul>
+<li><a href="http://phonegap.com/" target="_blank" rel="external">PhoneGap</a> / <a href="https://cordova.apache.org" target="_blank" rel="external">Cordova</a></li>
+<li><a href="http://www.apicloud.com/superwebview" target="_blank" rel="external">SuperWebView</a></li>
+<li><a href="http://dcloud.io/runtime.html#toDownload" target="_blank" rel="external">5+Runtime &amp; Native.js</a></li>
+</ul>
+</li>
+<li>‘JavaScipt Bridge’流派(JSBinding,LuaBinding,自定义消息传递):基于脚本语言本身做与Native语言的混合开发<ul>
+<li><a href="http://www.appcelerator.com/mobile-app-development-products/" target="_blank" rel="external">Titanium</a></li>
+<li><a href="https://facebook.github.io/react-native/" target="_blank" rel="external">ReactNative</a></li>
+<li><a href="https://github.com/hackers-painters/samurai-native" target="_blank" rel="external">samurai-native</a></li>
+</ul>
+</li>
+</ol>
+<p>另外，还有翻译流派，如<a href="http://j2objc.org/" target="_blank" rel="external">J2ObjC</a>将Java语言翻译成Objective-C，编译流派，如<a href="http://xamarin.com/" target="_blank" rel="external">Xamarin</a>直接C#编译为二进制文件来开发iOS应用，这两种做法相对比较小众，本文并不做探讨。</p>
+<h2 id="PhoneGap-Cordova"><a href="#PhoneGap-Cordova" class="headerlink" title="PhoneGap/Cordova"></a>PhoneGap/Cordova</h2><p><code>PhoneGap: &quot;Write Once, Run Anywhere&quot;。</code></p>
+<p>目标是让使用者编写一套代码来实现跨平台操作，它是Hybrid技术的一种实现，赋予WebView访问Native API的能力，屏蔽掉平台相关API实现跨平台开发。</p>
+<p><img src="移动端混合编程/Cordova.png" alt=""></p>
+<p>上图是Cordova的架构图，其中Web App部分是前端开发部分，在WebView上执行。Cordova Plugins是Cordova所提供的用于访问本地代码的插件，这些插件具有操作本地资源的能力，如定位、陀螺仪、相机、联系人等等，此外，用户也可以自定义插件，js代码部分可以通过Cordova Native APIs来访问这些插件。那么这里对插件的调用实际是怎么实现的？</p>
+<p>我们使用一个简单的demo进行测试。</p>
+<p>Native端定义了自定义插件MyHybridPlugin，其中定义了addBookmark方法，在html页面上点击按钮，我们通过cordova调用addBookmark。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">(1)html</div><div class="line">//页面上添加点击事件处理</div><div class="line">&lt;button id=&quot;bookmarkBtn&quot; onclick=&quot;app.addBookmark()&quot;&gt;Add a bookmark&lt;/button&gt;</div><div class="line"></div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;cordova.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;js/index.js&quot;&gt;&lt;/script&gt;</div><div class="line"></div><div class="line">(2)JavaScript(index.js)</div><div class="line">var app = &#123;</div><div class="line">    addBookmark: function() &#123;</div><div class="line">        ...</div><div class="line">        cordova.exec(win, fail, &quot;MyHybridPlugin&quot;, &quot;addBookmark&quot;, [bookmark]);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;;</div><div class="line"></div><div class="line">(3)JavaScript(cordova.js)</div><div class="line">//添加消息到消息队列</div><div class="line">commandQueue.push(JSON.stringify(command));</div><div class="line"></div><div class="line">(4)JavaScript(cordova.js)</div><div class="line">//通过iframe通知native</div><div class="line">pokeNativeViaIframe();</div><div class="line"></div><div class="line">===&gt;</div><div class="line">execIframe = document.createElement(&apos;iframe&apos;);</div><div class="line">execIframe.style.display = &apos;none&apos;;</div><div class="line">execIframe.src = &apos;gap://ready&apos;;</div><div class="line">document.body.appendChild(execIframe);   </div><div class="line"></div><div class="line">(5)Objective-C</div><div class="line">//从js消息队列中取消息内容</div><div class="line">webView:shouldStartLoadWithRequest:navigationType:</div><div class="line">[_commandQueue fetchCommandsFromJs];</div><div class="line"></div><div class="line">(6)JavaScript(cordova.js)</div><div class="line">//以json方式返回消息内容，包括callbackId</div><div class="line">nativeFetchMessages();</div><div class="line"> </div><div class="line">(7)Objective-C</div><div class="line">//根据json内容查找对应的class和selector，并执行相应方法</div><div class="line">- (BOOL)execute:(CDVInvokedUrlCommand*)command</div><div class="line"></div><div class="line">(8)Objective-C</div><div class="line">//回调执行结果，带上callbackId</div><div class="line">sendPluginResult:callbackId:</div><div class="line"></div><div class="line">(9)JavaScript(cordova.js)</div><div class="line">//根据callbackId回调执行结果</div><div class="line">iOSExec.nativeCallback();</div></pre></td></tr></table></figure>
+<p>通过调试发现，cordova是通过将js对native的方法调用信息，封装成一个UIL，并通过iframe的形式加载该url。native端通过UIWebViewDelegate的代理方法<code>webView:shouldStartLoadWithRequest:navigationType:</code>拦截url，并解析出其中的函数签名信息，通过oc的runtime查找对应的类和方法，实现了本地方法调用，并返回本次调用对应的callbackId，cordova会根据该id查找到对应的js回调方法，实现回调给js。</p>
+<p>优点：</p>
+<ul>
+<li>跨平台</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>性能问题：从上面的分析可以看出js到native的调用流程比较繁琐</li>
+<li>对native工程师的依赖：前端工程师需要native开发来提供所需插件</li>
+</ul>
+<h2 id="SuperWebView"><a href="#SuperWebView" class="headerlink" title="SuperWebView"></a>SuperWebView</h2><p><code>SuperWebView:能够帮助原生APP团队解决“如何在短时间内开发出体验好、功能强的HTML5页面”的问题</code></p>
+<p>SuperWebView为web程序员开发App提供一套整体的解决方案，以SDK的方式提供使用（不开源），总结一下主要包括特点：</p>
+<ul>
+<li>管理平台提供上百种模块，平台可以根据用户选取组合的模块构建生成SDK，开发者下载使用放到项目中使用</li>
+<li>支持用户自定义模块，导出给js使用，需要构建静态库，并打包成zip上传到管理平台，由平台编译生成sdk</li>
+<li>利用管理平台，可以进行资源包的热更新</li>
+<li>系统API对象提供的JS接口，可以在使用JS进行以下操作：获取系统属性、系统事件、使用进行封装了的接口</li>
+<li>提供云API来进行：操作云端数据、统计、推送、短信验证等功能</li>
+<li>提供与腾讯X5浏览器的集成（Android）</li>
+</ul>
+<p>下面是SuperWebView的架构图：</p>
+<p><img src="移动端混合编程/superwebview.png" alt=""></p>
+<p>先看右侧部分，上面是SuperWebView提供的页面组织结构，用户可以利用API对象提供的接口创建界面，用户可以创建window（整个界面），frame（界面中的模块界面），frameGroup（一组可以左右滑动浏览的界面），UIModule（native自定义视图）；右侧下面部分是SuperWebView提供的基础服务，并提供了与Native通信的机制；左侧部分是SuperWebView平台已模块的形式提供的可以供JS使用的Native模块单元，官网上有模块管理平台提供了模块可以供开发者使用，开发者也可以根据平台标准自定义模块。</p>
+<p>下面是使用SuperWebView实现的模拟网易云音乐的一个demo示例：</p>
+<p><img src="移动端混合编程/superwebview.gif" alt=""></p>
+<p>主页面的层级结构：</p>
+<p><img src="移动端混合编程/superwebview2.png" alt=""></p>
+<p>可以看到，应用界面可以由多个APIWebView与UIView（或其子类）组合而来，但是这些组合关系并不需要web端开发者来操心，可以借助平台api对象开放的接口调用，平台接口会构建出相应界面的的组合，例如,可以使用下面这样的方式打开一个可以左右滑动的多个页面组合而成的页面，其构建的界面结果就是UIScrollView中横向放置了四个页面，可以左右滑动翻页浏览。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">api.openFrameGroup(&#123;</div><div class="line">        name: &apos;framegroup01&apos;,</div><div class="line">        background: &apos;#FFF&apos;,</div><div class="line">        scrollEnabled: true,</div><div class="line">        rect: &#123;</div><div class="line">            x: 0,</div><div class="line">            y: firstHeaderOffset.h + firstHeaderIndexHeight,</div><div class="line">            w: &quot;auto&quot;,</div><div class="line">            h: api.frameHeight - firstHeaderOffset.h - firstHeaderIndexHeight - footerPos.h</div><div class="line">        &#125;,</div><div class="line">        index: 0,</div><div class="line">        frames: [&#123;</div><div class="line">            name: &apos;frame01_recommand&apos;,</div><div class="line">            url: &apos;./html/first_frame/frame01_recommand.html&apos;,</div><div class="line">            bounces: false,</div><div class="line">        &#125;, &#123;</div><div class="line">            name: &apos;frame01_list&apos;,</div><div class="line">            url: &apos;./html/first_frame/frame01_list.html&apos;,</div><div class="line">            bounces: true,</div><div class="line">        &#125;, &#123;</div><div class="line">            name: &apos;frame01_radio&apos;,</div><div class="line">            url: &apos;./html/first_frame/frame01_radio.html&apos;,</div><div class="line">            bounces: false,</div><div class="line">        &#125;, &#123;</div><div class="line">            name: &apos;frame01_rank&apos;,</div><div class="line">            url: &apos;./html/first_frame/frame01_rank.html&apos;,</div><div class="line">            bounces: false,</div><div class="line">        &#125;]</div><div class="line">    &#125;, function(ret) &#123;</div><div class="line">        setFrameGroupStatus(ret.index);</div><div class="line">    &#125;);</div></pre></td></tr></table></figure>
+<p>我们来看看APIWebView的真面目。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">@interface APIWebView : UZWebView</div><div class="line">@interface UZWebView : UIWebView</div></pre></td></tr></table></figure>
+<p>我们看到，APIWebView实际是UIWebView的子类，整个页面结构使用APIWebView嵌套的方式构建。</p>
+<ul>
+<li>通过Instruments在iPhone5s上进行内存测试，对前面云音乐demo反复操作，累计创建11个APIWebView，内存开销在35M左右(创建11个UIWebView，并加载本地类似静态页面内存开销在24M左右)。</li>
+<li>通过对APIWebView的构造方法initWithFrame:和dealloc方法进行拦截，发现在打开新页面是通过[UZWebViewController loadWindow]和[UZWebViewController openFrame:]创建多个APIWebView，再结合Native控件，构建出页面。</li>
+</ul>
+<p>SuperWebView的用户通过对页面结构进行拆分，利用SuperWebView提供的API来构建页面，SuperWebView所提供的API会构建出相应的页面结构，例如上面云音乐demo中的首页面，就是由2个APIWebView和一个UIScrollView嵌套组合而成。至于界面的样式，需要用户用HTML+CSS进行描述。</p>
+<h3 id="SuperWebView中JS与Native通信的实现原理"><a href="#SuperWebView中JS与Native通信的实现原理" class="headerlink" title="SuperWebView中JS与Native通信的实现原理"></a>SuperWebView中JS与Native通信的实现原理</h3><p>下面分析下SuperWebView的实现JS与Native的通信机制。</p>
+<p>测试环境：iPhone5S,iOS8.3和iPhone4S,iOS7.1.1</p>
+<p>我们在JS端调用<code>alert(&quot;alert from js&quot;);</code>接口，利用远程调试进行断点跟踪。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">//alert的实现</div><div class="line">function (msg) &#123;</div><div class="line">	!function(msg)&#123;</div><div class="line">		if(msg===null)&#123;</div><div class="line">			msg=&apos;null&apos;</div><div class="line">		&#125;;</div><div class="line">		if(msg===undefined)&#123;</div><div class="line">			msg=&apos;undefined&apos;</div><div class="line">		&#125;;</div><div class="line">		msg=msg.toString();</div><div class="line">		api.alert(&#123;title:&apos;index.html&apos;,msg:msg,buttons:[&apos;好&apos;]&#125;);</div><div class="line">	&#125;(msg);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//api.alert的实现</div><div class="line">function () &#123;</div><div class="line">	return uz$e(&apos;UZAPI&apos;,&apos;alert&apos;,arguments,false,&apos;api&apos;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">///uz$e的实现</div><div class="line">function uz$e(c, m, p, isSync, module) &#123;</div><div class="line">    var param = &#123;&#125;;</div><div class="line">    </div><div class="line">    //(1)</div><div class="line">    if (p.length === 1) &#123;</div><div class="line">        var p0 = p[0];</div><div class="line">       //(1.1)</div><div class="line">		if (Object.prototype.toString.call(p0) === &quot;[object Object]&quot;) &#123;</div><div class="line">            param = p0;</div><div class="line">        &#125; else if (typeof p0 === &quot;function&quot;) &#123;</div><div class="line">            param.cbId = uz$cb.id++;</div><div class="line">            uz$cb.fn[param.cbId] = p0;</div><div class="line">        &#125;</div><div class="line">    &#125; else if (p.length === 2) &#123;</div><div class="line">    	//(1.2)</div><div class="line">        var p0 = p[0];</div><div class="line">        var p1 = p[1];</div><div class="line">        if (Object.prototype.toString.call(p0) === &quot;[object Object]&quot;) &#123;</div><div class="line">            param = p0;</div><div class="line">        &#125;</div><div class="line">        if (typeof p1 === &quot;function&quot;) &#123;</div><div class="line">            param.cbId = uz$cb.id++;</div><div class="line">            uz$cb.fn[param.cbId] = p1;</div><div class="line">        &#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//（2）</div><div class="line">    if (typeof(_apiBridgeMethod)===&apos;function&apos;)&#123;</div><div class="line">    	 //(2.1)	</div><div class="line">        return _apiBridgeMethod(c, m, param, isSync, module);</div><div class="line">    &#125; else if (api.useWKWebView) &#123;</div><div class="line">    	 //(2.2)	</div><div class="line">        var message = &#123;&#125;;</div><div class="line">        message.class = c;</div><div class="line">        message.method = m;</div><div class="line">        message.param = param;</div><div class="line">        message.isSync = false;</div><div class="line">        message.module = module;</div><div class="line">        window.webkit.messageHandlers.api.postMessage(message);</div><div class="line">    &#125; else &#123;</div><div class="line">    	 //(2.3)	</div><div class="line">        uz$q.c.push(module+&apos;.&apos;+c+&apos;.&apos;+m+&apos;/?&apos;+encodeURIComponent(JSON.stringify(param)));</div><div class="line">        uz$r();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对这段代码进行分析：</p>
+<p>（1）对参数进行处理</p>
+<p>(1.1) 只有一个参数，对调用参数或者回调函数分别处理</p>
+<p>(1.2) 有两个参数，对调用参数和回调函数分别处理</p>
+<p>（2）执行函数调用</p>
+<p>(2.1) 调用_apiBridgeMethod方法，在当前测试环境下，会走2.1的逻辑，其实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">function () &#123;</div><div class="line">    [native code]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到_apiBridgeMethod的方法体是native code，那么是如何将native code注册给WebView的JS解释器的呢？</p>
+<p>将APICloud.a中的UZWebView.o反编译出来伪代码看到如下实现:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div></pre></td><td class="code"><pre><div class="line">// UZWebView - (void)initJavaScriptCoreBridgeMethod</div><div class="line">void __cdecl -[UZWebView initJavaScriptCoreBridgeMethod](struct UZWebView *self, SEL a2)</div><div class="line">&#123;</div><div class="line">  struct UZWebView *v7; // r8@1</div><div class="line">  void *v8; // r0@1</div><div class="line">  void *v9; // r5@1</div><div class="line">  void *v10; // r0@1</div><div class="line">  void *v11; // r6@1</div><div class="line">  void *v13; // r0@2</div><div class="line">  void *v14; // r6@2</div><div class="line">  void *v15; // r0@2</div><div class="line">  int v16; // r4@2</div><div class="line">  void *v17; // r0@2</div><div class="line">  void *v18; // r5@2</div><div class="line">  int *v19; // r4@3</div><div class="line">  int v23; // [sp+0h] [bp-78h]@1</div><div class="line">  void *v24; // [sp+4h] [bp-74h]@3</div><div class="line">  void *v25; // [sp+8h] [bp-70h]@3</div><div class="line">  void *v26; // [sp+Ch] [bp-6Ch]@3</div><div class="line">  int v27; // [sp+10h] [bp-68h]@3</div><div class="line">  int v28; // [sp+14h] [bp-64h]@3</div><div class="line">  int (__fastcall *v29)(__block_literal_3 *, Foundation::NSString::NSString *, Foundation::NSString::NSString *, Foundation::NSDictionary::NSDictionary *, Foundation::NSString::NSString *, int); // [sp+18h] [bp-60h]@3</div><div class="line">  void *v30; // [sp+1Ch] [bp-5Ch]@3</div><div class="line">  int v31; // [sp+20h] [bp-58h]@1</div><div class="line">  char v32; // [sp+24h] [bp-54h]@3</div><div class="line">  int *v33; // [sp+28h] [bp-50h]@3</div><div class="line">  char v34; // [sp+2Ch] [bp-4Ch]@1</div><div class="line">  int v35; // [sp+30h] [bp-48h]@2</div><div class="line">  void *v36; // [sp+44h] [bp-34h]@1</div><div class="line">  void *v37; // [sp+48h] [bp-30h]@1</div><div class="line">  __int64 *v38; // [sp+4Ch] [bp-2Ch]@1</div><div class="line">  unsigned int v39; // [sp+50h] [bp-28h]@1</div><div class="line">  int *v40; // [sp+54h] [bp-24h]@1</div><div class="line">  char v41; // [sp+60h] [bp-18h]@5</div><div class="line">  __int64 savedregs; // [sp+78h] [bp+0h]@1</div><div class="line"></div><div class="line">  _R4 = (unsigned int)&amp;v31 &amp; 0xFFFFFFF0;</div><div class="line">  __asm</div><div class="line">  &#123;</div><div class="line">    VST1.64         &#123;D8-D11&#125;, [R4@128]!</div><div class="line">    VST1.64         &#123;D12-D15&#125;, [R4@128]</div><div class="line">  &#125;</div><div class="line">  v7 = self;</div><div class="line">  v8 = objc_msgSend(&amp;OBJC_CLASS___UIDevice, &quot;currentDevice&quot;);</div><div class="line">  v9 = (void *)objc_retainAutoreleasedReturnValue(v8);</div><div class="line">  v10 = objc_msgSend(v9, &quot;systemVersion&quot;);</div><div class="line">  v11 = (void *)objc_retainAutoreleasedReturnValue(v10);</div><div class="line">  _R4 = objc_msgSend(v11, &quot;floatValue&quot;);</div><div class="line">  objc_release(v11);</div><div class="line">  objc_release(v9);</div><div class="line">  v36 = &amp;__objc_personality_v0;</div><div class="line">  v37 = &amp;GCC_except_table117;</div><div class="line">  v38 = &amp;savedregs;</div><div class="line">  v40 = &amp;v23;</div><div class="line">  v39 = (((unsigned int)&amp;loc_13E + 2) | 1) + 42164;</div><div class="line">  _Unwind_SjLj_Register(&amp;v34);</div><div class="line">  __asm</div><div class="line">  &#123;</div><div class="line">    VMOV.F32        D0, #7.0</div><div class="line">    VMOV            D1, R4, R4</div><div class="line">    VCMPE.F32       S2, S0</div><div class="line">    VMRS            APSR_nzcv, FPSCR</div><div class="line">  &#125;</div><div class="line">  if ( !(_NF ^ _VF) )</div><div class="line">  &#123;</div><div class="line">    v35 = -1;</div><div class="line">    v13 = objc_msgSend(v7, &quot;webView&quot;);</div><div class="line">    v35 = -1;</div><div class="line">    v14 = (void *)objc_retainAutoreleasedReturnValue(v13);</div><div class="line">    v35 = -1;</div><div class="line">    v15 = objc_msgSend(v7, &quot;jsContextKeyPath&quot;);</div><div class="line">    v35 = -1;</div><div class="line">    v16 = objc_retainAutoreleasedReturnValue(v15);</div><div class="line">    v35 = -1;</div><div class="line">    v17 = objc_msgSend(v14, &quot;valueForKeyPath:&quot;, v16);</div><div class="line">    v35 = -1;</div><div class="line">    v18 = (void *)objc_retainAutoreleasedReturnValue(v17);</div><div class="line">    objc_release(v16);</div><div class="line">    if ( v18 )</div><div class="line">    &#123;</div><div class="line">      v25 = v14;</div><div class="line">      objc_initWeak(&amp;v32, v7);</div><div class="line">      v26 = &amp;_NSConcreteStackBlock;</div><div class="line">      v27 = -1040187392;</div><div class="line">      v28 = 0;</div><div class="line">      v29 = _43__UZWebView_initJavaScriptCoreBridgeMethod__block_invoke;</div><div class="line">      v33 = &amp;v31;</div><div class="line">      v30 = &amp;__block_descriptor_tmp_1135;</div><div class="line">      objc_copyWeak(&amp;v31, &amp;v32);</div><div class="line">      v23 = objc_retainBlock(&amp;v26);</div><div class="line">      v35 = 1;</div><div class="line">      v24 = v18;</div><div class="line">      objc_msgSend(v18, &quot;setObject:forKeyedSubscript:&quot;);</div><div class="line">      v19 = v33;</div><div class="line">      objc_release(v23);</div><div class="line">      objc_destroyWeak(v19);</div><div class="line">      objc_destroyWeak(&amp;v32);</div><div class="line">      v14 = v25;</div><div class="line">      v18 = v24;</div><div class="line">    &#125;</div><div class="line">    objc_release(v18);</div><div class="line">    objc_release(v14);</div><div class="line">  &#125;</div><div class="line">  _Unwind_SjLj_Unregister(&amp;v34);</div><div class="line">  _R4 = &amp;v41;</div><div class="line">  __asm</div><div class="line">  &#123;</div><div class="line">    VLD1.64         &#123;D8-D11&#125;, [R4@128]!</div><div class="line">    VLD1.64         &#123;D12-D15&#125;, [R4@128]</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里我们可以看到，首先是利用KVC从UZWebView获得JSContext，然后setObject:forKeyedSubscript:设置_apiBridgeMethod的值为<code>_43__UZWebView_initJavaScriptCoreBridgeMethod__block_invoke</code>，它的实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line">int __fastcall _43__UZWebView_initJavaScriptCoreBridgeMethod__block_invoke(</div><div class="line">__block_literal_3 *.block_descriptor, </div><div class="line">Foundation::NSString::NSString *a2, </div><div class="line">Foundation::NSString::NSString *method, </div><div class="line">Foundation::NSDictionary::NSDictionary *param, </div><div class="line">Foundation::NSString::NSString *module, </div><div class="line">int a6)</div><div class="line">&#123;</div><div class="line">  Foundation::NSDictionary::NSDictionary *v7; // r5@1</div><div class="line">  Foundation::NSString::NSString *v8; // r4@1</div><div class="line">  int v9; // r10@1</div><div class="line">  int v10; // r4@1</div><div class="line">  void *v11; // r8@1</div><div class="line">  int v12; // r11@1</div><div class="line">  void *v13; // r2@1</div><div class="line">  int v14; // r0@2</div><div class="line">  void *v15; // r0@3</div><div class="line">  void *v16; // ST04_4@4</div><div class="line">  int v17; // r5@4</div><div class="line">  void *v18; // r0@4</div><div class="line">  void *v19; // r8@4</div><div class="line">  void *v20; // r4@4</div><div class="line">  void *v21; // r0@4</div><div class="line">  int v22; // r6@4</div><div class="line">  __block_literal_3 *v24; // [sp+8h] [bp-20h]@1</div><div class="line"></div><div class="line">  v24 = .block_descriptor;</div><div class="line">  v7 = param;</div><div class="line">  v8 = method;</div><div class="line">  v9 = objc_retain(a2);</div><div class="line">  v10 = objc_retain(v8);</div><div class="line">  v11 = (void *)objc_retain(v7);</div><div class="line">  v12 = objc_retain(a6);</div><div class="line">  v13 = objc_msgSend(&amp;OBJC_CLASS___NSDictionary, &quot;class&quot;);</div><div class="line">  if ( (unsigned int)objc_msgSend(v11, &quot;isKindOfClass:&quot;, v13) &amp; 0xFF )</div><div class="line">  &#123;</div><div class="line">    v14 = objc_retain(v11);</div><div class="line">  &#125;</div><div class="line">  else</div><div class="line">  &#123;</div><div class="line">    v15 = objc_msgSend(&amp;OBJC_CLASS___NSDictionary, &quot;dictionaryWithObjects:forKeys:count:&quot;);</div><div class="line">    v14 = objc_retainAutoreleasedReturnValue(v15);</div><div class="line">  &#125;</div><div class="line">  v16 = v11;</div><div class="line">  v17 = v14;</div><div class="line">  v18 = objc_msgSend(&amp;OBJC_CLASS___UZCommand, &quot;alloc&quot;);</div><div class="line">  v19 = objc_msgSend(v18, &quot;initWithClassName:methodName:param:&quot;, v9, v10, v17);</div><div class="line">  objc_release(v10);</div><div class="line">  objc_release(v9);</div><div class="line">  objc_msgSend(v19, &quot;setIsSyncMethod:&quot;, module);</div><div class="line">  objc_msgSend(v19, &quot;setModule:&quot;, v12);</div><div class="line">  objc_release(v12);</div><div class="line">  v20 = (void *)objc_loadWeakRetained(&amp;v24-&gt;weakSelf);</div><div class="line">  v21 = objc_msgSend(v20, &quot;execute:&quot;, v19);</div><div class="line">  v22 = objc_retainAutoreleasedReturnValue(v21);</div><div class="line">  objc_release(v20);</div><div class="line">  objc_release(v19);</div><div class="line">  objc_release(v17);</div><div class="line">  objc_release(v16);</div><div class="line">  return objc_autoreleaseReturnValue(v22);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>大概意思是，读取调用信息，根据信息创建一个UZCommand对象，再去执行UZCommand，再看execute的实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div></pre></td><td class="code"><pre><div class="line">// UZWebView - (id)execute:(id) </div><div class="line">id __cdecl -[UZWebView execute:](struct UZWebView *self, SEL a2, id a3)</div><div class="line">&#123;</div><div class="line">  struct UZWebView *v3; // r11@1</div><div class="line">  void *v4; // r6@1</div><div class="line">  int v5; // r5@2</div><div class="line">  void *v6; // r0@3</div><div class="line">  int v7; // r10@3</div><div class="line">  void *v8; // r0@3</div><div class="line">  void *v9; // r8@3</div><div class="line">  void *v10; // r0@3</div><div class="line">  void *v11; // r0@3</div><div class="line">  void *v12; // r4@3</div><div class="line">  void *v13; // r0@3</div><div class="line">  int v14; // r5@3</div><div class="line">  void *v15; // r0@3</div><div class="line">  int v16; // r0@3</div><div class="line">  void *v17; // r6@3</div><div class="line">  void *v18; // r0@3</div><div class="line">  void *v19; // r5@3</div><div class="line">  int v20; // r10@4</div><div class="line">  void *v21; // r0@5</div><div class="line">  void *v22; // r4@5</div><div class="line">  void *v23; // r0@5</div><div class="line">  void *v24; // r0@5</div><div class="line">  void *v25; // r6@5</div><div class="line">  void *v26; // r0@5</div><div class="line">  void *v27; // r10@5</div><div class="line">  void *v28; // ST10_4@5</div><div class="line">  void *v29; // r4@5</div><div class="line">  void *v30; // r0@5</div><div class="line">  void *v31; // r0@5</div><div class="line">  int v32; // r4@5</div><div class="line">  void *v33; // r2@6</div><div class="line">  void *v34; // r0@7</div><div class="line">  void *v35; // r0@10</div><div class="line">  int v36; // r8@10</div><div class="line">  int v37; // r6@10</div><div class="line">  int v38; // r11@11</div><div class="line">  void *v39; // r0@12</div><div class="line">  void *v40; // r4@12</div><div class="line">  void *v41; // r0@13</div><div class="line">  int v42; // r4@13</div><div class="line">  void *v43; // r0@16</div><div class="line">  int v44; // r4@16</div><div class="line">  int v46; // [sp+18h] [bp-28h]@4</div><div class="line">  void *v47; // [sp+1Ch] [bp-24h]@10</div><div class="line">  int v48; // [sp+20h] [bp-20h]@3</div><div class="line">  void *v49; // [sp+24h] [bp-1Ch]@3</div><div class="line"></div><div class="line">  v3 = self;</div><div class="line">  v4 = (void *)objc_retain(a3);</div><div class="line">  if ( !((unsigned int)objc_msgSend(v3, &quot;shouldClosed&quot;) &amp; 0xFF) )</div><div class="line">  &#123;</div><div class="line">    v6 = objc_msgSend(v4, &quot;methodName&quot;);</div><div class="line">    v7 = objc_retainAutoreleasedReturnValue(v6);</div><div class="line">    v8 = objc_msgSend(v4, &quot;className&quot;);</div><div class="line">    v9 = (void *)objc_retainAutoreleasedReturnValue(v8);</div><div class="line">    v10 = objc_msgSend(v4, &quot;paramDict&quot;);</div><div class="line">    v48 = objc_retainAutoreleasedReturnValue(v10);</div><div class="line">    v11 = objc_msgSend(v3, &quot;request&quot;);</div><div class="line">    v12 = (void *)objc_retainAutoreleasedReturnValue(v11);</div><div class="line">    v13 = objc_msgSend(v12, &quot;URL&quot;);</div><div class="line">    v14 = objc_retainAutoreleasedReturnValue(v13);</div><div class="line">    v49 = v4;</div><div class="line">    v15 = objc_msgSend(v4, &quot;module&quot;);</div><div class="line">    v16 = objc_retainAutoreleasedReturnValue(v15);</div><div class="line">    objc_release(v16);</div><div class="line">    v17 = v9;</div><div class="line">    objc_release(v14);</div><div class="line">    objc_release(v12);</div><div class="line">    v18 = objc_msgSend((void *)v3-&gt;_moduleDict, &quot;objectForKey:&quot;, v9);</div><div class="line">    v19 = (void *)objc_retainAutoreleasedReturnValue(v18);</div><div class="line">    if ( !v19 )</div><div class="line">    &#123;</div><div class="line">      v46 = v7;</div><div class="line">      v20 = NSClassFromString(v9);</div><div class="line">      if ( v20</div><div class="line">        || (v21 = objc_msgSend(&amp;OBJC_CLASS___NSBundle, &quot;mainBundle&quot;),</div><div class="line">            v22 = (void *)objc_retainAutoreleasedReturnValue(v21),</div><div class="line">            v23 = objc_msgSend(v22, &quot;infoDictionary&quot;),</div><div class="line">            v24 = (void *)objc_retainAutoreleasedReturnValue(v23),</div><div class="line">            v25 = v24,</div><div class="line">            v26 = objc_msgSend(v24, &quot;stringValueForKey:defaultValue:&quot;, CFSTR(&quot;CFBundleExecutable&quot;), &amp;stru_12864),</div><div class="line">            v27 = (void *)objc_retainAutoreleasedReturnValue(v26),</div><div class="line">            v28 = v27,</div><div class="line">            objc_release(v25),</div><div class="line">            objc_release(v22),</div><div class="line">            v29 = objc_msgSend(v27, &quot;length&quot;),</div><div class="line">            v17 = v9,</div><div class="line">            v19 = 0,</div><div class="line">            v30 = objc_msgSend(v9, &quot;length&quot;),</div><div class="line">            v31 = objc_msgSend(&amp;OBJC_CLASS___NSString, &quot;stringWithFormat:&quot;, CFSTR(&quot;_TtC%lu%@%lu%@&quot;), v29, v27, v30, v9),</div><div class="line">            v32 = objc_retainAutoreleasedReturnValue(v31),</div><div class="line">            v20 = NSClassFromString(v32),</div><div class="line">            objc_release(v32),</div><div class="line">            objc_release(v28),</div><div class="line">            v20) )</div><div class="line">      &#123;</div><div class="line">        v33 = objc_msgSend(&amp;OBJC_CLASS___UZModule, &quot;class&quot;);</div><div class="line">        if ( (unsigned int)objc_msgSend((void *)v20, &quot;isSubclassOfClass:&quot;, v33) &amp; 0xFF )</div><div class="line">        &#123;</div><div class="line">          v34 = objc_msgSend((void *)v20, &quot;alloc&quot;);</div><div class="line">          v19 = objc_msgSend(v34, &quot;initWithUZWebView:&quot;, v3);</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">      if ( !v19 )</div><div class="line">      &#123;</div><div class="line">        v43 = objc_msgSend(&amp;OBJC_CLASS___NSString, &quot;stringWithFormat:&quot;, CFSTR(&quot;ERROR: Module &apos;%@&apos; not found&quot;), v17);</div><div class="line">        v44 = objc_retainAutoreleasedReturnValue(v43);</div><div class="line">        objc_msgSend(v3, &quot;sendErrorEvent:&quot;, v44);</div><div class="line">        NSLog(CFSTR(&quot;%@&quot;), v44);</div><div class="line">        objc_release(v44);</div><div class="line">        v5 = 0;</div><div class="line">        v7 = v46;</div><div class="line">        v38 = v48;</div><div class="line">        goto LABEL_17;</div><div class="line">      &#125;</div><div class="line">      objc_msgSend((void *)v3-&gt;_moduleDict, &quot;setObject:forKey:&quot;, v19, v17);</div><div class="line">      v7 = v46;</div><div class="line">    &#125;</div><div class="line">    v47 = v17;</div><div class="line">    v35 = objc_msgSend(&amp;OBJC_CLASS___NSString, &quot;stringWithFormat:&quot;, CFSTR(&quot;%@:&quot;), v7);</div><div class="line">    v36 = objc_retainAutoreleasedReturnValue(v35);</div><div class="line">    v37 = NSSelectorFromString();</div><div class="line">    if ( (unsigned int)objc_msgSend(v19, &quot;respondsToSelector:&quot;, v37) &amp; 0xFF )</div><div class="line">    &#123;</div><div class="line">      v38 = v48;</div><div class="line">      if ( (unsigned int)objc_msgSend(v49, &quot;isSyncMethod&quot;) &amp; 0xFF )</div><div class="line">      &#123;</div><div class="line">        v39 = objc_msgSend(v19, &quot;performSelector:withObject:&quot;, v37, v48);</div><div class="line">        v40 = v19;</div><div class="line">        v5 = objc_retainAutoreleasedReturnValue(v39);</div><div class="line">        objc_release(v36);</div><div class="line">        objc_release(v40);</div><div class="line">        v17 = v47;</div><div class="line">LABEL_17:</div><div class="line">        objc_release(v38);</div><div class="line">        objc_release(v17);</div><div class="line">        objc_release(v7);</div><div class="line">        v4 = v49;</div><div class="line">        goto LABEL_18;</div><div class="line">      &#125;</div><div class="line">      objc_msgSend(v19, &quot;performSelectorOnMainThread:withObject:waitUntilDone:&quot;, v37, v48, 0);</div><div class="line">      v17 = v47;</div><div class="line">    &#125;</div><div class="line">    else</div><div class="line">    &#123;</div><div class="line">      v17 = v47;</div><div class="line">      v41 = objc_msgSend(</div><div class="line">              &amp;OBJC_CLASS___NSString,</div><div class="line">              &quot;stringWithFormat:&quot;,</div><div class="line">              CFSTR(&quot;ERROR: Method &apos;%@&apos; not defined in Module &apos;%@&apos;&quot;),</div><div class="line">              v7,</div><div class="line">              v47);</div><div class="line">      v42 = objc_retainAutoreleasedReturnValue(v41);</div><div class="line">      objc_msgSend(v3, &quot;sendErrorEvent:&quot;, v42);</div><div class="line">      NSLog(CFSTR(&quot;%@&quot;), v42);</div><div class="line">      objc_release(v42);</div><div class="line">      v38 = v48;</div><div class="line">    &#125;</div><div class="line">    objc_release(v36);</div><div class="line">    objc_release(v19);</div><div class="line">    v5 = 0;</div><div class="line">    goto LABEL_17;</div><div class="line">  &#125;</div><div class="line">  v5 = 0;</div><div class="line">LABEL_18:</div><div class="line">  objc_release(v4);</div><div class="line">  return (id)objc_autoreleaseReturnValue(v5);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>主要流程是从UZCommand中读出模块，方法，参数等信息，根据类名创建了实例，然后调用初始化构造函数initWithUZWebView（这里和官网介绍<a href="http://docs.apicloud.com/APICloud/%E6%8A%80%E6%9C%AF%E4%B8%93%E9%A2%98/module-dev-guide-for-ios" target="_blank" rel="external">如何自定义模块</a>中的说明是一致的）,然后会判断是同步调用还是异步调用，同步调用则直接执行<code>performSelector:withObject:</code>，异步调用执行<code>performSelectorOnMainThread:withObject:waitUntilDone:</code>，至此，完成了JS到native方法的调用。</p>
+<p>(2.2)如果使用了WKWebView，则通过发送信息的方式将调用信息发给Native端。</p>
+<p>不过，目前SuperWebView暂未支持WKWebView，没有开放api和文档出来。</p>
+<p>(2.3)uz$q和uz$r的实现如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//uz$q</div><div class="line">&#123;c: Array[0], flag: true&#125;</div><div class="line"></div><div class="line">//uz$r</div><div class="line">function uz$r() &#123;</div><div class="line">    if(uz$q.flag &amp;&amp; uz$q.c.length&gt;0)&#123;</div><div class="line">        uz$q.flag = false;</div><div class="line">        window.location = &apos;uz://&apos; + uz$q.c[0];</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里是将调用信息拼接成一个URL，scheme采用uz:，赋值给window.location赋值对当前页面重定向，这里应该是采用UIWebView的代理方式实现与Native端通信，会调用到<code>webView:shouldStartLoadWithRequest:navigationType:</code>代理方法中去，这种就是JSBridge的方式了。</p>
+<p>补充说明一点，从Native回调到JS端的方式是，通过<code>stringByEvaluatingJavaScriptFromString:</code>的方式，通知js端，并把callbackID作为参数回传过去。</p>
+<h3 id="关于SuperWebView所指的混合渲染的说明"><a href="#关于SuperWebView所指的混合渲染的说明" class="headerlink" title="关于SuperWebView所指的混合渲染的说明"></a>关于SuperWebView所指的混合渲染的说明</h3><p>看到混合渲染，第一理解是，SuperWebView支持将Native的View直接fix在UIWebView内部做渲染，这样做就需要修改webview的渲染机制，并且还要支持将css的解析映射到native view中去，通过官方文档和使用教程，并没有看到相关介绍。目前我的理解是，将Native的View作为子View添加到UIWebView中去。为了验证这一点，我们使用官网提供个UISlider模块来写示例代码，在JS中使用如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">var uislider = api.require(&apos;UISlider&apos;);</div><div class="line">            uislider.open(&#123;</div><div class="line">                animation: true,</div><div class="line">                orientation: &apos;horizontal&apos;,</div><div class="line">                rect: &#123;</div><div class="line">                    x: 10,</div><div class="line">                    y: 100,</div><div class="line">                    size: 300</div><div class="line">                &#125;,</div><div class="line">                bubble: &#123;</div><div class="line">                    direction: &apos;top&apos;,</div><div class="line">                    state: &apos;always&apos;,</div><div class="line">                    w: 80,</div><div class="line">                    h: 30,</div><div class="line">                    size: 14,</div><div class="line">                    color: &apos;#888&apos;,</div><div class="line">                    bg: &apos;widget://res/slider/bubble.png&apos;,</div><div class="line">                    prefix: &apos;温度：&apos;,</div><div class="line">                    suffix: &apos;摄氏度&apos;</div><div class="line">                &#125;,</div><div class="line">                handler: &#123;</div><div class="line">                    w: 10,</div><div class="line">                    h: 8,</div><div class="line">                    bg: &apos;widget://res/slider/handler.png&apos;</div><div class="line">                &#125;,</div><div class="line">                bar: &#123;</div><div class="line">                    h: 4,</div><div class="line">                    bg: &apos;widget://res/slider/background.png&apos;,</div><div class="line">                    active: &apos;widget://res/slider/bar-active.png&apos;</div><div class="line">                &#125;,</div><div class="line">                value: &#123;</div><div class="line">                    min: 16,</div><div class="line">                    max: 32,</div><div class="line">                    step: 0.5,</div><div class="line">                    init: 26</div><div class="line">                &#125;,</div><div class="line">                fixedOn: api.frameName,</div><div class="line">                fixed: false</div><div class="line">            &#125;, function(ret, err) &#123;</div><div class="line">                if (ret) &#123;</div><div class="line">                    alert(JSON.stringify(ret));</div><div class="line">                &#125; else &#123;</div><div class="line">                    alert(JSON.stringify(err));</div><div class="line">                &#125;</div><div class="line">            &#125;);</div></pre></td></tr></table></figure>
+<p>打开的视图效果如下：</p>
+<p><img src="./superwebview3.png" alt=""></p>
+<p>我们看到UISlider是悬浮在WebView之上的，那么我们可以猜测，其是通过在native构建并添加到WebView上的，这一点可以通过反编译了UISlider的目标文件，可以看到open方法的实现里面多次调用了addSubView方法。</p>
+<p>优点：</p>
+<ul>
+<li>性能好</li>
+<li>提供方便的api进行页面组合</li>
+<li>模块化平台，让更多的人为前端工程师服务</li>
+<li>管理平台：热更新，云数据等</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>样式需要前端开发者去模拟native的样式</li>
+<li>有些系统级的动画暂不支持，如导航栏渐变动画</li>
+</ul>
+<h2 id="5-Runtime-amp-Native-js"><a href="#5-Runtime-amp-Native-js" class="headerlink" title="5+Runtime &amp; Native.js"></a>5+Runtime &amp; Native.js</h2><ul>
+<li>5+Runtime是对HTML5+规范的实现，除了支持标准HTML5外，还扩展了JavaScript对象plus，使得js可以调用各种浏览器无法实现或实现不佳的系统能力，设备能力如摄像头、陀螺仪、文件系统等，业务能力如上传下载、二维码、地图、支付、语音输入、消息推送等。编写一次，可跨平台运行。</li>
+<li>大量的手机OS的原生API无法被HTML5使用，Native.js把原生API封装成了js对象，通过js可以直接调ios和android的原生API。这部分就不再跨平台，写法分别是plus.ios和plus.android。</li>
+<li>Native.js不是一个js库，不需要下载引入到页面的script中，也不像nodejs那样有单独的运行环境，Native.js的运行环境是集成在5+runtime里的。</li>
+</ul>
+<p>使用方式：</p>
+<ul>
+<li>对于web端开发者，使用HBuilder IDE，它集成了5+Runtime和Native.js，可以创建移动项目来开发App</li>
+<li>对于Native端开发者，可以从平台下载SDK集成到项目中使用</li>
+</ul>
+<p>看到5+runtime说是<a href="http://weibo.com/p/1001603806548597059383" target="_blank" rel="external">开源</a>了,不过在<a href="https://github.com/dcloudio/H5P.Core" target="_blank" rel="external">开源项目</a>中并未找到iOS native的代码实现，其中还是以静态库的形式提供，不过在pdr.js文件中，看到了plus.tools和plus.bridge的实现，这两个实现在后文中会使用到。</p>
+<h3 id="Native-js通信方式实现分析"><a href="#Native-js通信方式实现分析" class="headerlink" title="Native.js通信方式实现分析"></a>Native.js通信方式实现分析</h3><p>下面以使用iOS中的UIAlertView为示例。</p>
+<p>iOS端使用UIAlertView的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">#import &lt;UIKit/UIKit.h&gt;</div><div class="line">//...</div><div class="line">// 创建UIAlertView类的实例对象</div><div class="line">UIAlertView *view = [UIAlertView alloc];</div><div class="line">// 设置提示对话上的内容</div><div class="line">[view initWithTitle:@&quot;自定义标题&quot; // 提示框标题</div><div class="line">    message:@&quot;使用NJS的原生弹出框，可自定义弹出框的标题、按钮&quot; // 提示框上显示的内容</div><div class="line">    delegate:nil // 点击提示框后的通知代理对象，nil类似js的null，意为不设置</div><div class="line">    cancelButtonTitle:@&quot;确定(或者其他字符)&quot; // 提示框上取消按钮的文字</div><div class="line">    otherButtonTitles:nil]; // 提示框上其它按钮的文字，设置为nil表示不显示</div><div class="line">// 调用show方法显示提示对话框，在OC中使用[]语法调用对象的方法</div><div class="line">[view show];</div></pre></td></tr></table></figure>
+<p>JS端使用UIAlertView的方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// 创建UIAlertView类的实例对象</div><div class="line">var view = new UIAlertView();</div><div class="line">// 设置提示对话上的内容</div><div class="line">view.initWithTitlemessagedelegatecancelButtonTitleotherButtonTitles(&quot;自定义标题&quot; // 提示框标题</div><div class="line">	, &quot;使用NJS的原生弹出框，可自定义弹出框的标题、按钮&quot; // 提示框上显示的内容</div><div class="line">	, null // 操作提示框后的通知代理对象，暂不设置</div><div class="line">	, &quot;确定(或者其他字符)&quot; // 提示框上取消按钮的文字</div><div class="line">	, null ); // 提示框上其它按钮的文字，设置为null表示不显示</div><div class="line">// 调用show方法显示提示对话框</div><div class="line">view.show();</div></pre></td></tr></table></figure>
+<p>其中UIAlertView、initWithTitlemessagedelegatecancelButtonTitleotherButtonTitles和show的实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">window.plus.ios.UIAlertView = function(create) &#123;</div><div class="line">        this.__UUID__ = window.plus.tools.UUID(&apos;JSB&apos;);</div><div class="line">        this.__TYPE__ = &apos;JSBObject&apos;;</div><div class="line">        var args = window.plus.ios.__Tool.process(arguments);</div><div class="line">        if ( create &amp;&amp; plus.tools.IOS == plus.tools.platform ) &#123;</div><div class="line">        </div><div class="line">        &#125; else &#123;</div><div class="line">            window.plus.bridge.execSync(&apos;Invocation&apos;, &apos;__Instance&apos;, [this.__UUID__, &apos;UIAlertView&apos;, args]);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">plus.ios.UIAlertView.prototype.initWithTitlemessagedelegatedefaultButtoncancelButtonotherButtons = function () &#123;</div><div class="line">        var ret = null;</div><div class="line">        try &#123;</div><div class="line">            var args = window.plus.ios.__Tool.process(arguments);</div><div class="line">            ret = window.plus.bridge.execSync(&apos;Invocation&apos;, &apos;__exec&apos;, [this.__UUID__, &apos;initWithTitle:message:delegate:defaultButton:cancelButton:otherButtons:&apos;, args]);</div><div class="line">            ret = plus.ios.__Tool.New(ret, false);</div><div class="line">        &#125; catch (e) &#123;</div><div class="line">            throw e;</div><div class="line">        &#125;</div><div class="line">        return ret;</div><div class="line">    &#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">plus.ios.UIAlertView.prototype.show = function () &#123;</div><div class="line">        var ret = null;</div><div class="line">        try &#123;</div><div class="line">            var args = window.plus.ios.__Tool.process(arguments);</div><div class="line">            ret = window.plus.bridge.execSync(&apos;Invocation&apos;, &apos;__exec&apos;, [this.__UUID__, &apos;show&apos;, args]);</div><div class="line">            ret = plus.ios.__Tool.New(ret, false);</div><div class="line">        &#125; catch (e) &#123;</div><div class="line">            throw e;</div><div class="line">        &#125;</div><div class="line">        return ret;</div><div class="line">    &#125;;</div></pre></td></tr></table></figure>
+<p>可以看到，我们创建的UIAlertView是一个JS对象，这个对象是当我们使用<code>UIAlertView = plus.ios.importClass(&quot;UIAlertView&quot;);</code>时动态创建的JS对象，与Native的UIAlertView相对应，我们称该JS对象为NJS对象。我们对NJS对象UIAlertView进行的方法调用，最终会执行<code>window.plus.bridge.execSync</code>，我们需要看下它的实现，在此之前，关于通过NJS对象访问Native对象，先做一些说明。</p>
+<ul>
+<li>首次导入Native类对象时，Native.js会动态创建一个JS对象与之相对应，JS对象包括相应的构造函数、方法、父类(prototype)等信息。</li>
+<li>由于是动态创建对应的JS对象，这里有一定的性能损耗，<a href="http://ask.dcloud.net.cn/docs/#http://ask.dcloud.net.cn/article/88" target="_blank" rel="external">官方文档</a>中性能优化一节建议页面打开后触发的“plusready”事件中进行类对象的导入操作，这样提前导入了我们需要导入的类对象，是我们在后面逻辑中使用时保证其已经导入，这种方式只是将导入时机提前，并不是消除了导入带来的损耗。所以官方也不建议我们在一个页面中导入过多的类对象，这样会影响性能。</li>
+<li>数据类型转换：在NJS中调用Native API或从Native API返回数据到NJS时会自动转换数据类型。</li>
+<li>Native类对象的方法会在JS对象中有份映射，方法名是native方法名去掉‘冒号’之后的名称（字母大小写不变）。</li>
+<li>对于映射的JS对象，可以通过“.”调用方式来访问native对象的属性，但这种方式获得的值是Native层对象被映射为NJS对象那一刻的属性值，如果需要实时获取和设置native对象属性值，需要使用plusGetAttribute和plusSetAttribute方法，但这种方式效率比较低。</li>
+<li>Objective-C和Java中类如果存在继承自基类，在NJS中对应的对象会根据继承关系递归将所有基类的公有方法一一换成NJS对象的方法，所有基类的公有属性也可以通过其plusGetAttribute、plusSetAttribute方法访问。</li>
+<li>由于Objective-C中类没有静态变量，而是通过定义全局变量来实现，目前NJS中无法访问全局变量的值。对于全局常量，在NJS中也无法访问。</li>
+</ul>
+<p>继续之前的window.plus.bridge.execSync方法调用，其方法实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">function (service,action,args,fn)&#123;</div><div class="line">    var json,sync,ret;</div><div class="line">    if(T.IOS==T.platform)&#123;</div><div class="line">        try&#123;</div><div class="line">            if(json=T.stringify([[window.__HtMl_Id__,service,action,null,args]]),</div><div class="line">                sync=B.synExecXhr,</div><div class="line">                sync.open(&quot;post&quot;,&quot;http://localhost:13131/cmds&quot;,!1),</div><div class="line">                sync.setRequestHeader(&quot;Content-Type&quot;,&quot;multipart/form-data&quot;),</div><div class="line">                sync.send(json),</div><div class="line">                fn)</div><div class="line">                return fn(sync.responseText)</div><div class="line">        &#125;catch(e)&#123;</div><div class="line">            console.log(&quot;sf:&quot;+action+&quot;-&quot;+service)</div><div class="line">        &#125;</div><div class="line">        return window.eval(sync.responseText)</div><div class="line">    &#125;</div><div class="line">    return T.ANDROID==T.platform?</div><div class="line">        (ret=window.prompt(T.stringify(args),&quot;pdr:&quot;+T.stringify([service,action,!1])),fn?fn(ret):eval(ret))</div><div class="line">        :void 0</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">T=plus.tools,</div><div class="line">B=plus.bridge</div></pre></td></tr></table></figure>
+<p>synExecXhr的全称是“同步调用XML HTTP Request”，前面我们提到了plus.bridge的实现中我们可以看到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synExecXhr: new XMLHttpRequest()</div></pre></td></tr></table></figure>
+<p>可以看到，synExecXh实际是一个XMLHttpRequest对象，通过它最后将调用信息以http请求的方式发出去。我们在Native端利用oc-runtime hook住UIAlertView的构造函数，添加断点，可以看到调用栈如下图所示：</p>
+<p><img src="5+.png" alt=""></p>
+<p>可以看到，JS调用到Native端通过DCAsycSocket以这种进程间通信的方式来实现，并且在非主线程完成。至此，我们可以得知，native.js中js与native端的通信是通过本地socket同步通信的方式完成的，完成调用之后，调用结果会以字符串的形式保存在<code>sync.responseText</code>中，js端再通过evaluate其中的字符串来得到返回结果。</p>
+<p>小结：5+runtime还是基于WebView来做事，属于hybrid流派，通过本地socket通信方式来实现JS与Native的混合调用，支持动态导入native类对象，进行实例化、方法调用、属性访问等操作，与一般的hybrid技术不同的是，不需要native工程师来提供模块或者插件来支持扩展js的能力，web工程是可以参考native的方法调用类似的方式（只需要简单的修改），实现对native对象的访问。同时5+runtime还提供了一些跨平台的通用组件，如摄像头、陀螺仪、文件系统等。使用native.js技术所需要注意的问题就是性能问题，动态导入和访问native对象以及数据类型转化需要付出一定的性能损耗代价，官方给出了一些建议来进行性能优化。另外，值得一提的是DCloud公司还用HTML5做了一套模拟Native UI的开源项目MUI，有兴趣可以参考<a href="https://github.com/dcloudio/mui" target="_blank" rel="external">这里</a>.</p>
+<p>优点：</p>
+<ul>
+<li>web端可以直接访问native的api，调用接口参考</li>
+<li><p>提供一套native样式库：MUI</p>
+<p>缺点：</p>
+</li>
+<li><p>与native交互性能有点弱</p>
+</li>
+</ul>
+<h2 id="Titanium"><a href="#Titanium" class="headerlink" title="Titanium"></a>Titanium</h2><p>Titanium:”Write in JavaScript, run native everywhere”.</p>
+<p>Titanium与PhoneGap不同，并不是基于WebView来做跨平台开发，属于JavaSciptBridge流派，关于它与PhoneGap的对比可以参考<a href="http://www.appcelerator.com/blog/2012/05/comparing-titanium-and-phonegap/" target="_blank" rel="external">这篇文章</a>。值得一提的是，Titanium的上层语言并没有采用HTML+CSS+ JavaScript，而是XML+JSON+JavaScript，这增加了一定的学习成本。</p>
+<h2 id="React-Native"><a href="#React-Native" class="headerlink" title="React Native"></a>React Native</h2><p>ReactNative:”learn once，write anywhere”.</p>
+<p>ReactNative和Titanium的思路很像，也抛弃了WebView，属于JavaSciptBridge流派。ReactNative用JavaScript编写程序，渲染的界面全部都是Natvie的。<a href="https://facebook.github.io/react/" target="_blank" rel="external">React</a>是前端的知名开发库，程序代码通过操作Virturl DOM来编写程序，React runtime负责操作和更新真正的DOM节点，而这个更新是通过diff做增量更新，这提高性能，ReactNative沿用了React的编程模型和更新模型。</p>
+<p>ReactNative的JS运行在与应用主线程独立的线程，通过异步操作与Natvie接口通信，线程模型可以参考下图：</p>
+<p><img src="移动端混合编程/reactnative.png" alt=""></p>
+<p>JS解释器可以运行于手机中的独立线程，也可以远程调试时运行在浏览器中，另外，I/O操作、图片解码、布局信息计算等其他一些消耗CPU的操作也可以放到独立线程中，iOS应用主线程用来操作UI控件和Native API访问，JS线程与UI主线程之间通过ReactNative桥接进行异步通信，实现JS与Objective-C之间的相互调用。</p>
+<p><img src="移动端混合编程/reactnative2.png" alt=""></p>
+<h3 id="React-Native通信机制源码分析"><a href="#React-Native通信机制源码分析" class="headerlink" title="React Native通信机制源码分析"></a>React Native通信机制源码分析</h3><p>源码分析基于React Native v0.23.1,不过下载了目前的最新版0.38.0调试了，实现方式大同小异。</p>
+<p>React Native 的思路就是将Native方法导出给JS用，使得用户可以用JS编写程序，而采用原生控件构建构建应用。<br>React Native 导出以模块（Module）为单位，在程序启动时，加载需要注册到js中的module，挂到js解释器的__fbBatchedBridgeConfig变量上，格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;&quot;remoteModuleConfig&quot;:[</div><div class="line"></div><div class="line">[&quot;RCTStatusBarManager&quot;,</div><div class="line">	[&quot;getHeight&quot;,&quot;setStyle&quot;,&quot;setHidden&quot;,&quot;setNetworkActivityIndicatorVisible&quot;]],</div><div class="line">[&quot;RCTSourceCode&quot;,</div><div class="line">	&#123;&quot;scriptURL&quot;:&quot;http:\/\/localhost:8081\/index.ios.bundle?platform=ios&amp;dev=true&amp;hot=true&quot;&#125;,</div><div class="line">	[&quot;getScriptText&quot;],[0]]</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>React Native还在不断的迭代开发中，不同版本的实现方式可能不同，例如，在<a href="http://blog.cnbang.net/tech/2698/" target="_blank" rel="external">React Native通信机制详解</a>一文中介绍，Natvie模块的注册方式是通过在利用编译指令将需要导出的模块存储到执行文件的二进制DATA端，程序启动时再从中读取导出的模块信息，我使用的源码是v0.23.1版本，可以看到，需要bridge的模块需要使用<code>RCTRegisterModule</code>宏，其展开如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#define RCT_EXPORT_MODULE(js_name) \</div><div class="line">RCT_EXTERN void RCTRegisterModule(Class); \</div><div class="line">+ (NSString *)moduleName &#123; return @#js_name; &#125; \</div><div class="line">+ (void)load &#123; RCTRegisterModule(self); &#125;</div></pre></td></tr></table></figure>
+<p>可以看到，bridge的模块在load方法中进行注册，注册的模块保存在RCTBridge.m的<code>static NSMutableArray&lt;Class&gt; *RCTModuleClasses;</code>全局静态变量中。模块中需要bridge的方法使用<code>RCT_EXPORT_METHOD</code>宏，默认情况下，使用OC方法的第一个分号之前的部分作为JS中的调用名称，例如模块ModuleName中，需要导出的方法<code>- (void)doSomething:(NSString *)aString withA:(NSInteger)a andB:(NSInteger)b</code>，需要写成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">RCT_EXPORT_METHOD(doSomething:(NSString *)aString</div><div class="line">                   withA:(NSInteger)a</div><div class="line">                   andB:(NSInteger)b)</div><div class="line"> &#123; ... &#125;</div></pre></td></tr></table></figure>
+<p>最终JS的调用形式是<code>NativeModules.ModuleName.doSomething</code>。</p>
+<p>应用启动时，会创建一个CADisplayLink添加到线程（真机上是JS线程，模拟器上是主线程）的runloop中，周期性的调用JS的callFunctionReturnFlushedQueue方法，这个方法的作用就是从一个MessageQueue中取出消息内容。JS调用OC方法，会将调用的信息（moduleID、methodID、params）保存在这个MessageQueue中。</p>
+<p>这里需要说明一下：测试发现，在模拟器中，JS线程与Native端使用RCTSRWebSocketExecutor来进行通信，在真机上，使用RCTJSCExecutor来执行js脚本，在RCTJSCExecutor中可以看到对它的说明<strong>Uses a JavaScriptCore context as the execution engine.</strong>。</p>
+<p>回到刚才的话题，调用callFunctionReturnFlushedQueue之后，会从MessageQueue取出调用信息，已json字符串的形式返回给native端，native端通过RCTJSONParse接口parse出调用信息，信息包括模块id,方法id,参数,以及可能的回调id，格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">&lt;__NSCFArray 0x7f8bd1610e60&gt;(</div><div class="line"></div><div class="line">//moduleIDs</div><div class="line">&lt;__NSCFArray 0x7f8bd16c4ae0&gt;(</div><div class="line">56,</div><div class="line">33,</div><div class="line">33,</div><div class="line">34</div><div class="line">)</div><div class="line">,</div><div class="line"></div><div class="line">//methodIDs</div><div class="line">&lt;__NSCFArray 0x7f8bd16f0400&gt;(</div><div class="line">1,</div><div class="line">5,</div><div class="line">4,</div><div class="line">0</div><div class="line">)</div><div class="line">,</div><div class="line"></div><div class="line">//params</div><div class="line">&lt;__NSCFArray 0x7f8bd16396c0&gt;(</div><div class="line">&lt;__NSCFArray 0x7f8bd16f7d60&gt;(</div><div class="line">ws://localhost:8097/devtools,</div><div class="line">&lt;null&gt;,</div><div class="line">&lt;null&gt;,</div><div class="line">280</div><div class="line">)</div><div class="line">,</div><div class="line">&lt;__NSCFArray 0x7f8bd163d350&gt;(</div><div class="line">29,</div><div class="line">RCTView,</div><div class="line">1,</div><div class="line">&lt;null&gt;</div><div class="line">)</div><div class="line">,</div><div class="line">&lt;__NSCFArray 0x7f8bd162e670&gt;(</div><div class="line">7,</div><div class="line">&lt;null&gt;,</div><div class="line">&lt;null&gt;,</div><div class="line">&lt;__NSCFArray 0x7f8bd16e4c90&gt;(</div><div class="line">29</div><div class="line">)</div><div class="line">,</div><div class="line">&lt;__NSCFArray 0x7f8bd16f0d90&gt;(</div><div class="line">5</div><div class="line">)</div><div class="line">,</div><div class="line">&lt;__NSCFArray 0x7f8bd1621a10&gt;(</div><div class="line">5</div><div class="line">)</div><div class="line">)</div><div class="line">,</div><div class="line">&lt;__NSCFArray 0x7f8bd16c7670&gt;(</div><div class="line">5,</div><div class="line">2,</div><div class="line">3</div><div class="line">)</div><div class="line"></div><div class="line">)</div><div class="line">,</div><div class="line">//callID</div><div class="line">1171</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>我们先来看下JS部分是如何创建这个队列以及将这些消息调用信息保存在队列中的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//BatchedBridge.js</div><div class="line">const BatchedBridge = new MessageQueue(</div><div class="line">  __fbBatchedBridgeConfig.remoteModuleConfig,</div><div class="line">  __fbBatchedBridgeConfig.localModulesConfig,</div><div class="line">);</div></pre></td></tr></table></figure>
+<p>前面提到过<strong>fbBatchedBridgeConfig.remoteModuleConfig是Native端注册的模块，</strong>fbBatchedBridgeConfig.localModulesConfig是JS本地模块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">//MessageQueue.js</div><div class="line">constructor(remoteModules, localModules) &#123;</div><div class="line">    this.RemoteModules = &#123;&#125;;</div><div class="line"></div><div class="line">    this._callableModules = &#123;&#125;;</div><div class="line">    this._queue = [[], [], [], 0];</div><div class="line">    this._moduleTable = &#123;&#125;;</div><div class="line">    this._methodTable = &#123;&#125;;</div><div class="line">    this._callbacks = [];</div><div class="line">    this._callbackID = 0;</div><div class="line">    this._callID = 0;</div><div class="line">    this._lastFlush = 0;</div><div class="line">    this._eventLoopStartTime = new Date().getTime();</div><div class="line"></div><div class="line">    [</div><div class="line">      &apos;invokeCallbackAndReturnFlushedQueue&apos;,</div><div class="line">      &apos;callFunctionReturnFlushedQueue&apos;,</div><div class="line">      &apos;flushedQueue&apos;,</div><div class="line">    ].forEach((fn) =&gt; this[fn] = this[fn].bind(this));</div><div class="line"></div><div class="line">    let modulesConfig = this._genModulesConfig(remoteModules);</div><div class="line">    </div><div class="line">    //构建模块信息</div><div class="line">    this._genModules(modulesConfig);</div><div class="line">    localModules &amp;&amp; this._genLookupTables(</div><div class="line">      this._genModulesConfig(localModules),this._moduleTable, this._methodTable</div><div class="line">    );</div><div class="line"></div><div class="line">    this._debugInfo = &#123;&#125;;</div><div class="line">    this._remoteModuleTable = &#123;&#125;;</div><div class="line">    this._remoteMethodTable = &#123;&#125;;</div><div class="line">    this._genLookupTables(</div><div class="line">      modulesConfig, this._remoteModuleTable, this._remoteMethodTable</div><div class="line">    );</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>里面调用this._genModules(modulesConfig);，最后会调到_genModule。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">//config是module信息，包括模块名，导出方法名列表等，moduleID模块对应的id（这个ID就是模块在remoteModules数组中的索引）</div><div class="line">_genModule(config, moduleID) &#123;</div><div class="line">    if (!config) &#123;</div><div class="line">      return;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    let moduleName, constants, methods, asyncMethods;</div><div class="line">    if (moduleHasConstants(config)) &#123;</div><div class="line">      [moduleName, constants, methods, asyncMethods] = config;</div><div class="line">    &#125; else &#123;</div><div class="line">      [moduleName, methods, asyncMethods] = config;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    let module = &#123;&#125;;</div><div class="line">    methods &amp;&amp; methods.forEach((methodName, methodID) =&gt; &#123;</div><div class="line">      const methodType =</div><div class="line">        asyncMethods &amp;&amp; arrayContains(asyncMethods, methodID) ?</div><div class="line">          MethodTypes.remoteAsync : MethodTypes.remote;</div><div class="line">      //构建方法信息</div><div class="line">      module[methodName] = this._genMethod(moduleID, methodID, methodType);</div><div class="line">    &#125;);</div><div class="line">    Object.assign(module, constants);</div><div class="line"></div><div class="line">    if (!constants &amp;&amp; !methods &amp;&amp; !asyncMethods) &#123;</div><div class="line">      module.moduleID = moduleID;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">	//构建的module信息保存在RemoteModules中</div><div class="line">    this.RemoteModules[moduleName] = module;</div><div class="line">    return module;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>调用this._genMethod构建方法信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">//module：模块ID,method：方法ID（是方法在方法名列表中的索引），type：&quot;remote，remoteAsync&quot;，区分是同步调用还是异步调用，异步调用用Promise实现</div><div class="line">  _genMethod(module, method, type) &#123;</div><div class="line">    let fn = null;</div><div class="line">    let self = this;</div><div class="line">    if (type === MethodTypes.remoteAsync) &#123;</div><div class="line">      fn = function(...args) &#123;</div><div class="line">        return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">          self.__nativeCall(</div><div class="line">            module,</div><div class="line">            method,</div><div class="line">            args,</div><div class="line">            (data) =&gt; &#123;</div><div class="line">              resolve(data);</div><div class="line">            &#125;,</div><div class="line">            (errorData) =&gt; &#123;</div><div class="line">              var error = createErrorFromErrorData(errorData);</div><div class="line">              reject(error);</div><div class="line">            &#125;);</div><div class="line">        &#125;);</div><div class="line">      &#125;;</div><div class="line">    &#125; else &#123;</div><div class="line">      fn = function(...args) &#123;</div><div class="line">        let lastArg = args.length &gt; 0 ? args[args.length - 1] : null;</div><div class="line">        let secondLastArg = args.length &gt; 1 ? args[args.length - 2] : null;</div><div class="line">        let hasSuccCB = typeof lastArg === &apos;function&apos;;</div><div class="line">        let hasErrorCB = typeof secondLastArg === &apos;function&apos;;</div><div class="line">        hasErrorCB &amp;&amp; invariant(</div><div class="line">          hasSuccCB,</div><div class="line">          &apos;Cannot have a non-function arg after a function arg.&apos;</div><div class="line">        );</div><div class="line">        let numCBs = hasSuccCB + hasErrorCB;</div><div class="line">        let onSucc = hasSuccCB ? lastArg : null;</div><div class="line">        let onFail = hasErrorCB ? secondLastArg : null;</div><div class="line">        args = args.slice(0, args.length - numCBs);</div><div class="line">        return self.__nativeCall(module, method, args, onFail, onSucc);</div><div class="line">      &#125;;</div><div class="line">    &#125;</div><div class="line">    fn.type = type;</div><div class="line">    return fn;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>这里我们可以看到，__nativeCall的调用被包装在一个function中，这个function作为first-classed Value被返回，已<key,value>的形式保存在module信息中。我们开看到，native调用的成功和失败回调函数也是在这里传入。</key,value></p>
+<p>至此，Native方法的调用映射表构建完成。下面是JS端网络接口的例子。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">var RCTNetworkingNative = require(&apos;NativeModules&apos;).Networking;</div><div class="line"></div><div class="line">/**</div><div class="line"> * This class is a wrapper around the native RCTNetworking module.</div><div class="line"> */</div><div class="line">class RCTNetworking &#123;</div><div class="line"></div><div class="line">  static sendRequest(query, callback) &#123;</div><div class="line">    RCTNetworkingNative.sendRequest(query, callback);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  static abortRequest(requestId) &#123;</div><div class="line">    RCTNetworkingNative.cancelRequest(requestId);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">module.exports = RCTNetworking;</div></pre></td></tr></table></figure>
+<p>可以看到，RCTNetworking最终调用的是Native映射表中的本地方法。</p>
+<p>我们继续来看__nativeCall的实现，这里很重要。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"> __nativeCall(module, method, params, onFail, onSucc) &#123;</div><div class="line"> </div><div class="line"> 	//(1)</div><div class="line">   if (onFail || onSucc) &#123;</div><div class="line">     // eventually delete old debug info</div><div class="line">     (this._callbackID &gt; (1 &lt;&lt; 5)) &amp;&amp;</div><div class="line">       (this._debugInfo[this._callbackID &gt;&gt; 5] = null);</div><div class="line"></div><div class="line">     this._debugInfo[this._callbackID &gt;&gt; 1] = [module, method];</div><div class="line">     onFail &amp;&amp; params.push(this._callbackID);</div><div class="line">     this._callbacks[this._callbackID++] = onFail;</div><div class="line">     onSucc &amp;&amp; params.push(this._callbackID);</div><div class="line">     this._callbacks[this._callbackID++] = onSucc;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   global.nativeTraceBeginAsyncFlow &amp;&amp;</div><div class="line">     global.nativeTraceBeginAsyncFlow(TRACE_TAG_REACT_APPS, &apos;native&apos;, this._callID);</div><div class="line">   this._callID++;</div><div class="line"></div><div class="line">//（2）</div><div class="line">   this._queue[MODULE_IDS].push(module);</div><div class="line">   this._queue[METHOD_IDS].push(method);</div><div class="line">   this._queue[PARAMS].push(params);</div><div class="line"></div><div class="line">//(3)</div><div class="line">   var now = new Date().getTime();</div><div class="line">   if (global.nativeFlushQueueImmediate &amp;&amp;</div><div class="line">       now - this._lastFlush &gt;= MIN_TIME_BETWEEN_FLUSHES_MS) &#123;</div><div class="line">     global.nativeFlushQueueImmediate(this._queue);</div><div class="line">     this._queue = [[], [], [], this._callID];</div><div class="line">     this._lastFlush = now;</div><div class="line">   &#125;</div><div class="line">   Systrace.counterEvent(&apos;pending_js_to_native_queue&apos;, this._queue[0].length);</div><div class="line">   if (__DEV__ &amp;&amp; SPY_MODE &amp;&amp; isFinite(module)) &#123;</div><div class="line">     console.log(&apos;JS-&gt;N : &apos; + this._remoteModuleTable[module] + &apos;.&apos; +</div><div class="line">       this._remoteMethodTable[module][method] + &apos;(&apos; + JSON.stringify(params) + &apos;)&apos;);</div><div class="line">   &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>代码说明：<br>（1）往params中添加回调回调方法对应的id，可以看到，回调id保存在params数组最后，还会记录debug信息。<br>（2）将native调用信息添加到MessageQueue，可以看到，MessageQueue的格式是<code>this._queue = [[], [], [], this._callID];</code>，moduleID、methodID和params分别被加入到MessageQueue中不同数组中，所以就看到了前面我们打印出来的Native端收到的数据格式。<br>（3）如果是要求立即调用并且超时，则会调用global.nativeFlushQueueImmediate接口。这里我查找了下代码，js端和native端并没有为global.nativeFlushQueueImmediate，可见一般不会进入这个流程，一般还是使用前面介绍的Native定时驱动的方式来获取MessageQueue中的调用信息。但是，既然有这个值，说明是支持js主动调用到native端的，那又是如何实现的呢？</p>
+<p>在RCTJSCExecutor.m文件中的setUp方法，我们看到这样一段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[self addSynchronousHookWithName:@&quot;nativeFlushQueueImmediate&quot; usingBlock:^(NSArray&lt;NSArray *&gt; *calls)&#123;</div><div class="line">    RCTJSCExecutor *strongSelf = weakSelf;</div><div class="line">    if (!strongSelf.valid || !calls) &#123;</div><div class="line">      return;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    RCT_PROFILE_BEGIN_EVENT(0, @&quot;nativeFlushQueueImmediate&quot;, nil);</div><div class="line">    [strongSelf-&gt;_bridge handleBuffer:calls batchEnded:NO];</div><div class="line">    RCT_PROFILE_END_EVENT(0, @&quot;js_call&quot;, nil);</div><div class="line">  &#125;];</div></pre></td></tr></table></figure>
+<p>再看addSynchronousHookWithName的实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- (void)addSynchronousHookWithName:(NSString *)name usingBlock:(id)block</div><div class="line">&#123;</div><div class="line">  __weak RCTJSCExecutor *weakSelf = self;</div><div class="line">  [self executeBlockOnJavaScriptQueue:^&#123;</div><div class="line">    weakSelf.context.context[name] = block;</div><div class="line">  &#125;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们发现，这里是将native的方法挂到js解释器的全局上下文上，这样js端就可以直接调用这些native方法。除了nativeFlushQueueImmediate以外，还有其他一些全局方法。</p>
+<p>至此，我们看到了JS端如何调用组织数据发送给Native端，那Native端拿到数据之后是如何处理的呢？</p>
+<p>我跟踪了JS调用创建UIView的过程(通过hook UIView的initWithFrame方法，加断点进行测试)，其导出的Native方法在RCTUIManager.m中，方法签名如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">createView:(nonnull NSNumber *)reactTag</div><div class="line">                  viewName:(NSString *)viewName</div><div class="line">                  rootTag:(__unused NSNumber *)rootTag</div><div class="line">                  props:(NSDictionary *)props</div></pre></td></tr></table></figure>
+<p>创建UIView的流程如下：<br>Native端接收到数据，传给RCTBatchedBridge.m中的handleBuffer函数处理，从中解析出多组信息，每组信息包括模块id,方法id,参数,以及可能的回调id，用匿名block将每组信息包起来（这里我们取个名叫block1），放到moduleID所对应的RCTModuleData的methodQueue中异步执行，RCTModuleData是对module示例的包装，methodQueue是由module实例返回，由于iOS对UI的操作一般需要放在这线程，所以可以看到，UI相关的module的method的queue的实现返回的都是主线程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//RCTActionSheet.m</div><div class="line">- (dispatch_queue_t)methodQueue</div><div class="line">&#123;</div><div class="line">  return dispatch_get_main_queue();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>同时，还会往methodQueue中添加匿名block（这里我们取个名叫block2）的异步操作。block1执行时，首先根据moduleID在全局表中查找到对应的Module（RCTModuleData，ModuleData的创建会根据前面提到的RCTModuleClasses中的Class一一对应创建，保存在RCTBatchedBridge.m中的<code>NSArray&lt;RCTModuleData *&gt; *_moduleDataByID;</code>中），然后再根据methodID在Module中找到相应的方法RCTBridgeMethod（RCTBridgeMethod是对native方法的封装，内部会持有一个NSInvocation），为内部的_invocation设置参数并调用。这时实际调用的就是我们导出的Natvie方法了（也就是前面的createView: viewName:rootTag:props:），他会将创建UI的操作再次封装成一个个block（这里我们取个名叫block3），放到一个集合<code>NSMutableArray&lt;dispatch_block_t&gt; *_pendingUIBlocks;</code>中，当block2执行时，会从_pendingUIBlocks中逐个取出block3并执行，从而创建出相应的Natvie UI。</p>
+<p>如果调用Natvie之后，JS端需要CallBack被调用，会将CallBackID通过参数传给Native，Native函数执行完成之后，会通过发送json字符串的形式发送给JS调用结果，其中会带上CallBackID以及此次发送消息的ID。</p>
+<p>在查看ReactNative源码之前，本以为JS与OC之前的通信是通过利用JavaScriptCore进行JSBinding这种静态绑定的方式，查看源码之后才发现不是这样。通过上面对源码的分析，可以看到，RN自己实现以一套通信模式，JS与OC之间的调用采用动态查找的方式来实现，JS和Native工作于独立的线程，线程间根据一套基于ID映射协议的方式来进行通信，这样的动态查找的方式通信成本会高一些，为什么没有用JSBinding的方式，个人理解主要有一下两点原因。</p>
+<ol>
+<li>ReactNative 的目标是跨平台，并不是所有平台都采用JavaScriptCore引擎，另外，iOS7之前 JavaScriptCore也没有开发出来。</li>
+<li>ReactNative 的 JS 代码工作在独立线程（非主线程），如果采用静态绑定的方式，无法或者很难保证对UI的操作工作在主线程。</li>
+</ol>
+<h3 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h3><p>(1)Native</p>
+<p><img src="移动端混合编程/p-native.gif" alt=""></p>
+<p>(2)ReactNative</p>
+<p><img src="移动端混合编程/p-rn.gif" alt=""></p>
+<p>性能测试采用 RN v0.38.0，测试环境：iphone6,iOS9.3.2，测试用例，点击‘GO’按钮，push(带动画)一个新页面，新页面包含一个列表，首屏展示6项，向上滑动，总共展示20项，列表使用的数据是本地数据。测试数据如下，其中</p>
+<ul>
+<li>响应时间：从点击button开始构建页面，到页面完全构建完成（viewDidAppear）的时间</li>
+<li>页面构建内存开销：从点击button开始构建页面，到页面构建完成内存的增量</li>
+<li>页面滚动之后内存开销：向下滑动，加载所有的cell之后的内存增量</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">测试数据</th>
+<th style="text-align:center">响应时间(ms)</th>
+<th style="text-align:center">页面构建内存开销(MB)</th>
+<th style="text-align:center">页面滚动之后内存开销(MB)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">React Native</td>
+<td style="text-align:center">831</td>
+<td style="text-align:center">2.56</td>
+<td style="text-align:center">0.50</td>
+</tr>
+<tr>
+<td style="text-align:center">Native</td>
+<td style="text-align:center">555</td>
+<td style="text-align:center">1.29</td>
+<td style="text-align:center">1.36</td>
+</tr>
+</tbody>
+</table>
+<p>从体验上点击响应的顺滑程度明显native要顺滑很多，从上面的gif图中也可以看出。另外，内存开销上RN首屏列表开销明显高于Native。这里需要补充说明：React Native的ListView并不是使用UITableView实现，而是自己采用UIView实现的，这一点可以从视图层级中看出，如下图：</p>
+<p><img src="移动端混合编程/reactnative-scrollview.png" alt=""></p>
+<p>ListView的缓存策略也是自己做的，从<a href="https://github.com/facebook/react-native/issues/499" target="_blank" rel="external">这里</a>得知，React Native的ListView的”Cell”每次都是重新创建，之所以这么做原因是RN认为UITableView<br>的复用存在“脏数据”的问题，而且，在现在的手机设备上，创建新的cell已经足够快。当”Cell”划出屏幕，相应的“Cell”会被从view tree上取下来，但并不会销毁，只有当内存警告或者列表项太多时，会有Cell的销毁工作，下次使用，再重新构建出来。</p>
+<p>其实，ListView在RN中无法用UITableView实现，原因是，如前面所介绍，JS对Native的调用是异步操作，而且消息派发的驱动是Native端做的，试想一下，如果采用UITableView来做，在列表页快速滚动的时候，JS端是不能立刻同步获取下一个Cell来展示的。RN现在的实现方式是用ScrollView来实现，并且会预先创建若干个Cell来用户快速滑动时，下一个Cell的展示。测试发现，对于DataSource有20个数据，首屏只能显示6个cell的情况下，Native端首屏会创建6个cell，总共会创建7个（缓速的滑动）；React Native首屏会创建17个cell（用于快速滑动展示而预创建），总共会创建20个。</p>
+<p>优点：</p>
+<ul>
+<li>JS与native的异步通信，脚本不会卡住主线程</li>
+<li>原生的控件+原生的体验</li>
+<li>热调试能力</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>JS与native的异步通信</li>
+<li>门槛较高</li>
+<li>仅面向React前端开发</li>
+</ul>
+<h2 id="samurai-native"><a href="#samurai-native" class="headerlink" title="samurai-native"></a>samurai-native</h2><p>samurai-native的思路跟ReactNatvie的思路是一样的，也是将native的接口导给web端使用，而界面的渲染采用natvie控件，它与RN区别主要有两点：</p>
+<p>(1)表达语法是HTML+CSS;</p>
+<p>(2)标签名称与Native的View的名称对应，RN中由于对标签进行了抽象，有些标签与Native类名称上并不能对应，React Native书写一个tableview cell如下，可以看出，和原生的写法的命名有差异。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;TouchableHighlight onPress=&#123;() =&gt; this.rowPressed(rowData.guid)&#125;</div><div class="line">                underlayColor=&apos;#dddddd&apos;&gt;</div><div class="line">              &lt;View&gt;</div><div class="line">                &lt;View style=&#123;styles.rowContainer&#125;&gt;</div><div class="line">                  &lt;Image style=&#123;styles.thumb&#125; source=&#123;&#123; uri: rowData.img_url &#125;&#125; /&gt;</div><div class="line">                  &lt;View  style=&#123;styles.textContainer&#125;&gt;</div><div class="line">                    &lt;Text style=&#123;styles.price&#125;&gt;£&#123;price&#125;&lt;/Text&gt;</div><div class="line">                    &lt;Text style=&#123;styles.title&#125;</div><div class="line">                          numberOfLines=&#123;1&#125;&gt;&#123;rowData.title&#125;&lt;/Text&gt;</div><div class="line">                  &lt;/View&gt;</div><div class="line">                &lt;/View&gt;</div><div class="line">                &lt;View style=&#123;styles.separator&#125;/&gt;</div><div class="line">              &lt;/View&gt;</div><div class="line">            &lt;/TouchableHighlight&gt;</div></pre></td></tr></table></figure>
+<p>关于samurai-native的介绍可以参考他在infoq上的<a href="http://www.infoq.com/cn/presentations/semi-hybrid-app-framework" target="_blank" rel="external">演讲</a>。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/ios/">ios</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/混合开发框架/">混合开发框架</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://NEYouFan.github.io/2016/12/02/ios/移动端混合编程/移动端混合编程/" data-title="聊聊移动端那些混合开发框架们 | 网易杭州前端技术部" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/12/09/android/Jenkins-ci容器化在Android项目构建中的应用（公众号版）/" title="Jenkins-ci容器化在Android项目构建中的应用">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Jenkins-ci容器化在Android项目构建中的应用</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/11/25/android/网易 Android 工程模板化实践/"  title="网易Android工程模板化实践">
+ <strong>下一篇：</strong><br/> 
+ <span>网易Android工程模板化实践
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/12/02/ios/移动端混合编程/移动端混合编程/" data-title="聊聊移动端那些混合开发框架们" data-url="http://NEYouFan.github.io/2016/12/02/ios/移动端混合编程/移动端混合编程/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web-amp-Native"><span class="toc-number">2.</span> <span class="toc-text">Web & Native</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#那些混合编程们"><span class="toc-number">3.</span> <span class="toc-text">那些混合编程们</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PhoneGap-Cordova"><span class="toc-number">3.1.</span> <span class="toc-text">PhoneGap/Cordova</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SuperWebView"><span class="toc-number">3.2.</span> <span class="toc-text">SuperWebView</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SuperWebView中JS与Native通信的实现原理"><span class="toc-number">3.2.1.</span> <span class="toc-text">SuperWebView中JS与Native通信的实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于SuperWebView所指的混合渲染的说明"><span class="toc-number">3.2.2.</span> <span class="toc-text">关于SuperWebView所指的混合渲染的说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Runtime-amp-Native-js"><span class="toc-number">3.3.</span> <span class="toc-text">5+Runtime & Native.js</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Native-js通信方式实现分析"><span class="toc-number">3.3.1.</span> <span class="toc-text">Native.js通信方式实现分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Titanium"><span class="toc-number">3.4.</span> <span class="toc-text">Titanium</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#React-Native"><span class="toc-number">3.5.</span> <span class="toc-text">React Native</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#React-Native通信机制源码分析"><span class="toc-number">3.5.1.</span> <span class="toc-text">React Native通信机制源码分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性能测试"><span class="toc-number">3.5.2.</span> <span class="toc-text">性能测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#samurai-native"><span class="toc-number">3.6.</span> <span class="toc-text">samurai-native</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ios/" title="ios">ios<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ci容器/" title="ci容器">ci容器<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/LLVM/" title="LLVM">LLVM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Js引擎/" title="Js引擎">Js引擎<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NeteaseAPM/" title="NeteaseAPM">NeteaseAPM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/混合开发框架/" title="混合开发框架">混合开发框架<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">微信共众号</p>
+  <div class="barcode">
+    <img src="/img/barcode.jpg" alt="">
+  </div>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+		<p class="copyright">
+		cpryright © 2017
+		
+		<a href="/about" target="_blank" title="网易前端技术部">网易前端技术部</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"neyoufan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

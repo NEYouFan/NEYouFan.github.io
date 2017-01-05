@@ -1,0 +1,938 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Android平台上的JavaScript引擎 | 网易杭州前端技术部</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="网易前端技术部">
+    
+
+    
+    <meta name="description" content="JavaScript引擎能够解析和执行JS脚本，帮助移动端进行跨平台开发。本文主要介绍和讨论JS引擎在Android系统上的使用和性能比较，并针对JS绘制本地化问题给出了基于V8的开发实例。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android平台上的JavaScript引擎">
+<meta property="og:url" content="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/index.html">
+<meta property="og:site_name" content="网易杭州前端技术部">
+<meta property="og:description" content="JavaScript引擎能够解析和执行JS脚本，帮助移动端进行跨平台开发。本文主要介绍和讨论JS引擎在Android系统上的使用和性能比较，并针对JS绘制本地化问题给出了基于V8的开发实例。">
+<meta property="og:image" content="http://NEYouFan.github.io/Android平台上的JavaScript引擎/web_shape.png">
+<meta property="og:image" content="http://NEYouFan.github.io/Android平台上的JavaScript引擎/android_shape.png">
+<meta property="og:updated_time" content="2017-01-05T05:45:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android平台上的JavaScript引擎">
+<meta name="twitter:description" content="JavaScript引擎能够解析和执行JS脚本，帮助移动端进行跨平台开发。本文主要介绍和讨论JS引擎在Android系统上的使用和性能比较，并针对JS绘制本地化问题给出了基于V8的开发实例。">
+<meta name="twitter:image" content="http://NEYouFan.github.io/Android平台上的JavaScript引擎/web_shape.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="网易杭州前端技术部" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="网易杭州前端技术部" title="网易杭州前端技术部"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="网易杭州前端技术部">网易杭州前端技术部</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:NEYouFan.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/" title="Android平台上的JavaScript引擎" itemprop="url">Android平台上的JavaScript引擎</a>
+  </h1>
+  <p class="article-author">By
+       
+		<span style="color: rgb(44, 166, 203);" >刘宏涛</span>
+		
+  <p class="article-time">
+    <time datetime="2016-12-22T16:00:00.000Z" itemprop="datePublished"> 发表于 2016-12-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-前言"><span class="toc-text">1. 前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-JS引擎介绍"><span class="toc-text">2. JS引擎介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-JavaScriptCore"><span class="toc-text">1. JavaScriptCore</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-V8"><span class="toc-text">2. V8</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-SpiderMonkey"><span class="toc-text">3. SpiderMonkey</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Rhino"><span class="toc-text">4. Rhino</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Nashorn"><span class="toc-text">5. Nashorn</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-JS引擎性能比较"><span class="toc-text">3. JS引擎性能比较</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-创建JS环境"><span class="toc-text">3.1 创建JS环境</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-1-JSCore"><span class="toc-text">3.1.1 JSCore</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-2-J2V8"><span class="toc-text">3.1.2 J2V8</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-3-Rhino"><span class="toc-text">3.1.3 Rhino</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-实验〇：包的依赖"><span class="toc-text">3.2 实验〇：包的依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-实验一：空循环"><span class="toc-text">3.3 实验一：空循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-实验二：JS调用Java方法"><span class="toc-text">3.4 实验二：JS调用Java方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-实验三：JS递归计算斐波那契"><span class="toc-text">3.5 实验三：JS递归计算斐波那契</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-实验总结"><span class="toc-text">3.6 实验总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-J2V8的Android开发实例"><span class="toc-text">4. J2V8的Android开发实例</span></a></li></ol>
+		
+		</div>
+		
+		<p>JavaScript引擎能够解析和执行JS脚本，帮助移动端进行跨平台开发。本文主要介绍和讨论JS引擎在Android系统上的使用和性能比较，并针对JS绘制本地化问题给出了基于V8的开发实例。<a id="more"></a></p>
+<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h3><p>近期在产品中遇到了这样的一个问题：Web端已经存在一个功能完善的JavaScript库，如果将相关Web嵌入到App中，则WebView将带来一定的性能影响；如果Android端本地开发一个相同的库，则需要消耗大量的资源。考虑到代码复用和跨平台开发，团队调研了JS引擎在Android上的使用，希望解决”不经过WebView，而将JS库拿到Android端运行，并将运行结果交给本地输出”这一需求。</p>
+<p>JS引擎能够解析JS脚本，通常被依附于浏览器中，例如Safari所使用的<strong>JavaScriptCore</strong>、Google Chrome所使用的<strong>V8</strong>和FireFox所使用的<strong>SpiderMonkey</strong>等等。也被用作移动端的跨平台开发，例如<a href="http://developer.telerik.com/featured/nativescript-works/" target="_blank" rel="external">NativeScript</a>在iOS端和Android分别使用了JavaScriptCore和V8，<a href="https://facebook.github.io/react-native/docs/javascript-environment.html" target="_blank" rel="external">ReactNative</a>则都使用了JavaScriptCore。</p>
+<h3 id="2-JS引擎介绍"><a href="#2-JS引擎介绍" class="headerlink" title="2. JS引擎介绍"></a>2. JS引擎介绍</h3><p>在Android系统中能运行的JS引擎有如下5种：</p>
+<h4 id="1-JavaScriptCore"><a href="#1-JavaScriptCore" class="headerlink" title="1. JavaScriptCore"></a>1. <a href="https://trac.webkit.org/wiki/JavaScriptCore" target="_blank" rel="external">JavaScriptCore</a></h4><p>JavaScriptCore是一个在WebKit中提供JS引擎的开源框架，最近更新日期是2016年9月26日。目前该引擎由Apple维护，使用于Safari浏览器，iOS7后也集成到了iPhone平台。</p>
+<p>由于其使用C语言编写，因此在Android开发中并不能直接使用。Github上的开源项目<a href="https://github.com/ericwlange/AndroidJSCore" target="_blank" rel="external">AndroidJSCore</a>能够帮助开发者经过调用Java接口而使用JavaScriptCore。该项目由<strong>ericwlange</strong>维护，最新版本3.0.1发布于2016年7月31日，有API文档和示例代码，但缺少相关技术文章，并仍存在一些性能问题。</p>
+<h4 id="2-V8"><a href="#2-V8" class="headerlink" title="2. V8"></a>2. <a href="https://developers.google.com/v8/" target="_blank" rel="external">V8</a></h4><p>V8是由Google开发并维护的高性能开源JS引擎，采用C++编写，使用于Google Chrome浏览器。最新版本为V8 5.5 beta，更新于2016年10月24日。</p>
+<p>同JavaScriptCore一样，在Android开发中，相关接口需要通过一层包装进行调用。Github上的开源项目<a href="https://github.com/eclipsesource/J2V8" target="_blank" rel="external">J2V8</a>，相关文章可在此处<a href="http://eclipsesource.com/blogs/tag/j2v8/" target="_blank" rel="external">http://eclipsesource.com/blogs/tag/j2v8/</a>查阅，最新版本4.6.0发布于2016年9月22日。</p>
+<p>J2V8是一套针对V8的Java绑定。J2V8的开发为Android平台带来了高效的Javascript的执行环境，其以性能与内存消耗为设计目标。它采用了“基本类型优先”原则，意味着一个执行结果是基本类型，那么所返回的值也就是该基本类型。它还采用了“懒加载”技术，只有当JS执行结果被访问时，才会通过JNI复制到Java中。</p>
+<p>此外J2V8提供了<code>release()</code>方法，开发者在某一对象不再需要时主动调用该方法去释放本地对象句柄，释放规则如下：</p>
+<ul>
+<li>如果是由代码创建的对象，那么必须释放它；如果一个对象是通过返回语句传回来的话，系统会替你释放它；</li>
+<li>如果是由系统创建的对象，则无需担心释放，而如果对象是JS方法的返回值，就必须手动的释放它。</li>
+</ul>
+<h4 id="3-SpiderMonkey"><a href="#3-SpiderMonkey" class="headerlink" title="3. SpiderMonkey"></a>3. <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey" target="_blank" rel="external">SpiderMonkey</a></h4><p>开源JS引擎SpiderMonkey最初由Netscape开发，如今由Mozilla开发并维护，且被广泛用于Mozilla产品（如FireFox）。最新版本为SpiderMonkey 45，更新于2016年4月14日。</p>
+<p>SpiderMonkey提供了一些核心的JavaScript数据类型，如数字，字符串，数组，对象等等，以及一些方法如Array.push。它还使得每个应用程序都容易将其自己的对象和方法暴露给JavaScript代码。应用开发者可以决定应用如何将与所写脚本相关的对象暴露出来。</p>
+<h4 id="4-Rhino"><a href="#4-Rhino" class="headerlink" title="4. Rhino"></a>4. <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino" target="_blank" rel="external">Rhino</a></h4><p>Rhino是由Mozilla开发的开源JS引擎。采用Java编写，因此可以直接调用，在JDK 6、JDK 7中更是捆绑了该引擎。最新版本为Rhino 1.7.7.1，更新于2016年2月1日。</p>
+<p>其提供的特性包括：</p>
+<ul>
+<li>JavaScript 1.7的全部特性</li>
+<li>可以用脚本方式调用Java</li>
+<li>用一个JavaScript Shell来执行JavaScript脚本</li>
+<li>用一个JavaScript编译器来将JavaScript脚本文件转换成Java类文件</li>
+<li>用一个JavaScript调试器来调试Rhino执行的脚本</li>
+</ul>
+<h4 id="5-Nashorn"><a href="#5-Nashorn" class="headerlink" title="5. Nashorn"></a>5. <a href="http://openjdk.java.net/projects/nashorn/" target="_blank" rel="external">Nashorn</a></h4><p>Nashorn由Oracle开发并维护，从JDK 8开始，Rhino被Nashorn代替，成为JDK默认JS引擎。Nashorn同JDK 8一同发布和开源，较Rhino而言性能更好，但不支持Android Dalvik虚拟机。</p>
+<h3 id="3-JS引擎性能比较"><a href="#3-JS引擎性能比较" class="headerlink" title="3. JS引擎性能比较"></a>3. JS引擎性能比较</h3><p>从可用性方面考虑，选取了JavaScriptCore+AndroidJSCore（下文由“JSCore”指代）、V8+J2V8（下文由“J2V8”指代）和Rhino三种方案进行实验。</p>
+<h4 id="3-1-创建JS环境"><a href="#3-1-创建JS环境" class="headerlink" title="3.1 创建JS环境"></a>3.1 创建JS环境</h4><p>部分引擎并不支持直接运行文件，因此将JS代码作为字符串交给JS引擎执行，执行过程中可以调用已注册到JS上下文的Java方法。</p>
+<h5 id="3-1-1-JSCore"><a href="#3-1-1-JSCore" class="headerlink" title="3.1.1 JSCore"></a>3.1.1 JSCore</h5><pre><code>//创建JS上下文
+JSContext context = new JSContext();
+//创建Java方法
+JSFunction func = new JSFunction(context, &quot;func&quot;) {
+    public void func(String msg) {
+        //相关处理
+    }
+};
+//将Java方法注册到JS上下文
+context.property(&quot;func&quot;, func);
+//执行JS
+context.evaluateScript(/*JS代码*/);
+</code></pre><h5 id="3-1-2-J2V8"><a href="#3-1-2-J2V8" class="headerlink" title="3.1.2 J2V8"></a>3.1.2 J2V8</h5><pre><code>//创建JS上下文
+V8 context = V8.createV8Runtime();
+//创建Java方法，并注册到JS上下文
+context.registerJavaMethod(new JavaVoidCallback() {
+    public void invoke(final V8Object receiver, final V8Array parameters) {
+        //相关处理
+    }
+}, &quot;func&quot;);
+//执行JS
+context.executeScript(js);
+//释放资源
+context.release();
+</code></pre><h5 id="3-1-3-Rhino"><a href="#3-1-3-Rhino" class="headerlink" title="3.1.3 Rhino"></a>3.1.3 Rhino</h5><pre><code>class Func {
+    void func(String msg) {
+        //相关处理
+    }
+}
+
+//创建JS上下文
+Context context = Context.enter();
+context.setOptimizationLevel(-1);
+Scriptable scope = context.initStandardObjects();
+try {
+    //执行JS
+    context.evaluateString(scope, js, &quot;RhinoUtil&quot;, 1, null);
+
+    //将Java方法封装到类中，并作为参数传递给JS方法
+    Function function = (Function) scope.get(&quot;rhinofunc&quot;, scope);
+    function.call(context, scope, scope, new Object[]{new Func()});
+} finally {
+    Context.exit();
+}
+</code></pre><h4 id="3-2-实验〇：包的依赖"><a href="#3-2-实验〇：包的依赖" class="headerlink" title="3.2 实验〇：包的依赖"></a>3.2 实验〇：包的依赖</h4><p>比较各方案依赖包引入后，apk的体积增量：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>依赖包占用(MB)</th>
+<th>依赖方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J2V8</td>
+<td>8.2</td>
+<td>compile ‘com.eclipsesource.j2v8:j2v8:4.6.0@aar’</td>
+</tr>
+<tr>
+<td>JSCore</td>
+<td>44.9😳</td>
+<td>compile ‘com.github.ericwlange:AndroidJSCore:3.0.1’</td>
+</tr>
+<tr>
+<td>Rhino</td>
+<td>0.6</td>
+<td>将jar包放入libs文件夹下</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>J2V8引入的是全平台包，实际上它有针对Linux、Windows、MacOS、Android各平台进行打包，而Android平台最新版本为3.0.5（约4MB），并不是最新的4.6.0版本</li>
+<li>具AndroidJsCore作者回答，由于必须针对各CPU架构进行打包，而有7种CPU架构，每种架构包约6MB，因此整个依赖包体积相比之下显得庞大，但也可以通过ABIs Splits进行拆分。</li>
+<li>Rhino的jar包仅1.2M，因此apk增量并不显著。</li>
+</ul>
+<h4 id="3-3-实验一：空循环"><a href="#3-3-实验一：空循环" class="headerlink" title="3.3 实验一：空循环"></a>3.3 实验一：空循环</h4><p>JSCore和J2V8执行JS代码如下：</p>
+<pre><code>var i = 0;
+for (;i &lt; /*次数*/; i++) {
+}
+</code></pre><p>Rhino执行JS代码如下：</p>
+<pre><code>function rhinofunc(f) {
+    var i = 0;
+    for (;i &lt; /*次数*/; i++) {
+    }
+}
+</code></pre><p>循环次数分别设置为100万、1000万、1亿次，在Java代码中执行JS前输出开始时间，在JS执行后输出结束时间，相减得出执行时间记录如下：</p>
+<table>
+<thead>
+<tr>
+<th>执行时间(ms)</th>
+<th>100万次</th>
+<th>1000万次</th>
+<th>1亿次</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J2V8</td>
+<td>17.6</td>
+<td>122.8</td>
+<td>1116.6</td>
+</tr>
+<tr>
+<td>JSCore</td>
+<td>22</td>
+<td>173.2</td>
+<td>1551</td>
+</tr>
+<tr>
+<td>Rhino</td>
+<td>2078.4</td>
+<td>22358.4</td>
+<td>198600😳</td>
+</tr>
+</tbody>
+</table>
+<p>由实验结果可以看到：J2V8和JSCore相比，J2V8执行时间更短，但两者时间都在同一数量级上。而Rhino执行时间远大于前两者，根本原因在于Java程序运行较C/C++慢。</p>
+<h4 id="3-4-实验二：JS调用Java方法"><a href="#3-4-实验二：JS调用Java方法" class="headerlink" title="3.4 实验二：JS调用Java方法"></a>3.4 实验二：JS调用Java方法</h4><p>JSCore和J2V8执行JS代码如下：</p>
+<pre><code>var i = 0;
+for (;i &lt; /*次数*/; i++) {
+    func();
+}
+</code></pre><p>Rhino执行JS代码如下：</p>
+<pre><code>function rhinofunc(f) {
+    var i = 0;
+    for (;i &lt; /*次数*/; i++) {
+        f.func();
+    }
+}
+</code></pre><p>调用次数分别设置为1万、10万、100万次，记录执行时间如下：</p>
+<table>
+<thead>
+<tr>
+<th>执行时间(ms)</th>
+<th>1万次</th>
+<th>10万次</th>
+<th>100万次</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J2V8</td>
+<td>490.2</td>
+<td>4855.8</td>
+<td>47527</td>
+</tr>
+<tr>
+<td>JSCore</td>
+<td>1287.6</td>
+<td>13448.2</td>
+<td>121586.8😳</td>
+</tr>
+<tr>
+<td>Rhino</td>
+<td>408.2</td>
+<td>4007.2</td>
+<td>36752.4</td>
+</tr>
+</tbody>
+</table>
+<p>启动App时记录占用内存，JS执行过程中记录最高占用内存，相减得出占用内存。</p>
+<table>
+<thead>
+<tr>
+<th>占用内存(KB)</th>
+<th>1万次</th>
+<th>10万次</th>
+<th>100万次</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J2V8</td>
+<td>7264</td>
+<td>14004</td>
+<td>17328</td>
+</tr>
+<tr>
+<td>JSCore</td>
+<td>15368</td>
+<td>15140</td>
+<td>16720</td>
+</tr>
+<tr>
+<td>Rhino</td>
+<td>2776</td>
+<td>9084</td>
+<td>9116</td>
+</tr>
+</tbody>
+</table>
+<p>同样也是由于开发语言的差异，在JS调用Java上Rhino性能更优。执行时间方面，J2V8接近Rhino，而JSCore则远落后于前两种方案，这可能与其Java绑定层有很大关系。对于J2V8和JSCore则需要先经过JNI包装层才能调用到Java方法，而大量的JNI调用是非常耗时、耗内存的。</p>
+<h4 id="3-5-实验三：JS递归计算斐波那契"><a href="#3-5-实验三：JS递归计算斐波那契" class="headerlink" title="3.5 实验三：JS递归计算斐波那契"></a>3.5 实验三：JS递归计算斐波那契</h4><p>JS代码斐波那契函数如下：</p>
+<pre><code>function fibo(n) {
+    if (n == 1 || n == 2) {
+        return 1;
+    }
+    else {
+        return fibo(n - 1) + fibo(n - 2);
+    }
+}
+</code></pre><table>
+<thead>
+<tr>
+<th>执行时间(ms)</th>
+<th>fibo(20)</th>
+<th>fibo(30)</th>
+<th>fibo(40)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J2V8</td>
+<td>4</td>
+<td>67.6</td>
+<td>8158.6</td>
+</tr>
+<tr>
+<td>JSCore</td>
+<td>6.6</td>
+<td>76.2</td>
+<td>7884.4</td>
+</tr>
+<tr>
+<td>Rhino</td>
+<td>248.4</td>
+<td>26898</td>
+<td>???😳</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>占用内存(KB)</th>
+<th>fibo(20)</th>
+<th>fibo(30)</th>
+<th>fibo(40)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J2V8</td>
+<td>6148</td>
+<td>6120</td>
+<td>17328</td>
+</tr>
+<tr>
+<td>JSCore</td>
+<td>6204</td>
+<td>6200</td>
+<td>16720</td>
+</tr>
+<tr>
+<td>Rhino</td>
+<td>5284</td>
+<td>9052</td>
+<td>9116</td>
+</tr>
+</tbody>
+</table>
+<p>Rhino运行JS时频繁GC，虽然使其所占内存较少，但执行速度非常缓慢，相比之下J2V8和JSCore方案效率更高。</p>
+<h4 id="3-6-实验总结"><a href="#3-6-实验总结" class="headerlink" title="3.6 实验总结"></a>3.6 实验总结</h4><p>单从JS引擎来说：Rhino执行不需要通过JNI且占用更少的内存，但执行效率很低；V8和JavaScriptCore等C语言开发的引擎远胜于Rhino等Java开发的引擎，但需要一层Java包装层，并存在JNI调用性能问题。就J2V8和AndroidJSCore两个包装层而言：J2V8的可用性、可靠性、健壮性更优；AndroidJSCore还存在着不少的性能问题，在上述实验中出现较少，但实际开发中还存在很多坑。</p>
+<p>以上三种实现方案中更推荐J2V8方案。对于内存问题，J2V8的内存释放机制较为完善，在实际开发中可以通过主动release来释放内存；对于JNI调用性能问题，J2V8团队也在尝试通过批处理回调来进行优化，在将来的版本中会得到改善。</p>
+<h3 id="4-J2V8的Android开发实例"><a href="#4-J2V8的Android开发实例" class="headerlink" title="4. J2V8的Android开发实例"></a>4. J2V8的Android开发实例</h3><p>有以下一段JS代码，其中Canvas绘制了一些简单的图形：</p>
+<pre><code>var c=document.getElementById(&quot;myCanvas&quot;);
+var ctx=c.getContext(&quot;2d&quot;);
+
+ctx.beginPath();
+ctx.arc(100, 100, 25, 0, 360, false);
+ctx.moveTo(20,20);
+ctx.lineTo(20,100);
+ctx.lineTo(70,100);
+ctx.moveTo(100, 100);
+ctx.setLineWidth(15);
+ctx.setStrokeColor(&quot;#188ffc&quot;);
+ctx.stroke();
+
+ctx.setFillColor(&quot;#188ffc&quot;);
+ctx.fillText(&quot;Hello World!&quot;,150,50);
+</code></pre><p>其在Web端绘制效果如下：</p>
+<p><img src="Android平台上的JavaScript引擎/web_shape.png" alt="logo"></p>
+<p>实例中，借助J2V8在Android端运行同样一段脚本，使图形绘制到Android Canvas中。下面给出简单实现，主要思路为自定义View，JS中将要绘制的图形先存储到在List中，待整个JS脚本执行完毕，再将所有图形在<code>View.onDraw(Canvas canvas)</code>中通过Android Canvas绘制。</p>
+<p>1) 将ctx封装为V8Object，并在其中对应实现JS Canvas的方法</p>
+<pre><code>public class JustContext {
+    protected V8 mRuntime;
+    protected V8Object mCtx;
+    private ArrayList&lt;AbstractDraw&gt; mShapeList = new ArrayList&lt;&gt;();
+
+    public JustContext(V8 v8Runtime) {
+        mRuntime = v8Runtime;
+        initCtx();
+    }
+
+    public V8Object getCtx() {
+        return mCtx;
+    }
+
+    public ArrayList&lt;AbstractDraw&gt; getShapeList() {
+        return mShapeList;
+    }
+
+    protected void initCtx() {
+        mCtx = new V8Object(mRuntime);
+
+        //将Java方法注册到该V8Object中
+        mCtx.registerJavaMethod(this, &quot;beginPath&quot;, &quot;beginPath&quot;, null);
+        mCtx.registerJavaMethod(this, &quot;closePath&quot;, &quot;closePath&quot;, null);
+
+        ...
+    }
+
+    public void clean() {
+        mCtx.release();
+    }
+
+    public void beginPath() {...}
+
+    public void closePath() {...}
+
+    ...
+}
+</code></pre><p>2) 自定义View，在View的<code>onDraw(Canvas canvas)</code>方法中将传入的图形List绘制出来</p>
+<pre><code>public class JustView extends View implements Serializable {
+    ...
+
+    private ArrayList&lt;AbstractDraw&gt; mShapeList = new ArrayList&lt;&gt;();
+
+    public void setShapeList(ArrayList&lt;AbstractDraw&gt; shapeList) {
+        this.mShapeList = shapeList;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        for (AbstractDraw abstractDraw : mShapeList) {
+            abstractDraw.draw(canvas);
+        }
+    }
+
+    ...
+}
+</code></pre><p>3) 将ctx注册到JS上下文，并执行JS代码，执行完毕后将绘制图形List传递给View</p>
+<pre><code>JustView mJustView;
+...
+
+public void runJs(String js) {
+    V8 context = V8.createV8Runtime();
+    JustContext ctx = new JustContext(context);
+    context.add(&quot;ctx&quot;, ctx.getCtx());
+    context.executeScript(js);
+
+    //释放内存
+    ctx.clean();
+    context.release();
+
+    mJustView.setShapeList(ctx.getShapeList());
+}
+
+...
+</code></pre><p>4) 因为已将ctx注册到JS上下文，因此可以直接使用<code>ctx</code>变量，并运行如下JS代码</p>
+<pre><code>    ctx.beginPath();
+    ctx.arc(100, 100, 25, 0, 360, false);
+    ctx.moveTo(20,20);
+    ctx.lineTo(20,100);
+    ctx.lineTo(70,100);
+    ctx.moveTo(100, 100);
+    ctx.setLineWidth(15);
+    ctx.setStrokeColor(&quot;#188ffc&quot;);
+    ctx.stroke();        
+    ctx.setFillColor(&quot;#188ffc&quot;);
+    ctx.fillText(&quot;Hello World!&quot;,150,50);
+
+绘制结果如下：
+</code></pre><p><img src="Android平台上的JavaScript引擎/android_shape.png" alt="android_shape"></p>
+<p>以上仅是该实例的简单实现，详细的代码和设计可以根据需求的不同而进行细化，此处<a href="https://github.com/LiuHongtao/JustDraw" target="_blank" rel="external">https://github.com/LiuHongtao/JustDraw</a>提供一份具体实现的参考。由于每执行一个Canvas方法都将调用一次Java方法，该方案当绘制量过大的时候会出现JNI调用的性能问题，在性能方面也存在优化的空间，后续工作中将进行调用的优化，减少JNI调用次数。</p>
+<p>J2V8的团队开发的一套移动端跨平台框架<a href="https://tabrisjs.com/" target="_blank" rel="external">Tabris.js</a>，支持Android和iOS平台，又于近期宣布支持Windows 10。该框架旨在编写一份JavaScript代码，而能生成Android和iOS两个平台的本地应用。它在Android上使用了J2V8作为JS引擎方案，在iOS上使用系统自带的JSCore。</p>
+<p>不同于ReactNative、Weex之类的框架，它的亮点在于不通过WebView，但却能使用Web APIs，如Canvas 2d context（据了解，Weex也正在测试Canvas组件并即将开源）、XMLHttpRequest、localStorage。该框架通过批处理回调减少了JNI的调用，在一定程度上解决了JNI性能问题，例如其Canvas相关代码<code>tabris.CanvasContext</code>中，先将每次调用的Canvas方法和参数存储起来，并在适当的时候通过一次JNI调用来传递要执行的Canvas方法，相关代码如下：</p>
+<pre><code>defineMethod(&quot;fillText&quot;, 3, function(text, x, y /* , maxWidth */) {
+    this._strings.push(text);
+    this._booleans.push(false, false, false);
+    this._doubles.push(x, y);
+});
+
+function defineMethod(name, reqArgCount, fn) {
+    tabris.CanvasContext.prototype[name] = function() {
+        if (reqArgCount &amp;&amp; arguments.length &lt; reqArgCount) {
+            throw new Error(&quot;Not enough arguments to CanvasContext.&quot; + name);
+        }
+        this._pushOperation(name);
+        if (fn) {
+            fn.apply(this, arguments);
+        }
+    };
+}
+
+_pushOperation: function(operation) {
+    if (this._opCodes.indexOf(operation) &lt; 0) {
+        this._newOpCodes.push(operation);
+        this._opCodes.push(operation);
+    }
+    this._operations.push(this._opCodes.indexOf(operation));
+}
+
+_flush: function() {
+    if (this._operations.length &gt; 0) {
+        this._gc._nativeCall(&quot;draw&quot;, {packedOperations: [
+          this._newOpCodes,
+          this._operations,
+          this._doubles,
+          this._booleans,
+          this._strings,
+          this._ints]});
+        this._newOpCodes = [];
+      this._operations = [];
+      this._doubles = [];
+      this._booleans = [];
+      this._strings = [];
+      this._ints = [];
+    }
+}
+</code></pre><p>也就是说Tabris.js更完整的的实现了本节中的方案，这也使得“将Web端JS库直接拿到移动端执行，并由本地输出结果”变得更加容易。</p>
+<p>相关文章</p>
+<ul>
+<li><p><a href="https://www.skyscanner.net/blogs/developing-mobile-cross-platform-library-part-3-javascript" target="_blank" rel="external">Developing a mobile cross-platform library - Part 3. JavaScript</a></p>
+</li>
+<li><p><a href="http://openaphid.github.io/blog/2013/01/17/part-i-how-to-choose-a-javascript-engine-for-ios-and-android-apps/" target="_blank" rel="external">Part I: How to Choose a JavaScript Engine for iOS and Android Development</a></p>
+</li>
+<li><p><a href="http://eclipsesource.com/blogs/getting-started-with-j2v8/" target="_blank" rel="external">Getting Started With J2V8</a></p>
+</li>
+<li><p><a href="https://www.eclipsecon.org/na2015/sites/default/files/slides/J2V8_0.pdf" target="_blank" rel="external">J2V8-A Highly Efficient JS Runtime For Java</a></p>
+</li>
+<li><p><a href="http://eclipsesource.com/blogs/2016/08/10/smile-deploying-a-mobile-app-has-never-been-so-easy/" target="_blank" rel="external">Smile: Deploying a mobile app has never been so easy</a></p>
+</li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Js引擎/">Js引擎</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/" data-title="Android平台上的JavaScript引擎 | 网易杭州前端技术部" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/12/29/ios/关于LLVM这些东西你必须要知道 /" title="关于LLVM，这些东西你必须要知道">
+  <strong>上一篇：</strong><br/>
+  <span>
+  关于LLVM，这些东西你必须要知道</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/12/16/ios/NeteaseAPM iOS SDK技术实现/NeteaseAPM iOS SDK技术实现/"  title="NeteaseAPM iOS SDK技术实现">
+ <strong>下一篇：</strong><br/> 
+ <span>NeteaseAPM iOS SDK技术实现
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/" data-title="Android平台上的JavaScript引擎" data-url="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-前言"><span class="toc-number">1.</span> <span class="toc-text">1. 前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-JS引擎介绍"><span class="toc-number">2.</span> <span class="toc-text">2. JS引擎介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-JavaScriptCore"><span class="toc-number">2.1.</span> <span class="toc-text">1. JavaScriptCore</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-V8"><span class="toc-number">2.2.</span> <span class="toc-text">2. V8</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-SpiderMonkey"><span class="toc-number">2.3.</span> <span class="toc-text">3. SpiderMonkey</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Rhino"><span class="toc-number">2.4.</span> <span class="toc-text">4. Rhino</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Nashorn"><span class="toc-number">2.5.</span> <span class="toc-text">5. Nashorn</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-JS引擎性能比较"><span class="toc-number">3.</span> <span class="toc-text">3. JS引擎性能比较</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-创建JS环境"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 创建JS环境</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-1-JSCore"><span class="toc-number">3.1.1.</span> <span class="toc-text">3.1.1 JSCore</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-2-J2V8"><span class="toc-number">3.1.2.</span> <span class="toc-text">3.1.2 J2V8</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-3-Rhino"><span class="toc-number">3.1.3.</span> <span class="toc-text">3.1.3 Rhino</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-实验〇：包的依赖"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 实验〇：包的依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-实验一：空循环"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 实验一：空循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-实验二：JS调用Java方法"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 实验二：JS调用Java方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-实验三：JS递归计算斐波那契"><span class="toc-number">3.5.</span> <span class="toc-text">3.5 实验三：JS递归计算斐波那契</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-实验总结"><span class="toc-number">3.6.</span> <span class="toc-text">3.6 实验总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-J2V8的Android开发实例"><span class="toc-number">4.</span> <span class="toc-text">4. J2V8的Android开发实例</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ios/" title="ios">ios<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ci容器/" title="ci容器">ci容器<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/LLVM/" title="LLVM">LLVM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Js引擎/" title="Js引擎">Js引擎<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NeteaseAPM/" title="NeteaseAPM">NeteaseAPM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/混合开发框架/" title="混合开发框架">混合开发框架<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">微信共众号</p>
+  <div class="barcode">
+    <img src="/img/barcode.jpg" alt="">
+  </div>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+		<p class="copyright">
+		cpryright © 2017
+		
+		<a href="/about" target="_blank" title="网易前端技术部">网易前端技术部</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"neyoufan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

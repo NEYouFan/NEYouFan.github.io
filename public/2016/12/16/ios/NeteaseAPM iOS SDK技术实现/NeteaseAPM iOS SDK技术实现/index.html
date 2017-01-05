@@ -1,0 +1,568 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>NeteaseAPM iOS SDK技术实现 | 网易杭州前端技术部</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="网易前端技术部">
+    
+
+    
+    <meta name="description" content="一个企业的关键业务应用的性能强大，可以提高竞争力，并取得商业成功。NetsaseAPM 是网易性能数据分析平台，一个用户数据分析平台，支持非侵入式获取应用性能数据，实时展示多个维度分析结果。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NeteaseAPM iOS SDK技术实现">
+<meta property="og:url" content="http://NEYouFan.github.io/2016/12/16/ios/NeteaseAPM iOS SDK技术实现/NeteaseAPM iOS SDK技术实现/index.html">
+<meta property="og:site_name" content="网易杭州前端技术部">
+<meta property="og:description" content="一个企业的关键业务应用的性能强大，可以提高竞争力，并取得商业成功。NetsaseAPM 是网易性能数据分析平台，一个用户数据分析平台，支持非侵入式获取应用性能数据，实时展示多个维度分析结果。">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMRequestSearch.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMRequest.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMUITrace.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMUseSample.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMStruct.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMStructDesign.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMAOPTheory.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/Objective-CAOP.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMDlsymClose.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMFindSymbolIMPLocation.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMURLConnectionHook.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/ProxyDelegateInvocation.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMCFHookConnectionFlow.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMCFHookCreate.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMCopyProperty.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMErrorPropertyForKey.png">
+<meta property="og:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMRightPropertyForKey.png">
+<meta property="og:updated_time" content="2016-12-30T11:31:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NeteaseAPM iOS SDK技术实现">
+<meta name="twitter:description" content="一个企业的关键业务应用的性能强大，可以提高竞争力，并取得商业成功。NetsaseAPM 是网易性能数据分析平台，一个用户数据分析平台，支持非侵入式获取应用性能数据，实时展示多个维度分析结果。">
+<meta name="twitter:image" content="http://NEYouFan.github.io/NeteaseAPM iOS SDK技术实现/NAPMRequestSearch.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="网易杭州前端技术部" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="网易杭州前端技术部" title="网易杭州前端技术部"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="网易杭州前端技术部">网易杭州前端技术部</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:NEYouFan.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/12/16/ios/NeteaseAPM iOS SDK技术实现/NeteaseAPM iOS SDK技术实现/" title="NeteaseAPM iOS SDK技术实现" itemprop="url">NeteaseAPM iOS SDK技术实现</a>
+  </h1>
+  <p class="article-author">By
+       
+		<span style="color: rgb(44, 166, 203);" >朱志强</span>
+		
+  <p class="article-time">
+    <time datetime="2016-12-15T16:00:00.000Z" itemprop="datePublished"> 发表于 2016-12-16</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-NeteaseAPM-是什么"><span class="toc-text">一. NeteaseAPM 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-NeteaseAPM-iOS-SDK-的目标"><span class="toc-text">二. NeteaseAPM iOS SDK 的目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-现状"><span class="toc-text">三 现状</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-整体设计"><span class="toc-text">四 整体设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五-一些关键实现"><span class="toc-text">五. 一些关键实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-开始使用面向切面编程"><span class="toc-text">1.    开始使用面向切面编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-桥接模式，从面向过程到面向对象"><span class="toc-text">3.    桥接模式，从面向过程到面向对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-使用-NSURLProtocol-监控-UIWebView"><span class="toc-text">4. 使用 NSURLProtocol 监控 UIWebView</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六-后续工作"><span class="toc-text">六. 后续工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#七-引用链接"><span class="toc-text">七. 引用链接</span></a></li></ol>
+		
+		</div>
+		
+		<p>一个企业的关键业务应用的性能强大，可以提高竞争力，并取得商业成功。NetsaseAPM 是网易性能数据分析平台，一个用户数据分析平台，支持非侵入式获取应用性能数据，实时展示多个维度分析结果。<a id="more"></a>  </p>
+<h2 id="一-NeteaseAPM-是什么"><a href="#一-NeteaseAPM-是什么" class="headerlink" title="一. NeteaseAPM 是什么"></a>一. <span id="一">NeteaseAPM 是什么</span></h2><p>Application Performance Management(APM)，应用程序性能管理，主要指对企业的关键业务应用进行监测、优化，提高企业应用的可靠性和质量，保证用户得到良好的服务。一个企业的关键业务应用的性能强大，可以提高竞争力，并取得商业成功。NetsaseAPM 是网易性能数据分析平台，一个用户数据分析平台，支持非侵入式获取应用性能数据，实时展示多个维度分析结果。<!-- more -->  </p>
+<p>NetsaseAPM 移动端支持的功能：</p>
+<ol>
+<li>应用性能分析<br>对当前应用请求的各项性能指标进行分析，如响应时间，吞吐量，下载速率等，帮助用户全面了解应用性能表现。</li>
+<li>错误分析<br>分析应用每个域名的网络错误率及响应码错误率，快速定位应用问题。</li>
+<li>多维分析<br>可以组合域名，地理位置，运营商，网络环境等参数，精确定位应用的性能问题。</li>
+</ol>
+<p>下面是从移动端收集的数据在 NeteaseAPM Web 平台的展示</p>
+<div align="center"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMRequestSearch.png" width="800" height="160"><br></div><br><div align="center"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMRequest.png" width="800" height="300"><br></div><br><div align="center"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMUITrace.png" width="800" height="360"><br></div>
+
+
+<h2 id="二-NeteaseAPM-iOS-SDK-的目标"><a href="#二-NeteaseAPM-iOS-SDK-的目标" class="headerlink" title="二. NeteaseAPM iOS SDK 的目标"></a>二. <span id="二">NeteaseAPM iOS SDK 的目标</span></h2><ol>
+<li>最小侵入：<br>只需要启动一次，就可以持续收集网络和交互数据，不需要手动收集数据。<br>启动方式：<div align="center"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMUseSample.png" width="800" height="116"><br></div><br>启动之后，NeteaseAPM 会插入收集数据的代码到系统调用中，却不会影响用户的使用，在用户的网络消息中的位置如图：<br><div align="center"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMStruct.png" width="300" height="287"><br></div></li>
+<li>最大化自由配置：  <ul>
+<li>用户可以看到收集到的数据，选择是否上传到 NeteaseAPM 服务器；  </li>
+<li>用户可以自己上传数据到 NeteaseAPM 服务器；  </li>
+</ul>
+</li>
+<li>功能特点：<br>支持对底层网络库 CFNetwork 的监控；</li>
+</ol>
+<h2 id="三-现状"><a href="#三-现状" class="headerlink" title="三 现状"></a>三 <span id="三">现状</span></h2><p>目前实现的功能： </p>
+<ul>
+<li>网络请求的响应时间，下载速率，状态码，错误码，网络状态等数据的收集；</li>
+<li>页面加载时间的收集，检查出慢交互页面；</li>
+</ul>
+<p>已经接入的应用： 网易新闻，网易云音乐，考拉。</p>
+<h2 id="四-整体设计"><a href="#四-整体设计" class="headerlink" title="四 整体设计"></a>四 <span id="四">整体设计</span></h2><div align="center"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMStructDesign.png" width="400" height="272"><br></div>
+
+<p>NeteaseAPM iOS SDK分为四个部分：  </p>
+<ul>
+<li><p>Hooker：<br>Hooker 负责在用户无感知的情况下替换程序原实现，转发消息回调，完成对系统消息的 hook 和数据的采集。<br>Hooker 能否监控到更多更准确的数据，是衡量一个 APM 产品是否优秀的最重要的标准。<br>一个 APM 产品监控的数据面越广，收集的数据越细，就越能准确地取得用户的性能数据，帮助产品优化性能。</p>
+</li>
+<li><p>DataBuilder：<br>收集监控数据；</p>
+</li>
+<li>Persistence：<br>缓存监控数据；</li>
+<li>Poster：<br>上传监控数据到NeteaseAPM；  </li>
+</ul>
+<p>线程模型： 监控数据的保存和发送都在后台队列中执行，不会影响用户线程。  </p>
+<p>数据上传规则：  </p>
+<ul>
+<li>可设置允许数据上传的网络环境；</li>
+<li>数据支持批量发送，可自定义发送批量和等待间隔；</li>
+</ul>
+<p>===================================================================</p>
+<h2 id="五-一些关键实现"><a href="#五-一些关键实现" class="headerlink" title="五. 一些关键实现"></a>五. <span id="五">一些关键实现</span></h2><p>APM SDK 使用方式和一般的UI库有很大不同，APM 只需要启动一次即可生效，不需要修改代码。例如：启动APM之后，用户使用 NSURLConnection 执行的网络请求就会在开始连接，得到响应，获取数据等时机被 APM 监控到，而不需要使用者手动添加任何监控代码。要实现这样的目标，Hooker 需要使用一些比较特殊的的方式来实现，下面介绍Hooker使用到的解决方案：</p>
+<h3 id="1-开始使用面向切面编程"><a href="#1-开始使用面向切面编程" class="headerlink" title="1.    开始使用面向切面编程"></a>1.    <span id="五1">开始使用面向切面编程</span></h3><p>APM需要将监控代码插入到系统实现中，完成系统消息的拦截和数据收集。比如我们需要知道 NSURLConnection 在什么时候开始发送请求，就会监控 <code>-[NSURLConnection start]</code> 方法，这就需要在这个方法中插入APM的逻辑，要做到这一点，需要理解面向切面编程的思想。</p>
+<p>Aspect Oriented Programming(AOP)，面向切面编程，面对的是处理过程中的某个步骤或阶段。在运行时，动态地将代码切入到类的指定方法、指定位置上的编程思想就是面向切面编程。借助 AOP，甚至不用修改一行代码，就可以修改现有程序的行为，非常高效。</p>
+<p>AOP 基本原理：将一个函数替换为一个新函数，新的函数中插入代码片段，然后执行原函数。</p>
+<div align="center"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMAOPTheory.png" width="400" height="277"><br></div><br>下面分别介绍 Objective-C 和 C 这两种语言支持 AOP 的方式。<br><br>Objective-C 对 AOP 的支持非常容易：<br>一个 Objective-C 的方法调用 <code>[self setFilled:YES]</code> 在运行时和下方的代码等效<br><div align="left"><br><img src="NeteaseAPM iOS SDK技术实现/Objective-CAOP.png" width="580" height="97"><br></div><br>系统会通过 <strong>SEL</strong> 查找对应的函数指针 <strong>IMP</strong>，所以通过修改SEL对应的IMP，可以方便地hook原方法。<br>Objective-C 借助这个原理实现的 AOP 有一个形象的名字：<br><a href="http://blog.csdn.net/yiyaaixuexi/article/details/9374411" target="_blank" rel="external">Method Swizzling</a> 醉了的方法 ~~！<br><br>C 的 AOP 使用了 <code>dyld</code>(dynamic link editor)，在系统加载可执行文件时修改了符号的地址，简单了解一下：<br>C函数指针的地址可以通过<code>dlsym</code>函数取得，如：<br><div align="left"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMDlsymClose.png" width="600" height="50"><br></div><br>我们需要查找到这个函数指针的地址，查找过程见下图：<br><div align="center"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMFindSymbolIMPLocation.png" width="600" height="460"><br></div><br><a href="https://github.com/facebook/fishhook" target="_blank" rel="external">fishhook</a>可以方便地查找替换C函数的指针。<br><br>### 2.    <span id="五2">使用代理模式拦截回调消息</span><br>通过 AOP ，可以监控指定类的指定方法了，我们可以取得方法调用的时机了，但是程序中除了方法调用还存在方法回调，这是一种不适合用AOP监控的情况。例如，NSURLConnection 的 <code>start</code> 方法可以通过 Method Swizzling 监控，<br>但是回调消息的接收者 <code>delegate</code> 的类名不固定，可能是任意一个页面实例，不适合需要指定 Class 的 Method Swizzling。<br><br>解决方法是构造一个回调消息的转发者，作为代理，在转发者中收集数据，再转发给用户。下图演示对 NSURLConnection 的监控，MAM IMP 是 <code>start</code> 方法被替换后的实现，ProxyDelegate 就是消息转发者，负责将回调消息转发给 <code>delegate</code> 对象：<br><div align="center"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMURLConnectionHook.png" width="600" height="347"><br></div>  
+
+<p><code>NSProxy</code> 是 <code>Objective-C</code> 中除了 <code>NSObject</code> 之外的另一个基类，由于它实现的方法非常少，可以方便地借助消息转发机制转发未实现的消息。</p>
+<p>ProxyDelegate 的转发使用系统的消息转发机制：</p>
+<div align="left"><br><img src="NeteaseAPM iOS SDK技术实现/ProxyDelegateInvocation.png" width="647" height="180"><br></div>  
+
+<p>CFNetwork 的监控也使用了代理模式，获取 stream 读取的数据长度：</p>
+<div align="center"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMCFHookConnectionFlow.png" width="600" height="429"><br></div>
+
+
+<h3 id="3-桥接模式，从面向过程到面向对象"><a href="#3-桥接模式，从面向过程到面向对象" class="headerlink" title="3.    桥接模式，从面向过程到面向对象"></a>3.    <span id="五3">桥接模式，从面向过程到面向对象</span></h3><p>CFNetwork 是一个 C 语言实现的网络系统框架，虽然使用起来比较麻烦，但是可配置的功能更多。但由于面向过程编程难以扩展的缺点，没有办法选择性地监控和 http 有关的 <code>CFReadStreamRef</code> ，而不影响到来自文件或内存的 <code>CFReadStreamRef</code>。</p>
+<p>所幸 Objective-C 支持从面向过程到面向对象的桥接：<a href="http://blog.csdn.net/nlforever/article/details/12908115" target="_blank" rel="external"><strong>Toll-Free Bridging</strong></a>，允许某些 CoreFoundation类与对应的Objective-C 类互相转换，使我们可以在面向过程编程和面向对象编程两种编程思想中自由切换。</p>
+<p>NeteaseAPM 的策略：在系统构造 http stream 时，将一个 <code>NSInputStream</code> 的子类 ProxyStream 桥接为 <code>CFReadStreamRef</code>，返回给用户，达到单独监控 http stream 的效果。</p>
+<div align="center"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMCFHookCreate.png" width="360" height="178"><br></div>
+
+<p>使用 Toll-Free Bridging 时需要重点关注两种不同的内存管理机制的问题。例如 <code>-[NSInputStream propertyForKey]</code> 方法和 <code>CFReadStreamCopyProperty</code> 函数是桥接的，但是它们内存管理方法不同，前者是自动管理，后者是手动管理，后者在调用之后需要使用者在随后手动调用 <code>CFRelease</code>。</p>
+<p>以 ProxyStream 举例，ProxyStream 是 <code>CFReadStreamRef</code> 的代理，负责管理 http stream 的数据收集。如果用户对一个 http stream 执行如下调用：</p>
+<div align="left"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMCopyProperty.png" width="563" height="54"><br></div><br>ProxyStream的<code>propertyForKey:</code>方法会因为桥接而被调用，ProxyStream需要从original stream中获取正确的property，如果ProxyStream中这么写<br><br><div align="left"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMErrorPropertyForKey.png" width="300" height="72"><br></div>
+
+<p>那么这个方法返回的结果会被<code>CFReadStreamCopyProperty</code>随后的<code>CFRelease</code>函数错误地释放，引起内存异常。</p>
+<p>正确的书写方式应该是</p>
+<div align="left"><br><img src="NeteaseAPM iOS SDK技术实现/NAPMRightPropertyForKey.png" width="600" height="75"><br></div>
+
+<p>ProxyStream 只需要”转发” <code>CFReadStreamCopyProperty</code> 函数给 original stream 就可以了。</p>
+<h3 id="4-使用-NSURLProtocol-监控-UIWebView"><a href="#4-使用-NSURLProtocol-监控-UIWebView" class="headerlink" title="4. 使用 NSURLProtocol 监控 UIWebView"></a>4. <span id="五4">使用 NSURLProtocol 监控 UIWebView</span></h3><p><code>NSURLProtocol</code> 是监控 <code>UIWebView</code> 请求最普遍的解决方案。这里用户会产生多个 <code>NSURLProtocol</code> 会不会冲突的疑问？其实是不会的，因为即使用户注册了 <code>NSURLProtocol</code> ，拦截了 NeteaseAPM 的 <code>NSURLProtocol</code> 的请求，但用户的 <code>NSURLProtocol</code> 在发送请求时使用的的 <code>NSURLConnection</code> 或者 <code>NSURLSession</code> 还是会被 NeteaseAPM 监控到的。</p>
+<p>===================================================================</p>
+<h2 id="六-后续工作"><a href="#六-后续工作" class="headerlink" title="六. 后续工作"></a>六. <span id="六">后续工作</span></h2><ul>
+<li>支持更多性能数据的收集，如内存，CPU，帧率等；</li>
+<li>支持自动诊断性能问题，如卡顿，Out of Memory 等；</li>
+</ul>
+<h2 id="七-引用链接"><a href="#七-引用链接" class="headerlink" title="七. 引用链接"></a>七. 引用链接</h2><p><a href="http://blog.csdn.net/yiyaaixuexi/article/details/9374411" target="_blank" rel="external">Objective-C的hook方案: Method Swizzling</a><br><a href="http://www.tanhao.me/code/160702.html/" target="_blank" rel="external">使用NSProxy和NSObject设计代理类的差异</a><br><a href="https://github.com/facebook/fishhook" target="_blank" rel="external">fishhook</a><br><a href="http://blog.csdn.net/nlforever/article/details/12908115" target="_blank" rel="external">Toll-free bridging介绍</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/ios/">ios</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/NeteaseAPM/">NeteaseAPM</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://NEYouFan.github.io/2016/12/16/ios/NeteaseAPM iOS SDK技术实现/NeteaseAPM iOS SDK技术实现/" data-title="NeteaseAPM iOS SDK技术实现 | 网易杭州前端技术部" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/" title="Android平台上的JavaScript引擎">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Android平台上的JavaScript引擎</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/12/09/android/Jenkins-ci容器化在Android项目构建中的应用（公众号版）/"  title="Jenkins-ci容器化在Android项目构建中的应用">
+ <strong>下一篇：</strong><br/> 
+ <span>Jenkins-ci容器化在Android项目构建中的应用
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/12/16/ios/NeteaseAPM iOS SDK技术实现/NeteaseAPM iOS SDK技术实现/" data-title="NeteaseAPM iOS SDK技术实现" data-url="http://NEYouFan.github.io/2016/12/16/ios/NeteaseAPM iOS SDK技术实现/NeteaseAPM iOS SDK技术实现/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-NeteaseAPM-是什么"><span class="toc-number">1.</span> <span class="toc-text">一. NeteaseAPM 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-NeteaseAPM-iOS-SDK-的目标"><span class="toc-number">2.</span> <span class="toc-text">二. NeteaseAPM iOS SDK 的目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-现状"><span class="toc-number">3.</span> <span class="toc-text">三 现状</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-整体设计"><span class="toc-number">4.</span> <span class="toc-text">四 整体设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五-一些关键实现"><span class="toc-number">5.</span> <span class="toc-text">五. 一些关键实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-开始使用面向切面编程"><span class="toc-number">5.1.</span> <span class="toc-text">1.    开始使用面向切面编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-桥接模式，从面向过程到面向对象"><span class="toc-number">5.2.</span> <span class="toc-text">3.    桥接模式，从面向过程到面向对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-使用-NSURLProtocol-监控-UIWebView"><span class="toc-number">5.3.</span> <span class="toc-text">4. 使用 NSURLProtocol 监控 UIWebView</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六-后续工作"><span class="toc-number">6.</span> <span class="toc-text">六. 后续工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#七-引用链接"><span class="toc-number">7.</span> <span class="toc-text">七. 引用链接</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ios/" title="ios">ios<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ci容器/" title="ci容器">ci容器<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/LLVM/" title="LLVM">LLVM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Js引擎/" title="Js引擎">Js引擎<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NeteaseAPM/" title="NeteaseAPM">NeteaseAPM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/混合开发框架/" title="混合开发框架">混合开发框架<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">微信共众号</p>
+  <div class="barcode">
+    <img src="/img/barcode.jpg" alt="">
+  </div>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+		<p class="copyright">
+		cpryright © 2017
+		
+		<a href="/about" target="_blank" title="网易前端技术部">网易前端技术部</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"neyoufan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
