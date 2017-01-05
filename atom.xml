@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>网易前端技术部</title>
+  <title>网易杭州前端技术部</title>
   
   <link href="/atom.xml" rel="self"/>
   
@@ -9,7 +9,7 @@
   <id>http://NEYouFan.github.io/</id>
   
   <author>
-    <name>网易前端技术部</name>
+    <name>网易杭州前端技术部</name>
     
   </author>
   
