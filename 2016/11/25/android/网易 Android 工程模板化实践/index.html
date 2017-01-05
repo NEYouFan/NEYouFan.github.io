@@ -24,7 +24,7 @@
 <meta property="og:image" content="http://i1.piimg.com/574381/134add19853d8905.png">
 <meta property="og:image" content="http://p1.bpimg.com/574381/af37bc8f7a18c791s.png">
 <meta property="og:image" content="http://p1.bpimg.com/574381/cbe2f56ec299f5ee.gif">
-<meta property="og:updated_time" content="2017-01-05T06:13:43.000Z">
+<meta property="og:updated_time" content="2017-01-05T09:36:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网易Android工程模板化实践">
 <meta name="twitter:description" content="&amp;#x6211;&amp;#x4EEC;&amp;#x7F51;&amp;#x6613;&amp;#x524D;&amp;#x7AEF;&amp;#x6280;&amp;#x672F;&amp;#x90E8; - &amp;#x79FB;&amp;#x52A8;&amp;#x6280;&amp;#x672F;&amp;#x7EC4;&amp;#x4F5C;&amp;#x4E3A;&amp;#x516C;&amp;#x53F8;&amp;#x7684;&amp;#x79FB;&amp;#x52A8;&amp;#x7AEF;&amp;#x57FA;&amp;#x7840;&amp;#x62">
@@ -96,13 +96,6 @@
   </p>
 </header>
 	<div class="article-content">
-		
-		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
-		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Android-模板简介"><span class="toc-text">1. Android 模板简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Activity-模板的文件结构"><span class="toc-text">1.1 Activity 模板的文件结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-代码生成流程"><span class="toc-text">1.2 代码生成流程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-HTTemplate-Activity-模板实现"><span class="toc-text">2. HTTemplate Activity 模板实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-template-xml"><span class="toc-text">2.1 template.xml</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-globals-xml-ftl"><span class="toc-text">2.2 globals.xml.ftl</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-recipe-xml-ftl"><span class="toc-text">2.3 recipe.xml.ftl</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-root-文件夹"><span class="toc-text">2.4 root 文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-模板图标"><span class="toc-text">2.5 模板图标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-使用-Activity-模板生成初始工程"><span class="toc-text">2.6 使用 Activity 模板生成初始工程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-遇到的问题及解决方案"><span class="toc-text">3. 遇到的问题及解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-通配符冲突"><span class="toc-text">3.1 ${} 通配符冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Java-代码实例化问题"><span class="toc-text">3.2 Java 代码实例化问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-copy-和-instantiate-问题"><span class="toc-text">3.3 copy 和 instantiate 问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-gradle-properties-文件执行-copy-或者-instantiate-操作无效"><span class="toc-text">(1) gradle.properties 文件执行 copy 或者 instantiate 操作无效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-copy-和-instantiate-对文件夹操作的区别"><span class="toc-text">(2) copy 和 instantiate 对文件夹操作的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-merge-问题"><span class="toc-text">3.4 merge 问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-proguard-rules-pro、gradle-properties-文件执行-merge-操作失败"><span class="toc-text">(1) proguard-rules.pro、gradle.properties 文件执行 merge 操作失败</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-settings-gradle-文件合并，指定-module-路径错误"><span class="toc-text">(2) settings.gradle 文件合并，指定 module 路径错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-build-gradle-文件合并，apply-语句合并错误"><span class="toc-text">(3) build.gradle 文件合并，apply 语句合并错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-build-gradle-文件合并，dependencies-内的-apt-语句消失"><span class="toc-text">(4) build.gradle 文件合并，dependencies{ } 内的 apt 语句消失</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-小结和后续工作"><span class="toc-text">4. 小结和后续工作</span></a></li></ol>
-		
-		</div>
 		
 		<p>&#x6211;&#x4EEC;&#x7F51;&#x6613;&#x524D;&#x7AEF;&#x6280;&#x672F;&#x90E8; - &#x79FB;&#x52A8;&#x6280;&#x672F;&#x7EC4;&#x4F5C;&#x4E3A;&#x516C;&#x53F8;&#x7684;&#x79FB;&#x52A8;&#x7AEF;&#x57FA;&#x7840;&#x6280;&#x672F;&#x90E8;&#x95E8;&#xFF0C;&#x4E3B;&#x8981;&#x4E3A;&#x5176;&#x4ED6;&#x90E8;&#x95E8;&#x63D0;&#x4F9B;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#x3001;&#x6280;&#x672F;&#x652F;&#x6301;&#x548C;&#x4EA7;&#x54C1;&#x5B75;&#x5316;&#x3002;&#x5728;&#x51E0;&#x5E74;&#x7684;&#x79EF;&#x7D2F;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x62E5;&#x6709;&#x4E00;&#x4E9B;&#x81EA;&#x5DF1;&#x7684;&#x6846;&#x67B6;&#x548C; SDK&#xFF0C;&#x5982;&#x8F7B;&#x5E94;&#x7528;&#x6846;&#x67B6;&#x3001;&#x70ED;&#x66F4;&#x65B0; SDK&#x3001;&#x7F51;&#x7EDC;&#x8BF7;&#x6C42;&#x5E93;&#x3001;&#x672C;&#x5730;&#x5B58;&#x50A8;&#x5E93;&#x3001;&#x9875;&#x9762;&#x7BA1;&#x7406;&#x7B49;&#x3002;&#x670D;&#x52A1;&#x8FC7;&#x7F51;&#x6613;&#x65B0;&#x95FB;&#x3001;&#x4E91;&#x97F3;&#x4E50;&#x3001;&#x8003;&#x62C9;&#x3001;&#x6613;&#x4FE1;&#x7B49;&#x4EBF;&#x7EA7;&#x4EA7;&#x54C1;&#xFF0C;&#x5148;&#x540E;&#x5B75;&#x5316;&#x8FC7;&#x9752;&#x679C;&#x6444;&#x50CF;&#x5934;&#x3001;&#x4E8C;&#x6B21;&#x5143;Gacha&#x3001;&#x4E25;&#x9009;&#x7B49;&#x91CD;&#x8981;&#x4EA7;&#x54C1;&#x3002;<a id="more"></a></p>
 <p>&#x5728;&#x591A;&#x5E74;&#x7684;Android&#x5F00;&#x53D1;&#x4E2D;&#xFF0C;&#x5BF9;&#x4E8E; Android &#x7AEF;&#x4EA7;&#x54C1;&#x5F00;&#x53D1;&#xFF0C;&#x6211;&#x4EEC;&#x6709;&#x5982;&#x4E0B;&#x51E0;&#x70B9;&#x4F53;&#x4F1A;&#xFF1A;</p>
@@ -334,13 +327,6 @@
 </div>  
       <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
-  <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
- 
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Android-模板简介"><span class="toc-number">1.</span> <span class="toc-text">1. Android 模板简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Activity-模板的文件结构"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 Activity 模板的文件结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-代码生成流程"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 代码生成流程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-HTTemplate-Activity-模板实现"><span class="toc-number">2.</span> <span class="toc-text">2. HTTemplate Activity 模板实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-template-xml"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 template.xml</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-globals-xml-ftl"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 globals.xml.ftl</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-recipe-xml-ftl"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 recipe.xml.ftl</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-root-文件夹"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 root 文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-模板图标"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 模板图标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-使用-Activity-模板生成初始工程"><span class="toc-number">2.6.</span> <span class="toc-text">2.6 使用 Activity 模板生成初始工程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-遇到的问题及解决方案"><span class="toc-number">3.</span> <span class="toc-text">3. 遇到的问题及解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-通配符冲突"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 ${} 通配符冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Java-代码实例化问题"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 Java 代码实例化问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-copy-和-instantiate-问题"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 copy 和 instantiate 问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-gradle-properties-文件执行-copy-或者-instantiate-操作无效"><span class="toc-number">3.3.1.</span> <span class="toc-text">(1) gradle.properties 文件执行 copy 或者 instantiate 操作无效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-copy-和-instantiate-对文件夹操作的区别"><span class="toc-number">3.3.2.</span> <span class="toc-text">(2) copy 和 instantiate 对文件夹操作的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-merge-问题"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 merge 问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-proguard-rules-pro、gradle-properties-文件执行-merge-操作失败"><span class="toc-number">3.4.1.</span> <span class="toc-text">(1) proguard-rules.pro、gradle.properties 文件执行 merge 操作失败</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-settings-gradle-文件合并，指定-module-路径错误"><span class="toc-number">3.4.2.</span> <span class="toc-text">(2) settings.gradle 文件合并，指定 module 路径错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-build-gradle-文件合并，apply-语句合并错误"><span class="toc-number">3.4.3.</span> <span class="toc-text">(3) build.gradle 文件合并，apply 语句合并错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-build-gradle-文件合并，dependencies-内的-apt-语句消失"><span class="toc-number">3.4.4.</span> <span class="toc-text">(4) build.gradle 文件合并，dependencies{ } 内的 apt 语句消失</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-小结和后续工作"><span class="toc-number">4.</span> <span class="toc-text">4. 小结和后续工作</span></a></li></ol>
- 
-  </div>
-
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
@@ -371,15 +357,15 @@
 		<ul class="clearfix">
 		
 			
+				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ci容器/" title="ci容器">ci容器<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
 			
 		
 			
@@ -410,7 +396,7 @@
 </div>
 
   <div class="weiboshow">
-  <p class="asidetitle">微信共众号</p>
+  <p class="asidetitle">微信公众号</p>
   <div class="barcode">
     <img src="/img/qrcode_neyoufan.jpg" alt="">
   </div>
@@ -421,8 +407,17 @@
 </div>
     </div>
     <footer><div id="footer" >
+               <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?78a4a5539516d8238b30820c93b43b1f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 		<p class="copyright">
-		cpryright © 2017
+		copyright © 2017
 		
 		<a href="/about" target="_blank" title="网易杭州前端技术部">网易杭州前端技术部</a>
 		
@@ -473,8 +468,6 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
-      
-      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
