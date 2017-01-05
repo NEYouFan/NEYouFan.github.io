@@ -19,7 +19,7 @@
 <meta property="og:description" content="JavaScript&amp;#x5F15;&amp;#x64CE;&amp;#x80FD;&amp;#x591F;&amp;#x89E3;&amp;#x6790;&amp;#x548C;&amp;#x6267;&amp;#x884C;JS&amp;#x811A;&amp;#x672C;&amp;#xFF0C;&amp;#x5E2E;&amp;#x52A9;&amp;#x79FB;&amp;#x52A8;&amp;#x7AEF;&amp;#x8FDB;&amp;#x884C;&amp;#x8DE8;&amp;#x5E73;&amp;#x53F0;&amp;#x5F00;&amp;#x5">
 <meta property="og:image" content="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/web_shape.png">
 <meta property="og:image" content="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/android_shape.png">
-<meta property="og:updated_time" content="2016-12-30T11:28:00.000Z">
+<meta property="og:updated_time" content="2017-01-05T05:45:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android平台上的JavaScript引擎">
 <meta name="twitter:description" content="JavaScript&amp;#x5F15;&amp;#x64CE;&amp;#x80FD;&amp;#x591F;&amp;#x89E3;&amp;#x6790;&amp;#x548C;&amp;#x6267;&amp;#x884C;JS&amp;#x811A;&amp;#x672C;&amp;#xFF0C;&amp;#x5E2E;&amp;#x52A9;&amp;#x79FB;&amp;#x52A8;&amp;#x7AEF;&amp;#x8FDB;&amp;#x884C;&amp;#x8DE8;&amp;#x5E73;&amp;#x53F0;&amp;#x5F00;&amp;#x5">
@@ -87,7 +87,7 @@
   </h1>
   <p class="article-author">By
        
-		<a href="/about" title="网易前端技术部" target="_blank" itemprop="author">网易前端技术部</a>
+		<span style="color: rgb(44, 166, 203);" >刘宏涛</span>
 		
   <p class="article-time">
     <time datetime="2016-12-22T16:00:00.000Z" itemprop="datePublished"> 发表于 2016-12-23</time>
@@ -99,14 +99,14 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、前言"><span class="toc-number">1.</span> <span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、JS引擎介绍"><span class="toc-number">2.</span> <span class="toc-text">二、JS引擎介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-JavaScriptCore"><span class="toc-number">2.1.</span> <span class="toc-text">1. JavaScriptCore</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-V8"><span class="toc-number">2.2.</span> <span class="toc-text">2. V8</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-SpiderMonkey"><span class="toc-number">2.3.</span> <span class="toc-text">3. SpiderMonkey</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Rhino"><span class="toc-number">2.4.</span> <span class="toc-text">4. Rhino</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Nashorn"><span class="toc-number">2.5.</span> <span class="toc-text">5. Nashorn</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、JS引擎性能比较"><span class="toc-number">3.</span> <span class="toc-text">三、JS引擎性能比较</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建JS环境"><span class="toc-number">3.1.</span> <span class="toc-text">创建JS环境</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#JSCore"><span class="toc-number">3.1.1.</span> <span class="toc-text">JSCore</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#J2V8"><span class="toc-number">3.1.2.</span> <span class="toc-text">J2V8</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Rhino"><span class="toc-number">3.1.3.</span> <span class="toc-text">Rhino</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验〇：包的依赖"><span class="toc-number">3.2.</span> <span class="toc-text">实验〇：包的依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验一：空循环"><span class="toc-number">3.3.</span> <span class="toc-text">实验一：空循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验二：JS调用Java方法"><span class="toc-number">3.4.</span> <span class="toc-text">实验二：JS调用Java方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验三：JS递归计算斐波那契"><span class="toc-number">3.5.</span> <span class="toc-text">实验三：JS递归计算斐波那契</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验总结"><span class="toc-number">3.6.</span> <span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、J2V8的Android开发实例"><span class="toc-number">4.</span> <span class="toc-text">四、J2V8的Android开发实例</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-前言"><span class="toc-text">1. 前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-JS引擎介绍"><span class="toc-text">2. JS引擎介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-JavaScriptCore"><span class="toc-text">1. JavaScriptCore</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-V8"><span class="toc-text">2. V8</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-SpiderMonkey"><span class="toc-text">3. SpiderMonkey</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Rhino"><span class="toc-text">4. Rhino</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Nashorn"><span class="toc-text">5. Nashorn</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-JS引擎性能比较"><span class="toc-text">3. JS引擎性能比较</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-创建JS环境"><span class="toc-text">3.1 创建JS环境</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-1-JSCore"><span class="toc-text">3.1.1 JSCore</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-2-J2V8"><span class="toc-text">3.1.2 J2V8</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-3-Rhino"><span class="toc-text">3.1.3 Rhino</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-实验〇：包的依赖"><span class="toc-text">3.2 实验〇：包的依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-实验一：空循环"><span class="toc-text">3.3 实验一：空循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-实验二：JS调用Java方法"><span class="toc-text">3.4 实验二：JS调用Java方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-实验三：JS递归计算斐波那契"><span class="toc-text">3.5 实验三：JS递归计算斐波那契</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-实验总结"><span class="toc-text">3.6 实验总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-J2V8的Android开发实例"><span class="toc-text">4. J2V8的Android开发实例</span></a></li></ol>
 		
 		</div>
 		
 		<p>JavaScript&#x5F15;&#x64CE;&#x80FD;&#x591F;&#x89E3;&#x6790;&#x548C;&#x6267;&#x884C;JS&#x811A;&#x672C;&#xFF0C;&#x5E2E;&#x52A9;&#x79FB;&#x52A8;&#x7AEF;&#x8FDB;&#x884C;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#x3002;&#x672C;&#x6587;&#x4E3B;&#x8981;&#x4ECB;&#x7ECD;&#x548C;&#x8BA8;&#x8BBA;JS&#x5F15;&#x64CE;&#x5728;Android&#x7CFB;&#x7EDF;&#x4E0A;&#x7684;&#x4F7F;&#x7528;&#x548C;&#x6027;&#x80FD;&#x6BD4;&#x8F83;&#xFF0C;&#x5E76;&#x9488;&#x5BF9;JS&#x7ED8;&#x5236;&#x672C;&#x5730;&#x5316;&#x95EE;&#x9898;&#x7ED9;&#x51FA;&#x4E86;&#x57FA;&#x4E8E;V8&#x7684;&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;&#x3002;<a id="more"></a></p>
-<h3 id="&#x4E00;&#x3001;&#x524D;&#x8A00;"><a href="#&#x4E00;&#x3001;&#x524D;&#x8A00;" class="headerlink" title="&#x4E00;&#x3001;&#x524D;&#x8A00;"></a>&#x4E00;&#x3001;&#x524D;&#x8A00;</h3><p>&#x8FD1;&#x671F;&#x5728;&#x4EA7;&#x54C1;&#x4E2D;&#x9047;&#x5230;&#x4E86;&#x8FD9;&#x6837;&#x7684;&#x4E00;&#x4E2A;&#x95EE;&#x9898;&#xFF1A;Web&#x7AEF;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x4E00;&#x4E2A;&#x529F;&#x80FD;&#x5B8C;&#x5584;&#x7684;JavaScript&#x5E93;&#xFF0C;&#x5982;&#x679C;&#x5C06;&#x76F8;&#x5173;Web&#x5D4C;&#x5165;&#x5230;App&#x4E2D;&#xFF0C;&#x5219;WebView&#x5C06;&#x5E26;&#x6765;&#x4E00;&#x5B9A;&#x7684;&#x6027;&#x80FD;&#x5F71;&#x54CD;&#xFF1B;&#x5982;&#x679C;Android&#x7AEF;&#x672C;&#x5730;&#x5F00;&#x53D1;&#x4E00;&#x4E2A;&#x76F8;&#x540C;&#x7684;&#x5E93;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x6D88;&#x8017;&#x5927;&#x91CF;&#x7684;&#x8D44;&#x6E90;&#x3002;&#x8003;&#x8651;&#x5230;&#x4EE3;&#x7801;&#x590D;&#x7528;&#x548C;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#xFF0C;&#x56E2;&#x961F;&#x8C03;&#x7814;&#x4E86;JS&#x5F15;&#x64CE;&#x5728;Android&#x4E0A;&#x7684;&#x4F7F;&#x7528;&#xFF0C;&#x5E0C;&#x671B;&#x89E3;&#x51B3;&#x201D;&#x4E0D;&#x7ECF;&#x8FC7;WebView&#xFF0C;&#x800C;&#x5C06;JS&#x5E93;&#x62FF;&#x5230;Android&#x7AEF;&#x8FD0;&#x884C;&#xFF0C;&#x5E76;&#x5C06;&#x8FD0;&#x884C;&#x7ED3;&#x679C;&#x4EA4;&#x7ED9;&#x672C;&#x5730;&#x8F93;&#x51FA;&#x201D;&#x8FD9;&#x4E00;&#x9700;&#x6C42;&#x3002;</p>
+<h3 id="1-&#x524D;&#x8A00;"><a href="#1-&#x524D;&#x8A00;" class="headerlink" title="1. &#x524D;&#x8A00;"></a>1. &#x524D;&#x8A00;</h3><p>&#x8FD1;&#x671F;&#x5728;&#x4EA7;&#x54C1;&#x4E2D;&#x9047;&#x5230;&#x4E86;&#x8FD9;&#x6837;&#x7684;&#x4E00;&#x4E2A;&#x95EE;&#x9898;&#xFF1A;Web&#x7AEF;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x4E00;&#x4E2A;&#x529F;&#x80FD;&#x5B8C;&#x5584;&#x7684;JavaScript&#x5E93;&#xFF0C;&#x5982;&#x679C;&#x5C06;&#x76F8;&#x5173;Web&#x5D4C;&#x5165;&#x5230;App&#x4E2D;&#xFF0C;&#x5219;WebView&#x5C06;&#x5E26;&#x6765;&#x4E00;&#x5B9A;&#x7684;&#x6027;&#x80FD;&#x5F71;&#x54CD;&#xFF1B;&#x5982;&#x679C;Android&#x7AEF;&#x672C;&#x5730;&#x5F00;&#x53D1;&#x4E00;&#x4E2A;&#x76F8;&#x540C;&#x7684;&#x5E93;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x6D88;&#x8017;&#x5927;&#x91CF;&#x7684;&#x8D44;&#x6E90;&#x3002;&#x8003;&#x8651;&#x5230;&#x4EE3;&#x7801;&#x590D;&#x7528;&#x548C;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#xFF0C;&#x56E2;&#x961F;&#x8C03;&#x7814;&#x4E86;JS&#x5F15;&#x64CE;&#x5728;Android&#x4E0A;&#x7684;&#x4F7F;&#x7528;&#xFF0C;&#x5E0C;&#x671B;&#x89E3;&#x51B3;&#x201D;&#x4E0D;&#x7ECF;&#x8FC7;WebView&#xFF0C;&#x800C;&#x5C06;JS&#x5E93;&#x62FF;&#x5230;Android&#x7AEF;&#x8FD0;&#x884C;&#xFF0C;&#x5E76;&#x5C06;&#x8FD0;&#x884C;&#x7ED3;&#x679C;&#x4EA4;&#x7ED9;&#x672C;&#x5730;&#x8F93;&#x51FA;&#x201D;&#x8FD9;&#x4E00;&#x9700;&#x6C42;&#x3002;</p>
 <p>JS&#x5F15;&#x64CE;&#x80FD;&#x591F;&#x89E3;&#x6790;JS&#x811A;&#x672C;&#xFF0C;&#x901A;&#x5E38;&#x88AB;&#x4F9D;&#x9644;&#x4E8E;&#x6D4F;&#x89C8;&#x5668;&#x4E2D;&#xFF0C;&#x4F8B;&#x5982;Safari&#x6240;&#x4F7F;&#x7528;&#x7684;<strong>JavaScriptCore</strong>&#x3001;Google Chrome&#x6240;&#x4F7F;&#x7528;&#x7684;<strong>V8</strong>&#x548C;FireFox&#x6240;&#x4F7F;&#x7528;&#x7684;<strong>SpiderMonkey</strong>&#x7B49;&#x7B49;&#x3002;&#x4E5F;&#x88AB;&#x7528;&#x4F5C;&#x79FB;&#x52A8;&#x7AEF;&#x7684;&#x8DE8;&#x5E73;&#x53F0;&#x5F00;&#x53D1;&#xFF0C;&#x4F8B;&#x5982;<a href="http://developer.telerik.com/featured/nativescript-works/" target="_blank" rel="external">NativeScript</a>&#x5728;iOS&#x7AEF;&#x548C;Android&#x5206;&#x522B;&#x4F7F;&#x7528;&#x4E86;JavaScriptCore&#x548C;V8&#xFF0C;<a href="https://facebook.github.io/react-native/docs/javascript-environment.html" target="_blank" rel="external">ReactNative</a>&#x5219;&#x90FD;&#x4F7F;&#x7528;&#x4E86;JavaScriptCore&#x3002;</p>
-<h3 id="&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;"><a href="#&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;" class="headerlink" title="&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;"></a>&#x4E8C;&#x3001;JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;</h3><p>&#x5728;Android&#x7CFB;&#x7EDF;&#x4E2D;&#x80FD;&#x8FD0;&#x884C;&#x7684;JS&#x5F15;&#x64CE;&#x6709;&#x5982;&#x4E0B;5&#x79CD;&#xFF1A;</p>
+<h3 id="2-JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;"><a href="#2-JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;" class="headerlink" title="2. JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;"></a>2. JS&#x5F15;&#x64CE;&#x4ECB;&#x7ECD;</h3><p>&#x5728;Android&#x7CFB;&#x7EDF;&#x4E2D;&#x80FD;&#x8FD0;&#x884C;&#x7684;JS&#x5F15;&#x64CE;&#x6709;&#x5982;&#x4E0B;5&#x79CD;&#xFF1A;</p>
 <h4 id="1-JavaScriptCore"><a href="#1-JavaScriptCore" class="headerlink" title="1. JavaScriptCore"></a>1. <a href="https://trac.webkit.org/wiki/JavaScriptCore" target="_blank" rel="external">JavaScriptCore</a></h4><p>JavaScriptCore&#x662F;&#x4E00;&#x4E2A;&#x5728;WebKit&#x4E2D;&#x63D0;&#x4F9B;JS&#x5F15;&#x64CE;&#x7684;&#x5F00;&#x6E90;&#x6846;&#x67B6;&#xFF0C;&#x6700;&#x8FD1;&#x66F4;&#x65B0;&#x65E5;&#x671F;&#x662F;2016&#x5E74;9&#x6708;26&#x65E5;&#x3002;&#x76EE;&#x524D;&#x8BE5;&#x5F15;&#x64CE;&#x7531;Apple&#x7EF4;&#x62A4;&#xFF0C;&#x4F7F;&#x7528;&#x4E8E;Safari&#x6D4F;&#x89C8;&#x5668;&#xFF0C;iOS7&#x540E;&#x4E5F;&#x96C6;&#x6210;&#x5230;&#x4E86;iPhone&#x5E73;&#x53F0;&#x3002;</p>
 <p>&#x7531;&#x4E8E;&#x5176;&#x4F7F;&#x7528;C&#x8BED;&#x8A00;&#x7F16;&#x5199;&#xFF0C;&#x56E0;&#x6B64;&#x5728;Android&#x5F00;&#x53D1;&#x4E2D;&#x5E76;&#x4E0D;&#x80FD;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#x3002;Github&#x4E0A;&#x7684;&#x5F00;&#x6E90;&#x9879;&#x76EE;<a href="https://github.com/ericwlange/AndroidJSCore" target="_blank" rel="external">AndroidJSCore</a>&#x80FD;&#x591F;&#x5E2E;&#x52A9;&#x5F00;&#x53D1;&#x8005;&#x7ECF;&#x8FC7;&#x8C03;&#x7528;Java&#x63A5;&#x53E3;&#x800C;&#x4F7F;&#x7528;JavaScriptCore&#x3002;&#x8BE5;&#x9879;&#x76EE;&#x7531;<strong>ericwlange</strong>&#x7EF4;&#x62A4;&#xFF0C;&#x6700;&#x65B0;&#x7248;&#x672C;3.0.1&#x53D1;&#x5E03;&#x4E8E;2016&#x5E74;7&#x6708;31&#x65E5;&#xFF0C;&#x6709;API&#x6587;&#x6863;&#x548C;&#x793A;&#x4F8B;&#x4EE3;&#x7801;&#xFF0C;&#x4F46;&#x7F3A;&#x5C11;&#x76F8;&#x5173;&#x6280;&#x672F;&#x6587;&#x7AE0;&#xFF0C;&#x5E76;&#x4ECD;&#x5B58;&#x5728;&#x4E00;&#x4E9B;&#x6027;&#x80FD;&#x95EE;&#x9898;&#x3002;</p>
 <h4 id="2-V8"><a href="#2-V8" class="headerlink" title="2. V8"></a>2. <a href="https://developers.google.com/v8/" target="_blank" rel="external">V8</a></h4><p>V8&#x662F;&#x7531;Google&#x5F00;&#x53D1;&#x5E76;&#x7EF4;&#x62A4;&#x7684;&#x9AD8;&#x6027;&#x80FD;&#x5F00;&#x6E90;JS&#x5F15;&#x64CE;&#xFF0C;&#x91C7;&#x7528;C++&#x7F16;&#x5199;&#xFF0C;&#x4F7F;&#x7528;&#x4E8E;Google Chrome&#x6D4F;&#x89C8;&#x5668;&#x3002;&#x6700;&#x65B0;&#x7248;&#x672C;&#x4E3A;V8 5.5 beta&#xFF0C;&#x66F4;&#x65B0;&#x4E8E;2016&#x5E74;10&#x6708;24&#x65E5;&#x3002;</p>
@@ -129,9 +129,9 @@
 <li>&#x7528;&#x4E00;&#x4E2A;JavaScript&#x8C03;&#x8BD5;&#x5668;&#x6765;&#x8C03;&#x8BD5;Rhino&#x6267;&#x884C;&#x7684;&#x811A;&#x672C;</li>
 </ul>
 <h4 id="5-Nashorn"><a href="#5-Nashorn" class="headerlink" title="5. Nashorn"></a>5. <a href="http://openjdk.java.net/projects/nashorn/" target="_blank" rel="external">Nashorn</a></h4><p>Nashorn&#x7531;Oracle&#x5F00;&#x53D1;&#x5E76;&#x7EF4;&#x62A4;&#xFF0C;&#x4ECE;JDK 8&#x5F00;&#x59CB;&#xFF0C;Rhino&#x88AB;Nashorn&#x4EE3;&#x66FF;&#xFF0C;&#x6210;&#x4E3A;JDK&#x9ED8;&#x8BA4;JS&#x5F15;&#x64CE;&#x3002;Nashorn&#x540C;JDK 8&#x4E00;&#x540C;&#x53D1;&#x5E03;&#x548C;&#x5F00;&#x6E90;&#xFF0C;&#x8F83;Rhino&#x800C;&#x8A00;&#x6027;&#x80FD;&#x66F4;&#x597D;&#xFF0C;&#x4F46;&#x4E0D;&#x652F;&#x6301;Android Dalvik&#x865A;&#x62DF;&#x673A;&#x3002;</p>
-<h3 id="&#x4E09;&#x3001;JS&#x5F15;&#x64CE;&#x6027;&#x80FD;&#x6BD4;&#x8F83;"><a href="#&#x4E09;&#x3001;JS&#x5F15;&#x64CE;&#x6027;&#x80FD;&#x6BD4;&#x8F83;" class="headerlink" title="&#x4E09;&#x3001;JS&#x5F15;&#x64CE;&#x6027;&#x80FD;&#x6BD4;&#x8F83;"></a>&#x4E09;&#x3001;JS&#x5F15;&#x64CE;&#x6027;&#x80FD;&#x6BD4;&#x8F83;</h3><p>&#x4ECE;&#x53EF;&#x7528;&#x6027;&#x65B9;&#x9762;&#x8003;&#x8651;&#xFF0C;&#x9009;&#x53D6;&#x4E86;JavaScriptCore+AndroidJSCore&#xFF08;&#x4E0B;&#x6587;&#x7531;&#x201C;JSCore&#x201D;&#x6307;&#x4EE3;&#xFF09;&#x3001;V8+J2V8&#xFF08;&#x4E0B;&#x6587;&#x7531;&#x201C;J2V8&#x201D;&#x6307;&#x4EE3;&#xFF09;&#x548C;Rhino&#x4E09;&#x79CD;&#x65B9;&#x6848;&#x8FDB;&#x884C;&#x5B9E;&#x9A8C;&#x3002;</p>
-<h4 id="&#x521B;&#x5EFA;JS&#x73AF;&#x5883;"><a href="#&#x521B;&#x5EFA;JS&#x73AF;&#x5883;" class="headerlink" title="&#x521B;&#x5EFA;JS&#x73AF;&#x5883;"></a>&#x521B;&#x5EFA;JS&#x73AF;&#x5883;</h4><p>&#x90E8;&#x5206;&#x5F15;&#x64CE;&#x5E76;&#x4E0D;&#x652F;&#x6301;&#x76F4;&#x63A5;&#x8FD0;&#x884C;&#x6587;&#x4EF6;&#xFF0C;&#x56E0;&#x6B64;&#x5C06;JS&#x4EE3;&#x7801;&#x4F5C;&#x4E3A;&#x5B57;&#x7B26;&#x4E32;&#x4EA4;&#x7ED9;JS&#x5F15;&#x64CE;&#x6267;&#x884C;&#xFF0C;&#x6267;&#x884C;&#x8FC7;&#x7A0B;&#x4E2D;&#x53EF;&#x4EE5;&#x8C03;&#x7528;&#x5DF2;&#x6CE8;&#x518C;&#x5230;JS&#x4E0A;&#x4E0B;&#x6587;&#x7684;Java&#x65B9;&#x6CD5;&#x3002;</p>
-<h5 id="JSCore"><a href="#JSCore" class="headerlink" title="JSCore"></a>JSCore</h5><pre><code>//&#x521B;&#x5EFA;JS&#x4E0A;&#x4E0B;&#x6587;
+<h3 id="3-JS&#x5F15;&#x64CE;&#x6027;&#x80FD;&#x6BD4;&#x8F83;"><a href="#3-JS&#x5F15;&#x64CE;&#x6027;&#x80FD;&#x6BD4;&#x8F83;" class="headerlink" title="3. JS&#x5F15;&#x64CE;&#x6027;&#x80FD;&#x6BD4;&#x8F83;"></a>3. JS&#x5F15;&#x64CE;&#x6027;&#x80FD;&#x6BD4;&#x8F83;</h3><p>&#x4ECE;&#x53EF;&#x7528;&#x6027;&#x65B9;&#x9762;&#x8003;&#x8651;&#xFF0C;&#x9009;&#x53D6;&#x4E86;JavaScriptCore+AndroidJSCore&#xFF08;&#x4E0B;&#x6587;&#x7531;&#x201C;JSCore&#x201D;&#x6307;&#x4EE3;&#xFF09;&#x3001;V8+J2V8&#xFF08;&#x4E0B;&#x6587;&#x7531;&#x201C;J2V8&#x201D;&#x6307;&#x4EE3;&#xFF09;&#x548C;Rhino&#x4E09;&#x79CD;&#x65B9;&#x6848;&#x8FDB;&#x884C;&#x5B9E;&#x9A8C;&#x3002;</p>
+<h4 id="3-1-&#x521B;&#x5EFA;JS&#x73AF;&#x5883;"><a href="#3-1-&#x521B;&#x5EFA;JS&#x73AF;&#x5883;" class="headerlink" title="3.1 &#x521B;&#x5EFA;JS&#x73AF;&#x5883;"></a>3.1 &#x521B;&#x5EFA;JS&#x73AF;&#x5883;</h4><p>&#x90E8;&#x5206;&#x5F15;&#x64CE;&#x5E76;&#x4E0D;&#x652F;&#x6301;&#x76F4;&#x63A5;&#x8FD0;&#x884C;&#x6587;&#x4EF6;&#xFF0C;&#x56E0;&#x6B64;&#x5C06;JS&#x4EE3;&#x7801;&#x4F5C;&#x4E3A;&#x5B57;&#x7B26;&#x4E32;&#x4EA4;&#x7ED9;JS&#x5F15;&#x64CE;&#x6267;&#x884C;&#xFF0C;&#x6267;&#x884C;&#x8FC7;&#x7A0B;&#x4E2D;&#x53EF;&#x4EE5;&#x8C03;&#x7528;&#x5DF2;&#x6CE8;&#x518C;&#x5230;JS&#x4E0A;&#x4E0B;&#x6587;&#x7684;Java&#x65B9;&#x6CD5;&#x3002;</p>
+<h5 id="3-1-1-JSCore"><a href="#3-1-1-JSCore" class="headerlink" title="3.1.1 JSCore"></a>3.1.1 JSCore</h5><pre><code>//&#x521B;&#x5EFA;JS&#x4E0A;&#x4E0B;&#x6587;
 JSContext context = new JSContext();
 //&#x521B;&#x5EFA;Java&#x65B9;&#x6CD5;
 JSFunction func = new JSFunction(context, &quot;func&quot;) {
@@ -143,7 +143,7 @@ JSFunction func = new JSFunction(context, &quot;func&quot;) {
 context.property(&quot;func&quot;, func);
 //&#x6267;&#x884C;JS
 context.evaluateScript(/*JS&#x4EE3;&#x7801;*/);
-</code></pre><h5 id="J2V8"><a href="#J2V8" class="headerlink" title="J2V8"></a>J2V8</h5><pre><code>//&#x521B;&#x5EFA;JS&#x4E0A;&#x4E0B;&#x6587;
+</code></pre><h5 id="3-1-2-J2V8"><a href="#3-1-2-J2V8" class="headerlink" title="3.1.2 J2V8"></a>3.1.2 J2V8</h5><pre><code>//&#x521B;&#x5EFA;JS&#x4E0A;&#x4E0B;&#x6587;
 V8 context = V8.createV8Runtime();
 //&#x521B;&#x5EFA;Java&#x65B9;&#x6CD5;&#xFF0C;&#x5E76;&#x6CE8;&#x518C;&#x5230;JS&#x4E0A;&#x4E0B;&#x6587;
 context.registerJavaMethod(new JavaVoidCallback() {
@@ -155,7 +155,7 @@ context.registerJavaMethod(new JavaVoidCallback() {
 context.executeScript(js);
 //&#x91CA;&#x653E;&#x8D44;&#x6E90;
 context.release();
-</code></pre><h5 id="Rhino"><a href="#Rhino" class="headerlink" title="Rhino"></a>Rhino</h5><pre><code>class Func {
+</code></pre><h5 id="3-1-3-Rhino"><a href="#3-1-3-Rhino" class="headerlink" title="3.1.3 Rhino"></a>3.1.3 Rhino</h5><pre><code>class Func {
     void func(String msg) {
         //&#x76F8;&#x5173;&#x5904;&#x7406;
     }
@@ -175,7 +175,7 @@ try {
 } finally {
     Context.exit();
 }
-</code></pre><h4 id="&#x5B9E;&#x9A8C;&#x3007;&#xFF1A;&#x5305;&#x7684;&#x4F9D;&#x8D56;"><a href="#&#x5B9E;&#x9A8C;&#x3007;&#xFF1A;&#x5305;&#x7684;&#x4F9D;&#x8D56;" class="headerlink" title="&#x5B9E;&#x9A8C;&#x3007;&#xFF1A;&#x5305;&#x7684;&#x4F9D;&#x8D56;"></a>&#x5B9E;&#x9A8C;&#x3007;&#xFF1A;&#x5305;&#x7684;&#x4F9D;&#x8D56;</h4><p>&#x6BD4;&#x8F83;&#x5404;&#x65B9;&#x6848;&#x4F9D;&#x8D56;&#x5305;&#x5F15;&#x5165;&#x540E;&#xFF0C;apk&#x7684;&#x4F53;&#x79EF;&#x589E;&#x91CF;&#xFF1A;</p>
+</code></pre><h4 id="3-2-&#x5B9E;&#x9A8C;&#x3007;&#xFF1A;&#x5305;&#x7684;&#x4F9D;&#x8D56;"><a href="#3-2-&#x5B9E;&#x9A8C;&#x3007;&#xFF1A;&#x5305;&#x7684;&#x4F9D;&#x8D56;" class="headerlink" title="3.2 &#x5B9E;&#x9A8C;&#x3007;&#xFF1A;&#x5305;&#x7684;&#x4F9D;&#x8D56;"></a>3.2 &#x5B9E;&#x9A8C;&#x3007;&#xFF1A;&#x5305;&#x7684;&#x4F9D;&#x8D56;</h4><p>&#x6BD4;&#x8F83;&#x5404;&#x65B9;&#x6848;&#x4F9D;&#x8D56;&#x5305;&#x5F15;&#x5165;&#x540E;&#xFF0C;apk&#x7684;&#x4F53;&#x79EF;&#x589E;&#x91CF;&#xFF1A;</p>
 <table>
 <thead>
 <tr>
@@ -207,7 +207,7 @@ try {
 <li>&#x5177;AndroidJsCore&#x4F5C;&#x8005;&#x56DE;&#x7B54;&#xFF0C;&#x7531;&#x4E8E;&#x5FC5;&#x987B;&#x9488;&#x5BF9;&#x5404;CPU&#x67B6;&#x6784;&#x8FDB;&#x884C;&#x6253;&#x5305;&#xFF0C;&#x800C;&#x6709;7&#x79CD;CPU&#x67B6;&#x6784;&#xFF0C;&#x6BCF;&#x79CD;&#x67B6;&#x6784;&#x5305;&#x7EA6;6MB&#xFF0C;&#x56E0;&#x6B64;&#x6574;&#x4E2A;&#x4F9D;&#x8D56;&#x5305;&#x4F53;&#x79EF;&#x76F8;&#x6BD4;&#x4E4B;&#x4E0B;&#x663E;&#x5F97;&#x5E9E;&#x5927;&#xFF0C;&#x4F46;&#x4E5F;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;ABIs Splits&#x8FDB;&#x884C;&#x62C6;&#x5206;&#x3002;</li>
 <li>Rhino&#x7684;jar&#x5305;&#x4EC5;1.2M&#xFF0C;&#x56E0;&#x6B64;apk&#x589E;&#x91CF;&#x5E76;&#x4E0D;&#x663E;&#x8457;&#x3002;</li>
 </ul>
-<h4 id="&#x5B9E;&#x9A8C;&#x4E00;&#xFF1A;&#x7A7A;&#x5FAA;&#x73AF;"><a href="#&#x5B9E;&#x9A8C;&#x4E00;&#xFF1A;&#x7A7A;&#x5FAA;&#x73AF;" class="headerlink" title="&#x5B9E;&#x9A8C;&#x4E00;&#xFF1A;&#x7A7A;&#x5FAA;&#x73AF;"></a>&#x5B9E;&#x9A8C;&#x4E00;&#xFF1A;&#x7A7A;&#x5FAA;&#x73AF;</h4><p>JSCore&#x548C;J2V8&#x6267;&#x884C;JS&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<h4 id="3-3-&#x5B9E;&#x9A8C;&#x4E00;&#xFF1A;&#x7A7A;&#x5FAA;&#x73AF;"><a href="#3-3-&#x5B9E;&#x9A8C;&#x4E00;&#xFF1A;&#x7A7A;&#x5FAA;&#x73AF;" class="headerlink" title="3.3 &#x5B9E;&#x9A8C;&#x4E00;&#xFF1A;&#x7A7A;&#x5FAA;&#x73AF;"></a>3.3 &#x5B9E;&#x9A8C;&#x4E00;&#xFF1A;&#x7A7A;&#x5FAA;&#x73AF;</h4><p>JSCore&#x548C;J2V8&#x6267;&#x884C;JS&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
 <pre><code>var i = 0;
 for (;i &lt; /*&#x6B21;&#x6570;*/; i++) {
 }
@@ -249,7 +249,7 @@ for (;i &lt; /*&#x6B21;&#x6570;*/; i++) {
 </tbody>
 </table>
 <p>&#x7531;&#x5B9E;&#x9A8C;&#x7ED3;&#x679C;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#xFF1A;J2V8&#x548C;JSCore&#x76F8;&#x6BD4;&#xFF0C;J2V8&#x6267;&#x884C;&#x65F6;&#x95F4;&#x66F4;&#x77ED;&#xFF0C;&#x4F46;&#x4E24;&#x8005;&#x65F6;&#x95F4;&#x90FD;&#x5728;&#x540C;&#x4E00;&#x6570;&#x91CF;&#x7EA7;&#x4E0A;&#x3002;&#x800C;Rhino&#x6267;&#x884C;&#x65F6;&#x95F4;&#x8FDC;&#x5927;&#x4E8E;&#x524D;&#x4E24;&#x8005;&#xFF0C;&#x6839;&#x672C;&#x539F;&#x56E0;&#x5728;&#x4E8E;Java&#x7A0B;&#x5E8F;&#x8FD0;&#x884C;&#x8F83;C/C++&#x6162;&#x3002;</p>
-<h4 id="&#x5B9E;&#x9A8C;&#x4E8C;&#xFF1A;JS&#x8C03;&#x7528;Java&#x65B9;&#x6CD5;"><a href="#&#x5B9E;&#x9A8C;&#x4E8C;&#xFF1A;JS&#x8C03;&#x7528;Java&#x65B9;&#x6CD5;" class="headerlink" title="&#x5B9E;&#x9A8C;&#x4E8C;&#xFF1A;JS&#x8C03;&#x7528;Java&#x65B9;&#x6CD5;"></a>&#x5B9E;&#x9A8C;&#x4E8C;&#xFF1A;JS&#x8C03;&#x7528;Java&#x65B9;&#x6CD5;</h4><p>JSCore&#x548C;J2V8&#x6267;&#x884C;JS&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<h4 id="3-4-&#x5B9E;&#x9A8C;&#x4E8C;&#xFF1A;JS&#x8C03;&#x7528;Java&#x65B9;&#x6CD5;"><a href="#3-4-&#x5B9E;&#x9A8C;&#x4E8C;&#xFF1A;JS&#x8C03;&#x7528;Java&#x65B9;&#x6CD5;" class="headerlink" title="3.4 &#x5B9E;&#x9A8C;&#x4E8C;&#xFF1A;JS&#x8C03;&#x7528;Java&#x65B9;&#x6CD5;"></a>3.4 &#x5B9E;&#x9A8C;&#x4E8C;&#xFF1A;JS&#x8C03;&#x7528;Java&#x65B9;&#x6CD5;</h4><p>JSCore&#x548C;J2V8&#x6267;&#x884C;JS&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
 <pre><code>var i = 0;
 for (;i &lt; /*&#x6B21;&#x6570;*/; i++) {
     func();
@@ -324,7 +324,7 @@ for (;i &lt; /*&#x6B21;&#x6570;*/; i++) {
 </tbody>
 </table>
 <p>&#x540C;&#x6837;&#x4E5F;&#x662F;&#x7531;&#x4E8E;&#x5F00;&#x53D1;&#x8BED;&#x8A00;&#x7684;&#x5DEE;&#x5F02;&#xFF0C;&#x5728;JS&#x8C03;&#x7528;Java&#x4E0A;Rhino&#x6027;&#x80FD;&#x66F4;&#x4F18;&#x3002;&#x6267;&#x884C;&#x65F6;&#x95F4;&#x65B9;&#x9762;&#xFF0C;J2V8&#x63A5;&#x8FD1;Rhino&#xFF0C;&#x800C;JSCore&#x5219;&#x8FDC;&#x843D;&#x540E;&#x4E8E;&#x524D;&#x4E24;&#x79CD;&#x65B9;&#x6848;&#xFF0C;&#x8FD9;&#x53EF;&#x80FD;&#x4E0E;&#x5176;Java&#x7ED1;&#x5B9A;&#x5C42;&#x6709;&#x5F88;&#x5927;&#x5173;&#x7CFB;&#x3002;&#x5BF9;&#x4E8E;J2V8&#x548C;JSCore&#x5219;&#x9700;&#x8981;&#x5148;&#x7ECF;&#x8FC7;JNI&#x5305;&#x88C5;&#x5C42;&#x624D;&#x80FD;&#x8C03;&#x7528;&#x5230;Java&#x65B9;&#x6CD5;&#xFF0C;&#x800C;&#x5927;&#x91CF;&#x7684;JNI&#x8C03;&#x7528;&#x662F;&#x975E;&#x5E38;&#x8017;&#x65F6;&#x3001;&#x8017;&#x5185;&#x5B58;&#x7684;&#x3002;</p>
-<h4 id="&#x5B9E;&#x9A8C;&#x4E09;&#xFF1A;JS&#x9012;&#x5F52;&#x8BA1;&#x7B97;&#x6590;&#x6CE2;&#x90A3;&#x5951;"><a href="#&#x5B9E;&#x9A8C;&#x4E09;&#xFF1A;JS&#x9012;&#x5F52;&#x8BA1;&#x7B97;&#x6590;&#x6CE2;&#x90A3;&#x5951;" class="headerlink" title="&#x5B9E;&#x9A8C;&#x4E09;&#xFF1A;JS&#x9012;&#x5F52;&#x8BA1;&#x7B97;&#x6590;&#x6CE2;&#x90A3;&#x5951;"></a>&#x5B9E;&#x9A8C;&#x4E09;&#xFF1A;JS&#x9012;&#x5F52;&#x8BA1;&#x7B97;&#x6590;&#x6CE2;&#x90A3;&#x5951;</h4><p>JS&#x4EE3;&#x7801;&#x6590;&#x6CE2;&#x90A3;&#x5951;&#x51FD;&#x6570;&#x5982;&#x4E0B;&#xFF1A;</p>
+<h4 id="3-5-&#x5B9E;&#x9A8C;&#x4E09;&#xFF1A;JS&#x9012;&#x5F52;&#x8BA1;&#x7B97;&#x6590;&#x6CE2;&#x90A3;&#x5951;"><a href="#3-5-&#x5B9E;&#x9A8C;&#x4E09;&#xFF1A;JS&#x9012;&#x5F52;&#x8BA1;&#x7B97;&#x6590;&#x6CE2;&#x90A3;&#x5951;" class="headerlink" title="3.5 &#x5B9E;&#x9A8C;&#x4E09;&#xFF1A;JS&#x9012;&#x5F52;&#x8BA1;&#x7B97;&#x6590;&#x6CE2;&#x90A3;&#x5951;"></a>3.5 &#x5B9E;&#x9A8C;&#x4E09;&#xFF1A;JS&#x9012;&#x5F52;&#x8BA1;&#x7B97;&#x6590;&#x6CE2;&#x90A3;&#x5951;</h4><p>JS&#x4EE3;&#x7801;&#x6590;&#x6CE2;&#x90A3;&#x5951;&#x51FD;&#x6570;&#x5982;&#x4E0B;&#xFF1A;</p>
 <pre><code>function fibo(n) {
     if (n == 1 || n == 2) {
         return 1;
@@ -394,9 +394,9 @@ for (;i &lt; /*&#x6B21;&#x6570;*/; i++) {
 </tbody>
 </table>
 <p>Rhino&#x8FD0;&#x884C;JS&#x65F6;&#x9891;&#x7E41;GC&#xFF0C;&#x867D;&#x7136;&#x4F7F;&#x5176;&#x6240;&#x5360;&#x5185;&#x5B58;&#x8F83;&#x5C11;&#xFF0C;&#x4F46;&#x6267;&#x884C;&#x901F;&#x5EA6;&#x975E;&#x5E38;&#x7F13;&#x6162;&#xFF0C;&#x76F8;&#x6BD4;&#x4E4B;&#x4E0B;J2V8&#x548C;JSCore&#x65B9;&#x6848;&#x6548;&#x7387;&#x66F4;&#x9AD8;&#x3002;</p>
-<h4 id="&#x5B9E;&#x9A8C;&#x603B;&#x7ED3;"><a href="#&#x5B9E;&#x9A8C;&#x603B;&#x7ED3;" class="headerlink" title="&#x5B9E;&#x9A8C;&#x603B;&#x7ED3;"></a>&#x5B9E;&#x9A8C;&#x603B;&#x7ED3;</h4><p>&#x5355;&#x4ECE;JS&#x5F15;&#x64CE;&#x6765;&#x8BF4;&#xFF1A;Rhino&#x6267;&#x884C;&#x4E0D;&#x9700;&#x8981;&#x901A;&#x8FC7;JNI&#x4E14;&#x5360;&#x7528;&#x66F4;&#x5C11;&#x7684;&#x5185;&#x5B58;&#xFF0C;&#x4F46;&#x6267;&#x884C;&#x6548;&#x7387;&#x5F88;&#x4F4E;&#xFF1B;V8&#x548C;JavaScriptCore&#x7B49;C&#x8BED;&#x8A00;&#x5F00;&#x53D1;&#x7684;&#x5F15;&#x64CE;&#x8FDC;&#x80DC;&#x4E8E;Rhino&#x7B49;Java&#x5F00;&#x53D1;&#x7684;&#x5F15;&#x64CE;&#xFF0C;&#x4F46;&#x9700;&#x8981;&#x4E00;&#x5C42;Java&#x5305;&#x88C5;&#x5C42;&#xFF0C;&#x5E76;&#x5B58;&#x5728;JNI&#x8C03;&#x7528;&#x6027;&#x80FD;&#x95EE;&#x9898;&#x3002;&#x5C31;J2V8&#x548C;AndroidJSCore&#x4E24;&#x4E2A;&#x5305;&#x88C5;&#x5C42;&#x800C;&#x8A00;&#xFF1A;J2V8&#x7684;&#x53EF;&#x7528;&#x6027;&#x3001;&#x53EF;&#x9760;&#x6027;&#x3001;&#x5065;&#x58EE;&#x6027;&#x66F4;&#x4F18;&#xFF1B;AndroidJSCore&#x8FD8;&#x5B58;&#x5728;&#x7740;&#x4E0D;&#x5C11;&#x7684;&#x6027;&#x80FD;&#x95EE;&#x9898;&#xFF0C;&#x5728;&#x4E0A;&#x8FF0;&#x5B9E;&#x9A8C;&#x4E2D;&#x51FA;&#x73B0;&#x8F83;&#x5C11;&#xFF0C;&#x4F46;&#x5B9E;&#x9645;&#x5F00;&#x53D1;&#x4E2D;&#x8FD8;&#x5B58;&#x5728;&#x5F88;&#x591A;&#x5751;&#x3002;</p>
+<h4 id="3-6-&#x5B9E;&#x9A8C;&#x603B;&#x7ED3;"><a href="#3-6-&#x5B9E;&#x9A8C;&#x603B;&#x7ED3;" class="headerlink" title="3.6 &#x5B9E;&#x9A8C;&#x603B;&#x7ED3;"></a>3.6 &#x5B9E;&#x9A8C;&#x603B;&#x7ED3;</h4><p>&#x5355;&#x4ECE;JS&#x5F15;&#x64CE;&#x6765;&#x8BF4;&#xFF1A;Rhino&#x6267;&#x884C;&#x4E0D;&#x9700;&#x8981;&#x901A;&#x8FC7;JNI&#x4E14;&#x5360;&#x7528;&#x66F4;&#x5C11;&#x7684;&#x5185;&#x5B58;&#xFF0C;&#x4F46;&#x6267;&#x884C;&#x6548;&#x7387;&#x5F88;&#x4F4E;&#xFF1B;V8&#x548C;JavaScriptCore&#x7B49;C&#x8BED;&#x8A00;&#x5F00;&#x53D1;&#x7684;&#x5F15;&#x64CE;&#x8FDC;&#x80DC;&#x4E8E;Rhino&#x7B49;Java&#x5F00;&#x53D1;&#x7684;&#x5F15;&#x64CE;&#xFF0C;&#x4F46;&#x9700;&#x8981;&#x4E00;&#x5C42;Java&#x5305;&#x88C5;&#x5C42;&#xFF0C;&#x5E76;&#x5B58;&#x5728;JNI&#x8C03;&#x7528;&#x6027;&#x80FD;&#x95EE;&#x9898;&#x3002;&#x5C31;J2V8&#x548C;AndroidJSCore&#x4E24;&#x4E2A;&#x5305;&#x88C5;&#x5C42;&#x800C;&#x8A00;&#xFF1A;J2V8&#x7684;&#x53EF;&#x7528;&#x6027;&#x3001;&#x53EF;&#x9760;&#x6027;&#x3001;&#x5065;&#x58EE;&#x6027;&#x66F4;&#x4F18;&#xFF1B;AndroidJSCore&#x8FD8;&#x5B58;&#x5728;&#x7740;&#x4E0D;&#x5C11;&#x7684;&#x6027;&#x80FD;&#x95EE;&#x9898;&#xFF0C;&#x5728;&#x4E0A;&#x8FF0;&#x5B9E;&#x9A8C;&#x4E2D;&#x51FA;&#x73B0;&#x8F83;&#x5C11;&#xFF0C;&#x4F46;&#x5B9E;&#x9645;&#x5F00;&#x53D1;&#x4E2D;&#x8FD8;&#x5B58;&#x5728;&#x5F88;&#x591A;&#x5751;&#x3002;</p>
 <p>&#x4EE5;&#x4E0A;&#x4E09;&#x79CD;&#x5B9E;&#x73B0;&#x65B9;&#x6848;&#x4E2D;&#x66F4;&#x63A8;&#x8350;J2V8&#x65B9;&#x6848;&#x3002;&#x5BF9;&#x4E8E;&#x5185;&#x5B58;&#x95EE;&#x9898;&#xFF0C;J2V8&#x7684;&#x5185;&#x5B58;&#x91CA;&#x653E;&#x673A;&#x5236;&#x8F83;&#x4E3A;&#x5B8C;&#x5584;&#xFF0C;&#x5728;&#x5B9E;&#x9645;&#x5F00;&#x53D1;&#x4E2D;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x4E3B;&#x52A8;release&#x6765;&#x91CA;&#x653E;&#x5185;&#x5B58;&#xFF1B;&#x5BF9;&#x4E8E;JNI&#x8C03;&#x7528;&#x6027;&#x80FD;&#x95EE;&#x9898;&#xFF0C;J2V8&#x56E2;&#x961F;&#x4E5F;&#x5728;&#x5C1D;&#x8BD5;&#x901A;&#x8FC7;&#x6279;&#x5904;&#x7406;&#x56DE;&#x8C03;&#x6765;&#x8FDB;&#x884C;&#x4F18;&#x5316;&#xFF0C;&#x5728;&#x5C06;&#x6765;&#x7684;&#x7248;&#x672C;&#x4E2D;&#x4F1A;&#x5F97;&#x5230;&#x6539;&#x5584;&#x3002;</p>
-<h3 id="&#x56DB;&#x3001;J2V8&#x7684;Android&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;"><a href="#&#x56DB;&#x3001;J2V8&#x7684;Android&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;" class="headerlink" title="&#x56DB;&#x3001;J2V8&#x7684;Android&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;"></a>&#x56DB;&#x3001;J2V8&#x7684;Android&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;</h3><p>&#x6709;&#x4EE5;&#x4E0B;&#x4E00;&#x6BB5;JS&#x4EE3;&#x7801;&#xFF0C;&#x5176;&#x4E2D;Canvas&#x7ED8;&#x5236;&#x4E86;&#x4E00;&#x4E9B;&#x7B80;&#x5355;&#x7684;&#x56FE;&#x5F62;&#xFF1A;</p>
+<h3 id="4-J2V8&#x7684;Android&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;"><a href="#4-J2V8&#x7684;Android&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;" class="headerlink" title="4. J2V8&#x7684;Android&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;"></a>4. J2V8&#x7684;Android&#x5F00;&#x53D1;&#x5B9E;&#x4F8B;</h3><p>&#x6709;&#x4EE5;&#x4E0B;&#x4E00;&#x6BB5;JS&#x4EE3;&#x7801;&#xFF0C;&#x5176;&#x4E2D;Canvas&#x7ED8;&#x5236;&#x4E86;&#x4E00;&#x4E9B;&#x7B80;&#x5355;&#x7684;&#x56FE;&#x5F62;&#xFF1A;</p>
 <pre><code>var c=document.getElementById(&quot;myCanvas&quot;);
 var ctx=c.getContext(&quot;2d&quot;);
 
@@ -590,7 +590,7 @@ _flush: function() {
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/" data-title="Android平台上的JavaScript引擎 | 网易前端技术部" data-tsina="undefined" class="share clearfix">
+	  <div data-url="http://NEYouFan.github.io/2016/12/23/android/Android Js引擎/Android平台上的JavaScript引擎/" data-title="Android平台上的JavaScript引擎 | 网易前端技术部" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -634,7 +634,7 @@ _flush: function() {
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、前言"><span class="toc-number">1.</span> <span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、JS引擎介绍"><span class="toc-number">2.</span> <span class="toc-text">二、JS引擎介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-JavaScriptCore"><span class="toc-number">2.1.</span> <span class="toc-text">1. JavaScriptCore</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-V8"><span class="toc-number">2.2.</span> <span class="toc-text">2. V8</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-SpiderMonkey"><span class="toc-number">2.3.</span> <span class="toc-text">3. SpiderMonkey</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Rhino"><span class="toc-number">2.4.</span> <span class="toc-text">4. Rhino</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Nashorn"><span class="toc-number">2.5.</span> <span class="toc-text">5. Nashorn</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、JS引擎性能比较"><span class="toc-number">3.</span> <span class="toc-text">三、JS引擎性能比较</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建JS环境"><span class="toc-number">3.1.</span> <span class="toc-text">创建JS环境</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#JSCore"><span class="toc-number">3.1.1.</span> <span class="toc-text">JSCore</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#J2V8"><span class="toc-number">3.1.2.</span> <span class="toc-text">J2V8</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Rhino"><span class="toc-number">3.1.3.</span> <span class="toc-text">Rhino</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验〇：包的依赖"><span class="toc-number">3.2.</span> <span class="toc-text">实验〇：包的依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验一：空循环"><span class="toc-number">3.3.</span> <span class="toc-text">实验一：空循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验二：JS调用Java方法"><span class="toc-number">3.4.</span> <span class="toc-text">实验二：JS调用Java方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验三：JS递归计算斐波那契"><span class="toc-number">3.5.</span> <span class="toc-text">实验三：JS递归计算斐波那契</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实验总结"><span class="toc-number">3.6.</span> <span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、J2V8的Android开发实例"><span class="toc-number">4.</span> <span class="toc-text">四、J2V8的Android开发实例</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-前言"><span class="toc-number">1.</span> <span class="toc-text">1. 前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-JS引擎介绍"><span class="toc-number">2.</span> <span class="toc-text">2. JS引擎介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-JavaScriptCore"><span class="toc-number">2.1.</span> <span class="toc-text">1. JavaScriptCore</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-V8"><span class="toc-number">2.2.</span> <span class="toc-text">2. V8</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-SpiderMonkey"><span class="toc-number">2.3.</span> <span class="toc-text">3. SpiderMonkey</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Rhino"><span class="toc-number">2.4.</span> <span class="toc-text">4. Rhino</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Nashorn"><span class="toc-number">2.5.</span> <span class="toc-text">5. Nashorn</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-JS引擎性能比较"><span class="toc-number">3.</span> <span class="toc-text">3. JS引擎性能比较</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-创建JS环境"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 创建JS环境</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-1-JSCore"><span class="toc-number">3.1.1.</span> <span class="toc-text">3.1.1 JSCore</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-2-J2V8"><span class="toc-number">3.1.2.</span> <span class="toc-text">3.1.2 J2V8</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-3-Rhino"><span class="toc-number">3.1.3.</span> <span class="toc-text">3.1.3 Rhino</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-实验〇：包的依赖"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 实验〇：包的依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-实验一：空循环"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 实验一：空循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-实验二：JS调用Java方法"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 实验二：JS调用Java方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-实验三：JS递归计算斐波那契"><span class="toc-number">3.5.</span> <span class="toc-text">3.5 实验三：JS递归计算斐波那契</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-实验总结"><span class="toc-number">3.6.</span> <span class="toc-text">3.6 实验总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-J2V8的Android开发实例"><span class="toc-number">4.</span> <span class="toc-text">4. J2V8的Android开发实例</span></a></li></ol>
  
   </div>
 
@@ -668,10 +668,6 @@ _flush: function() {
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/LLVM/" title="LLVM">LLVM<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>1</sup></a></li>
 			
 		
@@ -681,6 +677,10 @@ _flush: function() {
 		
 			
 				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/LLVM/" title="LLVM">LLVM<sup>1</sup></a></li>
 			
 		
 			
@@ -707,8 +707,10 @@ _flush: function() {
 </div>
 
   <div class="weiboshow">
-  <p class="asidetitle">新浪微博</p>
-    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=undefined&verifier=&dpc=1"></iframe>
+  <p class="asidetitle">微信共众号</p>
+  <div class="barcode">
+    <img src="/img/barcode.jpg" alt="">
+  </div>
 </div>
 
 
@@ -716,28 +718,10 @@ _flush: function() {
 </div>
     </div>
     <footer><div id="footer" >
-	
-	
-	<div class="social-font" class="clearfix">
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</div>
-			
-		
-
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		cpryright © 2017
 		
 		<a href="/about" target="_blank" title="网易前端技术部">网易前端技术部</a>
-		
 		
 		</p>
 </div>

@@ -102,7 +102,7 @@
   </h1>
   <p class="article-author">By
        
-		<a href="/about" title="网易前端技术部" target="_blank" itemprop="author">网易前端技术部</a>
+		<span style="color: rgb(44, 166, 203);" >朱志强</span>
 		
   <p class="article-time">
     <time datetime="2016-12-15T16:00:00.000Z" itemprop="datePublished"> 发表于 2016-12-16</time>
@@ -114,7 +114,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-NeteaseAPM-是什么"><span class="toc-number">1.</span> <span class="toc-text">一. NeteaseAPM 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-NeteaseAPM-iOS-SDK-的目标"><span class="toc-number">2.</span> <span class="toc-text">二. NeteaseAPM iOS SDK 的目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-现状"><span class="toc-number">3.</span> <span class="toc-text">三 现状</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-整体设计"><span class="toc-number">4.</span> <span class="toc-text">四 整体设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五-一些关键实现"><span class="toc-number">5.</span> <span class="toc-text">五. 一些关键实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-开始使用面向切面编程"><span class="toc-number">5.1.</span> <span class="toc-text">1.    开始使用面向切面编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-桥接模式，从面向过程到面向对象"><span class="toc-number">5.2.</span> <span class="toc-text">3.    桥接模式，从面向过程到面向对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-使用-NSURLProtocol-监控-UIWebView"><span class="toc-number">5.3.</span> <span class="toc-text">4. 使用 NSURLProtocol 监控 UIWebView</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六-后续工作"><span class="toc-number">6.</span> <span class="toc-text">六. 后续工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#七-引用链接"><span class="toc-number">7.</span> <span class="toc-text">七. 引用链接</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-NeteaseAPM-是什么"><span class="toc-text">一. NeteaseAPM 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-NeteaseAPM-iOS-SDK-的目标"><span class="toc-text">二. NeteaseAPM iOS SDK 的目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-现状"><span class="toc-text">三 现状</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-整体设计"><span class="toc-text">四 整体设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五-一些关键实现"><span class="toc-text">五. 一些关键实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-开始使用面向切面编程"><span class="toc-text">1.    开始使用面向切面编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-桥接模式，从面向过程到面向对象"><span class="toc-text">3.    桥接模式，从面向过程到面向对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-使用-NSURLProtocol-监控-UIWebView"><span class="toc-text">4. 使用 NSURLProtocol 监控 UIWebView</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六-后续工作"><span class="toc-text">六. 后续工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#七-引用链接"><span class="toc-text">七. 引用链接</span></a></li></ol>
 		
 		</div>
 		
@@ -220,7 +220,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://NEYouFan.github.io/2016/12/16/ios/NeteaseAPM iOS SDK技术实现/NeteaseAPM iOS SDK技术实现/" data-title="NeteaseAPM iOS SDK技术实现 | 网易前端技术部" data-tsina="undefined" class="share clearfix">
+	  <div data-url="http://NEYouFan.github.io/2016/12/16/ios/NeteaseAPM iOS SDK技术实现/NeteaseAPM iOS SDK技术实现/" data-title="NeteaseAPM iOS SDK技术实现 | 网易前端技术部" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -298,10 +298,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/LLVM/" title="LLVM">LLVM<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>1</sup></a></li>
 			
 		
@@ -311,6 +307,10 @@
 		
 			
 				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/LLVM/" title="LLVM">LLVM<sup>1</sup></a></li>
 			
 		
 			
@@ -337,8 +337,10 @@
 </div>
 
   <div class="weiboshow">
-  <p class="asidetitle">新浪微博</p>
-    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=undefined&verifier=&dpc=1"></iframe>
+  <p class="asidetitle">微信共众号</p>
+  <div class="barcode">
+    <img src="/img/barcode.jpg" alt="">
+  </div>
 </div>
 
 
@@ -346,28 +348,10 @@
 </div>
     </div>
     <footer><div id="footer" >
-	
-	
-	<div class="social-font" class="clearfix">
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</div>
-			
-		
-
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		cpryright © 2017
 		
 		<a href="/about" target="_blank" title="网易前端技术部">网易前端技术部</a>
-		
 		
 		</p>
 </div>
