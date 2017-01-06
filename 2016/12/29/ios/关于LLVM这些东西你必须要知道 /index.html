@@ -44,11 +44,9 @@
     <link rel="alternative" href="/atom.xml" title="网易杭州前端技术部" type="application/atom+xml">
     
     
-    <link rel="icon" href="/img/favicon.ico">
     
-    
-    <link rel="apple-touch-icon" href="/img/jacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon" href="/img/author.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/author.jpg">
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -327,13 +325,6 @@
 </div>  
       <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
-  <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
- 
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是LLVM？"><span class="toc-number">1.</span> <span class="toc-text">1. 什么是LLVM？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-安装编译LLVM"><span class="toc-number">2.</span> <span class="toc-text">2. 安装编译LLVM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-从源码到可执行文件"><span class="toc-number">3.</span> <span class="toc-text">3. 从源码到可执行文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-预处理（Preprocess）"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 预处理（Preprocess）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-词法分析-Lexical-Analysis"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 词法分析 (Lexical Analysis)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-语法分析-Semantic-Analysis"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 语法分析 (Semantic Analysis)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-IR代码生成-CodeGen"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 IR代码生成 (CodeGen)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-生成字节码-LLVM-Bitcode"><span class="toc-number">3.5.</span> <span class="toc-text">3.5 生成字节码 (LLVM Bitcode)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-生成相关汇编"><span class="toc-number">3.6.</span> <span class="toc-text">3.6 生成相关汇编</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-生成目标文件"><span class="toc-number">3.7.</span> <span class="toc-text">3.7 生成目标文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-8-生成可执行文件"><span class="toc-number">3.8.</span> <span class="toc-text">3.8 生成可执行文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-9-整体流程"><span class="toc-number">3.9.</span> <span class="toc-text">3.9 整体流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-可以用Clang做什么？"><span class="toc-number">4.</span> <span class="toc-text">4. 可以用Clang做什么？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-libclang进行语法分析"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 libclang进行语法分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-LibTooling"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 LibTooling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-ClangPlugin"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 ClangPlugin</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-动手写Pass"><span class="toc-number">5.</span> <span class="toc-text">5. 动手写Pass</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-一个简单的Pass"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 一个简单的Pass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-将Pass加入PassManager管理"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 将Pass加入PassManager管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-总结"><span class="toc-number">6.</span> <span class="toc-text">6. 总结</span></a></li></ol>
- 
-  </div>
-
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
@@ -380,11 +371,11 @@
 			
 		
 			
-				<li><a href="/tags/Js引擎/" title="Js引擎">Js引擎<sup>1</sup></a></li>
+				<li><a href="/tags/NeteaseAPM/" title="NeteaseAPM">NeteaseAPM<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/NeteaseAPM/" title="NeteaseAPM">NeteaseAPM<sup>1</sup></a></li>
+				<li><a href="/tags/Js引擎/" title="Js引擎">Js引擎<sup>1</sup></a></li>
 			
 		
 			
@@ -466,8 +457,6 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
-      
-      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
