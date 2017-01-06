@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://NEYouFan.github.io/"/>
-  <updated>2017-01-06T06:32:22.000Z</updated>
+  <updated>2017-01-06T07:02:16.000Z</updated>
   <id>http://NEYouFan.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://NEYouFan.github.io/2017/01/06/android/OkHttp3%E4%B8%AD%E7%9A%84HTTP2%E9%A6%96%E9%83%A8%E5%8E%8B%E7%BC%A9/"/>
     <id>http://NEYouFan.github.io/2017/01/06/android/OkHttp3中的HTTP2首部压缩/</id>
     <published>2017-01-05T16:00:00.000Z</published>
-    <updated>2017-01-06T06:32:22.000Z</updated>
+    <updated>2017-01-06T07:02:16.000Z</updated>
     
     <content type="html"><![CDATA[<p>&#x9996;&#x90E8;&#x538B;&#x7F29;&#x538B;&#x7F29;&#x662F;HTTP/2&#x6700;&#x91CD;&#x8981;&#x7684;&#x4F18;&#x5316;&#x4E4B;&#x4E00;&#x3002;&#x7136;&#x800C;&#x5728;RFC&#x6807;&#x51C6;&#x53CA;&#x7B97;&#x6CD5;&#x4E0E;&#x5B9E;&#x9645;&#x5E94;&#x7528;&#x4E4B;&#x95F4;&#x8FD8;&#x662F;&#x6709;&#x4E00;&#x5B9A;&#x7684;&#x9E3F;&#x6C9F;&#xFF0C;&#x5C31;&#x50CF;&#x7406;&#x60F3;&#x4E0E;&#x73B0;&#x5B9E;&#x3002;&#x672C;&#x6587;&#x5C06;&#x5728;&#x8BF4;&#x660E;&#x7B97;&#x6CD5;&#x4E4B;&#x5916;&#x66F4;&#x5C06;&#x8BE6;&#x7EC6;&#x8BF4;&#x660E;OkHttp&#x5BF9;&#x9996;&#x90E8;&#x538B;&#x7F29;&#x7684;&#x5B9E;&#x73B0;&#xFF0C;&#x4EE5;&#x5E26;&#x4F60;&#x66F4;&#x597D;&#x7684;&#x7406;&#x89E3;&#x8FD9;&#x4E00;&#x4F18;&#x5316;&#x3002;<a id="more"></a></p>
 <p>&#x5F53;&#x524D;&#x7F51;&#x7EDC;&#x73AF;&#x5883;&#x4E2D;&#xFF0C;&#x540C;&#x4E00;&#x4E2A;&#x9875;&#x9762;&#x53D1;&#x51FA;&#x51E0;&#x5341;&#x4E2A;HTTP&#x8BF7;&#x6C42;&#x5DF2;&#x7ECF;&#x662F;&#x53F8;&#x7A7A;&#x89C1;&#x60EF;&#x7684;&#x4E8B;&#x60C5;&#x4E86;&#x3002;&#x5728;HTTP/1.1&#x4E2D;&#xFF0C;&#x8BF7;&#x6C42;&#x4E4B;&#x95F4;&#x5B8C;&#x5168;&#x76F8;&#x4E92;&#x72EC;&#x7ACB;&#xFF0C;&#x4F7F;&#x5F97;&#x8BF7;&#x6C42;&#x4E2D;&#x5197;&#x4F59;&#x7684;&#x9996;&#x90E8;&#x5B57;&#x6BB5;&#x4E0D;&#x5FC5;&#x8981;&#x5730;&#x6D6A;&#x8D39;&#x4E86;&#x5927;&#x91CF;&#x7684;&#x7F51;&#x7EDC;&#x5E26;&#x5BBD;&#xFF0C;&#x5E76;&#x589E;&#x52A0;&#x4E86;&#x7F51;&#x7EDC;&#x5EF6;&#x65F6;&#x3002;&#x4EE5;&#x5BF9;&#x67D0;&#x7AD9;&#x70B9;&#x7684;&#x4E00;&#x6B21;&#x9875;&#x9762;&#x8BBF;&#x95EE;&#x4E3A;&#x4F8B;&#xFF0C;&#x76F4;&#x89C2;&#x5730;&#x770B;&#x4E00;&#x4E0B;&#x8FD9;&#x79CD;&#x72B6;&#x51B5;&#xFF1A;</p>
