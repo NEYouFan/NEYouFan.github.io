@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://NEYouFan.github.io/"/>
-  <updated>2017-01-13T02:39:17.000Z</updated>
+  <updated>2017-01-20T01:27:43.000Z</updated>
   <id>http://NEYouFan.github.io/</id>
   
   <author>
@@ -14,6 +14,77 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>谈谈MultiDex启动优化</title>
+    <link href="http://NEYouFan.github.io/2017/01/20/android/Multidex%E5%8A%A0%E9%80%9F/"/>
+    <id>http://NEYouFan.github.io/2017/01/20/android/Multidex加速/</id>
+    <published>2017-01-19T16:00:00.000Z</published>
+    <updated>2017-01-20T01:27:43.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>&#x65E7;&#x6587;&#x4E00;&#x7BC7;&#xFF0C;&#x79FB;&#x52A8;&#x5F00;&#x53D1;&#x524D;&#x7EBF;&#x63A8;&#x9001;&#x4E86;<a href="https://zhuanlan.zhihu.com/p/24305296" target="_blank" rel="external">MultiDex&#x5DE5;&#x4F5C;&#x539F;&#x7406;&#x5206;&#x6790;&#x548C;&#x4F18;&#x5316;&#x65B9;&#x6848;</a>&#xFF0C;&#x4E5F;&#x5206;&#x4EAB;&#x4E00;&#x4E0B;&#x6211;&#x4EEC;&#x7684;MultiDex&#x542F;&#x52A8;&#x4F18;&#x5316;&#x601D;&#x8DEF;<a id="more"></a></p>
+<h2 id="&#x524D;&#x8A00;"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</h2><p>&#x65E7;&#x6587;&#x4E00;&#x7BC7;&#xFF0C;&#x79FB;&#x52A8;&#x5F00;&#x53D1;&#x524D;&#x7EBF;&#x63A8;&#x9001;&#x4E86;<a href="https://zhuanlan.zhihu.com/p/24305296" target="_blank" rel="external">MultiDex&#x5DE5;&#x4F5C;&#x539F;&#x7406;&#x5206;&#x6790;&#x548C;&#x4F18;&#x5316;&#x65B9;&#x6848;</a>&#xFF0C;&#x4E5F;&#x5206;&#x4EAB;&#x4E00;&#x4E0B;&#x6211;&#x4EEC;&#x7684;MultiDex&#x542F;&#x52A8;&#x4F18;&#x5316;&#x601D;&#x8DEF;</p>
+<h2 id="MultiDex&#x5B58;&#x5728;&#x7684;&#x95EE;&#x9898;"><a href="#MultiDex&#x5B58;&#x5728;&#x7684;&#x95EE;&#x9898;" class="headerlink" title="MultiDex&#x5B58;&#x5728;&#x7684;&#x95EE;&#x9898;"></a>MultiDex&#x5B58;&#x5728;&#x7684;&#x95EE;&#x9898;</h2><p>&#x6211;&#x4EEC;&#x7ECF;&#x5E38;&#x8BF4;&#x7684;MultiDex&#xFF0C;&#x53EF;&#x4EE5;&#x5206;&#x6210;&#x8FD0;&#x884C;&#x65F6;&#x548C;&#x7F16;&#x8BD1;&#x65F6;&#x4E24;&#x4E2A;&#x90E8;&#x5206;&#xFF1A;</p>
+<ul>
+<li><p>&#x7F16;&#x8BD1;&#x65F6;&#x7684;&#x5206;&#x5305;&#x673A;&#x5236;&#xFF0C;&#x5C06;app&#x4E2D;&#x7684;class&#x4EE5;&#x67D0;&#x79CD;&#x7B56;&#x7565;&#x5206;&#x6563;&#x5728;&#x591A;&#x4E2A;dex&#x4E2D;&#xFF0C;&#x76EE;&#x7684;&#x662F;&#x51CF;&#x5C11;&#x4E3A;&#x4E86;&#x7B2C;&#x4E00;&#x4E2A;dex&#x4E5F;&#x5C31;&#x662F;main dex&#x4E2D;&#x5305;&#x542B;&#x7684;class</p>
+</li>
+<li><p>&#x8FD0;&#x884C;&#x65F6;&#xFF1A; app&#x542F;&#x52A8;&#x65F6;&#xFF0C;&#x865A;&#x62DF;&#x673A;&#x53EA;&#x52A0;&#x8F7D;main dex&#x4E2D;&#x7684;class&#x3002;app&#x542F;&#x52A8;&#x4EE5;&#x540E;&#xFF0C;&#x4F7F;&#x7528;<em>Multidex.install</em> API&#xFF0C;&#x901A;&#x8FC7;&#x53CD;&#x5C04;&#x4FEE;&#x6539;ClassLoader&#x4E2D;&#x7684;dexElements&#x52A0;&#x8F7D;&#x5176;&#x4ED6;dex</p>
+</li>
+</ul>
+<p>MultiDex&#x673A;&#x5236;&#x7684;&#x51FA;&#x73B0;&#x672C;&#x8EAB;&#x662F;&#x4E3A;&#x4E86;&#x907F;&#x514D;&#x51FA;&#x73B0;app 65535&#x95EE;&#x9898;&#x7684;&#x51FA;&#x73B0;&#xFF0C;&#x4F46;&#x968F;&#x7740;&#x4E1A;&#x52A1;&#x903B;&#x8F91;&#x7684;&#x589E;&#x957F;&#xFF0C;&#x4EE5;&#x53CA;&#x4E0D;&#x5408;&#x7406;&#x7684;&#x6A21;&#x5757;&#x5212;&#x5206;&#xFF0C;&#x53EF;&#x80FD;&#x4F1A;&#x5BFC;&#x81F4;main dex&#x7684;&#x65B9;&#x6CD5;&#x6570;&#x4E5F;&#x8D85;&#x51FA;&#x4E86;65535&#xFF0C;&#x8FD9;&#x5C31;&#x5BFC;&#x81F4;&#x4E86;<em>main dex capacity exceeded</em>&#x5F02;&#x5E38;&#x3002;</p>
+<p>&#x6B64;&#x5916;&#xFF0C;Multidex&#x7684;&#x63A5;&#x5165;&#x989D;&#x5916;&#x8FD8;&#x4F1A;&#x5BF9;app&#x7684;&#x542F;&#x52A8;&#x6027;&#x80FD;&#x9020;&#x6210;&#x5F71;&#x54CD;&#x3002;Multidex&#x5728;install&#x65F6;&#x9700;&#x8981;&#x52A0;&#x8F7D;dex&#xFF0C;&#x9996;&#x6B21;&#x542F;&#x52A8;&#x65F6;&#x8FD8;&#x9700;&#x8981;&#x505A;odex&#x7684;&#x8F6C;&#x6362;&#xFF0C;&#x800C;&#x8FD9;&#x4E9B;&#x90FD;&#x662F;&#x5728;ui&#x4E3B;&#x7EBF;&#x7A0B;&#x4E2D;&#x5B8C;&#x6210;&#x3002;<br>&#x6839;&#x636E;<a href="https://medium.com/@Macarse/lazy-loading-dex-files-d41f6f37df0e#.3vx8kle8j" target="_blank" rel="external"> Carlos Sessa</a>&#x7684;&#x6D4B;&#x8BD5;&#xFF0C;&#x542F;&#x7528;multidex&#x540E;&#xFF0C;4.4&#x6216;&#x4EE5;&#x4E0B;&#x7684;&#x8BBE;&#x5907;&#xFF0C;app&#x7684;&#x542F;&#x52A8;&#x65F6;&#x95F4;&#x5E73;&#x5747;&#x4F1A;&#x589E;&#x52A0;15%&#xFF0C;&#x66F4;&#x4E25;&#x91CD;&#x7684;&#x60C5;&#x51B5;&#xFF0C;&#x751A;&#x81F3;&#x5728;&#x542F;&#x52A8;&#x65F6;&#x5019;&#x4F1A;&#x51FA;&#x73B0;&#x4E86;&#x9ED1;&#x5C4F;&#x3002;</p>
+<p>&#x56E0;&#x6B64;&#x76EE;&#x524D;&#x90E8;&#x5206;app&#x91C7;&#x53D6;&#x7684;&#x7B56;&#x7565;&#x662F;&#xFF0C;&#x653E;&#x5F03;&#x6389;Multidex&#x7684;&#xFF0C;&#x800C;&#x8F6C;&#x4E3A;&#x63D2;&#x4EF6;&#x5316;&#x7684;&#x67B6;&#x6784;&#x3002;&#x901A;&#x8FC7;&#x5C06;&#x975E;&#x6838;&#x5FC3;&#x6A21;&#x5757;&#x7684;lazy load&#xFF0C;&#x6765;&#x8FBE;&#x5230;&#x542F;&#x52A8;&#x901F;&#x5EA6;&#x7684;&#x4F18;&#x5316;&#xFF0C;&#x4F46;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x660E;&#x786E;&#x7684;&#x662F;&#xFF0C;&#x5E76;&#x4E0D;&#x662F;&#x6240;&#x6709;app&#x90FD;&#x9002;&#x5408;&#x63D2;&#x4EF6;&#x5316;&#x67B6;&#x6784;&#xFF0C;&#x4E3A;&#x4E86;&#x5B9E;&#x73B0;&#x542F;&#x52A8;&#x52A0;&#x901F;&#x5C06;&#x672C;&#x8026;&#x5408;&#x7684;&#x4E1A;&#x52A1;&#x903B;&#x8F91;&#x786C;&#x751F;&#x751F;&#x62C6;&#x89E3;&#x5176;&#x5B9E;&#x662F;&#x672C;&#x672B;&#x5012;&#x7F6E;&#x3002;</p>
+<h2 id="&#x89E3;&#x51B3;&#x65B9;&#x6848;"><a href="#&#x89E3;&#x51B3;&#x65B9;&#x6848;" class="headerlink" title="&#x89E3;&#x51B3;&#x65B9;&#x6848;"></a>&#x89E3;&#x51B3;&#x65B9;&#x6848;</h2><h3 id="Multidex&#x5F02;&#x6B65;&#x5316;"><a href="#Multidex&#x5F02;&#x6B65;&#x5316;" class="headerlink" title="Multidex&#x5F02;&#x6B65;&#x5316;"></a>Multidex&#x5F02;&#x6B65;&#x5316;</h3><p>&#x5728;Android&#x7684;&#x6027;&#x80FD;&#x4F18;&#x5316;&#x4E2D;&#xFF0C;&#x6700;&#x5E38;&#x89C1;&#x7684;&#x601D;&#x8DEF;&#x5C31;&#x662F;&#x5F02;&#x6B65;&#x5316;&#xFF0C;&#x51CF;&#x5C11;UI&#x7EBF;&#x7A0B;&#x7684;&#x5DE5;&#x4F5C;&#x3002;&#x5728;&#x5E94;&#x7528;&#x7684;&#x4EA4;&#x4E92;&#x5C42;&#x9762;&#x4E0A;&#xFF0C;app&#x542F;&#x52A8;&#x65F6;&#xFF0C;&#x51E0;&#x4E4E;&#x6240;&#x6709;app&#x90FD;&#x4F1A;&#x6709;&#x4E00;&#x4E2A;SplashActivity&#x3002;&#x5728;&#x754C;&#x9762;&#x4E0A;&#x5C55;&#x793A;&#x6B22;&#x8FCE;&#x9875;&#xFF0C;&#x5728;&#x540E;&#x53F0;&#x8FDB;&#x884C;&#x521D;&#x59CB;&#x5316;&#x7684;&#x4E1A;&#x52A1;&#x903B;&#x8F91;&#x3002;&#x8FD9;&#x5C31;&#x7ED9;&#x6211;&#x4EEC;&#x4E00;&#x4E2A;&#x542F;&#x53D1;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5C06;&#x7CFB;&#x7EDF;&#x7684;&#x521D;&#x59CB;&#x5316;&#x903B;&#x8F91;&#xFF0C;&#x5EF6;&#x8FDF;&#x5230;&#x6211;&#x4EEC;&#x7684;&#x4E1A;&#x52A1;&#x521D;&#x59CB;&#x5316;&#x65F6;&#x95F4;&#x70B9;&#x4E0A;&#x3002;</p>
+<p>&#x66F4;&#x52A0;&#x5177;&#x4F53;&#x7684;&#x65B9;&#x5F0F;&#x662F;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5C06;Multidex.install&#x8FD9;&#x4E2A;&#x64CD;&#x4F5C;&#x5F02;&#x6B65;&#x5316;&#xFF0C;&#x4FDD;&#x8BC1;&#x4E3B;&#x7EBF;&#x7A0B;&#x7684;&#x6B63;&#x5E38;&#x8FDB;&#x884C;&#xFF0C;&#x5F85;dex&#x52A0;&#x8F7D;&#x5B8C;&#x6210;&#x540E;&#x901A;&#x77E5;SplashActivity&#x8DF3;&#x8F6C;&#x5230;&#x771F;&#x6B63;&#x7684;&#x4E1A;&#x52A1;&#x4E3B;&#x754C;&#x9762;&#x3002;</p>
+<p>&#x5BF9;MultiDex&#x7684;&#x52A0;&#x8F7D;&#x8FDB;&#x884C;&#x5F02;&#x6B65;&#x5316;&#x4E4B;&#x540E;&#xFF0C;&#x6211;&#x4EEC;&#x8FD8;&#x53EF;&#x4EE5;&#x8FDB;&#x884C;&#x7B2C;&#x4E8C;&#x6B65;&#xFF0C;main dex&#x5927;&#x5C0F;&#x7684;&#x7CBE;&#x7B80;&#x3002;</p>
+<h3 id="Main-Dex&#x7CBE;&#x7B80;"><a href="#Main-Dex&#x7CBE;&#x7B80;" class="headerlink" title="Main Dex&#x7CBE;&#x7B80;"></a>Main Dex&#x7CBE;&#x7B80;</h3><p>&#x6211;&#x4EEC;&#x5148;&#x4E86;&#x89E3;&#x4E00;&#x4E0B;MultiDex&#x5206;&#x5305;&#x7684;&#x539F;&#x7406;&#xFF0C;Multidex&#x4F1A;&#x5728;&#x5165;&#x53E3;Application&#x7684;attachBaseContext&#xFF0C;&#x52A0;&#x8F7D;second dex&#xFF0C;&#x56E0;&#x6B64;multidex&#x5206;&#x5305;&#x7684;&#x57FA;&#x672C;&#x539F;&#x5219;&#x662F;&#xFF1A;&#x4FDD;&#x8BC1;app&#x542F;&#x52A8;&#x9700;&#x8981;&#x7684;class&#x653E;&#x7F6E;&#x5728;main dex&#x4E0A;&#x3002;&#x5728;android gradle 1.5&#x4E4B;&#x540E;&#xFF0C;multidex&#x90FD;&#x901A;&#x8FC7;&#x4E00;&#x4E2A;MultidexTransform&#x5B8C;&#x6210;&#xFF0C;&#x5206;&#x5305;&#x8FC7;&#x7A0B;&#x53EF;&#x4EE5;&#x5206;&#x4E3A;&#x4E09;&#x6B65;&#xFF1A;</p>
+<ul>
+<li>&#x751F;&#x6210;manifest_keep.txt</li>
+</ul>
+<p>MutidexTransform&#x4F1A;&#x89E3;&#x6790;&#x51FA;AndroidManifest.xml&#x4E2D;&#x6240;&#x6709;&#x7684;&#x7EC4;&#x4EF6;&#x7C7B;&#xFF1A;&#x5305;&#x62EC;Activity&#x3001;Service&#x3001;Receiver&#x4EE5;&#x53CA;ContentProvider&#xFF0C;&#x8FD9;&#x4E9B;&#x7C7B;&#x5C06;&#x548C;Application&#x5165;&#x53E3;&#x7C7B;&#x4E00;&#x8D77;&#x653E;&#x5728;build/intermediates/multi-dex/{flavor}/{buildType}/manifest_keep.txt&#x6587;&#x4EF6;&#x4E2D;</p>
+<ul>
+<li>&#x751F;&#x6210;maindexlist.txt&#x6587;&#x4EF6;</li>
+</ul>
+<p>&#x67E5;&#x627E;manifest_keep.txt&#x4E2D;&#x6240;&#x6709;&#x7C7B;&#x7684;&#x76F4;&#x63A5;&#x5F15;&#x7528;&#x7C7B;&#xFF0C;&#x5177;&#x4F53;&#x7684;&#x65B9;&#x5F0F;&#x662F;&#x904D;&#x5386;&#x7C7B;&#x7684;&#x6240;&#x6709;&#x5B57;&#x6BB5;&#x4EE5;&#x53CA;&#x65B9;&#x6CD5;&#xFF0C;&#x67E5;&#x770B;&#x65B9;&#x6CD5;&#x7684;&#x53C2;&#x6570;&#x548C;&#x8FD4;&#x56DE;&#x503C;&#x7684;&#x7C7B;&#x578B;&#xFF0C;&#x5C06;&#x5176;&#x653E;&#x4FDD;&#x5B58;&#x5728;maindexlist.txt</p>
+<ul>
+<li>&#x751F;&#x6210;main dex</li>
+</ul>
+<p>&#x5C06;maindexlist.txt&#x6587;&#x4EF6;&#x5305;&#x542B;&#x7684;&#x6240;&#x6709;class&#x7F16;&#x8BD1;&#x8FDB;main dex</p>
+<p>&#x4ECE;&#x4E0A;&#x9762;&#x7684;&#x5206;&#x6790;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x786E;&#x5B9A;&#x7684;&#x662F;&#xFF0C;MultiDex&#x7684;&#x5206;&#x5305;&#x673A;&#x5236;&#x5E76;&#x4E0D;&#x4E25;&#x5BC6;&#xFF1A;</p>
+<ul>
+<li>MultiDex&#x5C06;AndroidManifest.xml&#x4E2D;&#x7684;&#x6240;&#x6709;&#x7EC4;&#x4EF6;&#x90FD;&#x5305;&#x542B;&#x5728;&#x4E86;manifest_keep.txt&#x3002;&#x4F46;app&#x5728;&#x9996;&#x6B21;&#x542F;&#x52A8;&#x65F6;&#xFF0C;&#x5E76;&#x4E0D;&#x9700;&#x8981;&#x52A0;&#x8F7D;&#x6240;&#x6709;&#x7684;&#x7EC4;&#x4EF6;&#xFF0C;&#x800C;&#x53EA;&#x662F;&#x9700;&#x8981;&#x5165;&#x53E3;&#x7684;activity&#xFF0C;&#x4F9B;&#x5176;&#x4ED6;app&#x8BBF;&#x95EE;&#x7684;service&#x3001;contentprovider&#x4EE5;&#x53CA;&#x6CE8;&#x518C;&#x83B7;&#x53D6;&#x7CFB;&#x7EDF;&#x901A;&#x77E5;&#x7684;receiver&#x3002;MainDex&#x4E2D;&#x8FC7;&#x591A;&#x7684;&#x7EC4;&#x4EF6;&#x4FE1;&#x606F;&#x53CD;&#x800C;&#x53EF;&#x80FD;&#x5BFC;&#x81F4;&#x4E86;app&#x542F;&#x52A8;&#x8FC7;&#x6162;&#x3002;</li>
+</ul>
+<ul>
+<li>MultidexTransform&#x53EA;&#x67E5;&#x627E;&#x4E86;manifest_keep.txt&#x4E2D;&#x7C7B;&#x7684;&#x76F4;&#x63A5;&#x5F15;&#x7528;&#x7C7B;&#xFF0C;&#x95F4;&#x63A5;&#x5F15;&#x7528;&#x7C7B;&#x5E76;&#x6CA1;&#x6709;&#x51FA;&#x73B0;&#x5728;maindex&#x4E2D;&#xFF0C;&#x7279;&#x6B8A;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x4F1A;&#x51FA;&#x73B0;<a href="http://blog.waynell.com/2015/04/19/android-multidex/" target="_blank" rel="external">NoClassDefFoundError</a>&#x7684;&#x5F02;&#x5E38;&#xFF0C;&#x8FD9;&#x65F6;&#x5019;&#x5F00;&#x53D1;&#x8005;&#x9700;&#x8981;&#x81EA;&#x884C;&#x5C06;&#x9700;&#x8981;&#x7684;class&#x6DFB;&#x52A0;&#x5230;maindexlist.txt</li>
+</ul>
+<p>&#x9488;&#x5BF9;&#x8FD9;&#x4E24;&#x4E2A;&#x7F3A;&#x9677;&#xFF0C;&#x6211;&#x4EEC;&#x7684;&#x4F18;&#x5316;&#x601D;&#x8DEF;&#x662F;MultiDex&#x7684;&#x5206;&#x5305;&#x6D41;&#x7A0B;&#x8FDB;&#x884C;&#x6539;&#x8FDB;&#xFF1A;</p>
+<ul>
+<li><p>&#x4F7F;&#x7528;SAX&#x81EA;&#x884C;&#x89E3;&#x6790;AndroidMainfest.xml&#xFF0C;&#x62BD;&#x53D6;&#x51FA;&#x7EC4;&#x4EF6;&#x4FE1;&#x606F;&#xFF0C;&#x5C06;&#x539F;&#x59CB;&#x7684;Manifest_keep.txt&#x5185;&#x5BB9;&#x66FF;&#x6362;&#x6389;&#xFF0C;&#x53BB;&#x9664;&#x542F;&#x52A8;&#x4E0D;&#x9700;&#x8981;&#x7684;Activity&#x7EC4;&#x4EF6;&#xFF0C;&#x4FDD;&#x8BC1;&#x542F;&#x52A8;&#x52A0;&#x8F7D;&#x7684;&#x7C7B;&#x6700;&#x5C0F;&#x3002;</p>
+</li>
+<li><p>&#x5728;gradle&#x4E2D;&#x6DFB;&#x52A0;multiDexExt&#x6269;&#x5C55;&#x5757;&#xFF0C;&#x901A;&#x8FC7;&#x6307;&#x5B9A;&#x7C7B;&#x540D;&#x6216;&#x901A;&#x914D;&#x7B26;&#x6765;&#x8BBE;&#x7F6E;&#x5FC5;&#x987B;&#x7F16;&#x8BD1;&#x5728;MainDex&#x4E2D;&#x7C7B;&#xFF0C;&#x5728;&#x6269;&#x5C55;&#x5757;&#x4E2D;&#x6307;&#x5B9A;&#x7684;&#x7C7B;&#x90FD;&#x4F1A;&#x88AB;&#x6DFB;&#x52A0;&#x5230;maindexlist.txt&#x6587;&#x4EF6;&#x6C47;&#x4E2D;&#x3002;</p>
+<pre><code>multiDexExt {
+    keepClasses += &apos;android.support.v7.app.AppCompatActivity&apos;
+    keepClasses += &apos;android.support.v7.app.AppCompatDelegate&apos;
+    keepClasses += &apos;android.support.v7.app.**&apos;
+}
+</code></pre></li>
+</ul>
+<p>&#x989D;&#x5916;&#x9700;&#x8981;&#x63D0;&#x7684;&#x4E00;&#x4E2A;&#x7EC6;&#x8282;&#x662F;&#xFF0C;&#x4E3A;&#x4E86;&#x4FDD;&#x8BC1;&#x4EE5;&#x4E0A;&#x7CBE;&#x7B80;&#x751F;&#x6548;&#x3002;&#x6211;&#x4EEC;&#x8FD8;&#x9700;&#x8981;&#x5F00;&#x542F;dx&#x5DE5;&#x5177;&#x7684;minimal-main-dex&#x53C2;&#x6570;&#xFF1A;<br><img src="http://coolpers.github.io/assets/posts/2015-04-08-multidex/dxhelp.png" alt=""><br>&#x8FD9;&#x4E2A;&#x53C2;&#x6570;&#x53EF;&#x4EE5;&#x4FDD;&#x8BC1;MainDex&#x53EA;&#x5305;&#x542B;maindexlist.txt&#x6587;&#x4EF6;&#x4E2D;&#x6307;&#x5B9A;&#x7684;&#x7C7B;&#x3002;&#x4F46;&#x5728;gradle1.5&#x5230;2.2&#x4E4B;&#x95F4;&#xFF0C;&#x8FD9;&#x4E2A;&#x53C2;&#x6570;&#x88AB;&#x9ED8;&#x8BA4;&#x5173;&#x95ED;&#x7684;&#xFF0C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#x8FD9;&#x7BC7;&#x6587;&#x7AE0;&#xFF1A;<a href="http://blog.csdn.net/lizhen3125/article/details/51911989?utm_source=itdadao&amp;utm_medium=referral" target="_blank" rel="external">Gradle1.5.0&#x4E4B;&#x540E;&#x5982;&#x4F55;&#x63A7;&#x5236;dex&#x5305;&#x5185;&#x7684;&#x65B9;&#x6CD5;&#x6570;&#x4E0A;&#x9650;&#xFF1F;</a> ,&#x76F4;&#x5230;gradle2.2&#x4E4B;&#x540E;&#xFF0C;dx&#x7684;minimal-main-dex&#x624D;&#x91CD;&#x65B0;&#x5F00;&#x653E;&#x7ED9;&#x4E86;&#x5F00;&#x53D1;&#x8005;&#x3002;&#x5728;gradle 2.0~2.1&#x7684;&#x7248;&#x672C;&#x9636;&#x6BB5;&#xFF0C;&#x6211;&#x4EEC;&#x901A;&#x8FC7;&#x6302;&#x8F7D;<a href="http://www.infoq.com/cn/articles/javaagent-illustrated/" target="_blank" rel="external">javaagent</a>&#x7684;&#x65B9;&#x5F0F;&#x5BF9;dx&#x8FC7;&#x7A0B;&#x8FDB;&#x884C;&#x4E86;hook&#xFF0C;&#x91CD;&#x65B0;&#x5F00;&#x653E;minimal-main-dex&#x53C2;&#x6570;&#xFF0C;&#x540E;&#x9762;&#x6211;&#x4EEC;&#x518D;&#x51FA;&#x4E00;&#x7BC7;&#x6587;&#x7AE0;&#x6765;&#x8BE6;&#x7EC6;&#x63CF;&#x8FF0;&#x8FD9;&#x4E2A;&#x6D41;&#x7A0B;&#x3002;    </p>
+<h2 id="&#x6700;&#x540E;"><a href="#&#x6700;&#x540E;" class="headerlink" title="&#x6700;&#x540E;"></a>&#x6700;&#x540E;</h2><p>&#x5728;main dex&#x7684;&#x5206;&#x5305;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;maindex&#x53EA;&#x5305;&#x542B;&#x4E86;&#x7EC4;&#x4EF6;&#x4EE5;&#x53CA;&#x76F4;&#x63A5;&#x5F15;&#x7528;&#x7C7B;&#x3002;&#x901A;&#x8FC7;&#x6211;&#x4EEC;&#x7684;&#x4F18;&#x5316;&#x8FDB;&#x4E00;&#x6B65;&#x51CF;&#x5C11;&#x4E86;maindex&#x7684;&#x5927;&#x5C0F;&#xFF0C;&#x56E0;&#x6B64;&#x4E5F;&#x589E;&#x5927;&#x4E86;<a href="http://blog.waynell.com/2015/04/19/android-multidex/" target="_blank" rel="external">NoClassDefFoundError</a>&#x7684;&#x5F02;&#x5E38;&#x7684;&#x53EF;&#x80FD;&#xFF0C;&#x4F7F;&#x7528;&#x4EE5;&#x4E0A;&#x7684;&#x4F18;&#x5316;&#x601D;&#x8DEF;&#x505A;&#x597D;&#x6D4B;&#x8BD5;&#xFF0C;&#x4E00;&#x65E6;&#x53D1;&#x73B0;&#x542F;&#x52A8;&#x5931;&#x8D25;&#xFF0C;&#x4F7F;&#x7528;multiDexExt&#x91CD;&#x65B0;&#x6DFB;&#x52A0;&#x7F3A;&#x5931;&#x7684;&#x7C7B;&#x578B;&#x3002;</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&amp;#x65E7;&amp;#x6587;&amp;#x4E00;&amp;#x7BC7;&amp;#xFF0C;&amp;#x79FB;&amp;#x52A8;&amp;#x5F00;&amp;#x53D1;&amp;#x524D;&amp;#x7EBF;&amp;#x63A8;&amp;#x9001;&amp;#x4E86;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/24305296&quot;&gt;MultiDex&amp;#x5DE5;&amp;#x4F5C;&amp;#x539F;&amp;#x7406;&amp;#x5206;&amp;#x6790;&amp;#x548C;&amp;#x4F18;&amp;#x5316;&amp;#x65B9;&amp;#x6848;&lt;/a&gt;&amp;#xFF0C;&amp;#x4E5F;&amp;#x5206;&amp;#x4EAB;&amp;#x4E00;&amp;#x4E0B;&amp;#x6211;&amp;#x4EEC;&amp;#x7684;MultiDex&amp;#x542F;&amp;#x52A8;&amp;#x4F18;&amp;#x5316;&amp;#x601D;&amp;#x8DEF;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="android" scheme="http://NEYouFan.github.io/categories/android/"/>
+    
+    
+      <category term="性能优化" scheme="http://NEYouFan.github.io/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    
+  </entry>
   
   <entry>
     <title>大白健康系统--iOS APP运行时Crash自动修复系统</title>
