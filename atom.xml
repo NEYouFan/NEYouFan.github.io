@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://NEYouFan.github.io/"/>
-  <updated>2017-03-10T04:43:31.000Z</updated>
+  <updated>2017-03-10T05:33:46.000Z</updated>
   <id>http://NEYouFan.github.io/</id>
   
   <author>
@@ -17,10 +17,10 @@
   
   <entry>
     <title>网易NAPM Andorid SDK实现原理</title>
-    <link href="http://NEYouFan.github.io/2017/03/09/android/NAPM%20Android%20SDK/"/>
-    <id>http://NEYouFan.github.io/2017/03/09/android/NAPM Android SDK/</id>
-    <published>2017-03-08T16:00:00.000Z</published>
-    <updated>2017-03-10T04:43:31.000Z</updated>
+    <link href="http://NEYouFan.github.io/2017/03/10/android/NAPM%20Android%20SDK/"/>
+    <id>http://NEYouFan.github.io/2017/03/10/android/NAPM Android SDK/</id>
+    <published>2017-03-09T16:00:00.000Z</published>
+    <updated>2017-03-10T05:33:46.000Z</updated>
     
     <content type="html"><![CDATA[<p>NAPM &#x662F;&#x7F51;&#x6613;&#x7684;&#x5E94;&#x7528;&#x6027;&#x80FD;&#x7BA1;&#x7406;&#x5E73;&#x53F0;&#xFF0C;&#x91C7;&#x7528;&#x975E;&#x4FB5;&#x5165;&#x7684;&#x65B9;&#x5F0F;&#x83B7;&#x53D6;&#x5E94;&#x7528;&#x6027;&#x80FD;&#x6570;&#x636E;&#xFF0C;&#x53EF;&#x4EE5;&#x5B9E;&#x65F6;&#x5C55;&#x793A;&#x591A;&#x4E2A;&#x7EF4;&#x5EA6;&#x7684;&#x5206;&#x6790;&#x7ED3;&#x679C;&#x3002;&#x672C;&#x6587;&#x4E3B;&#x8981;&#x7ED9;&#x5927;&#x5BB6;&#x5206;&#x4EAB;&#x4E00;&#x4E0B;Android&#x7AEF;SDK&#x7684;&#x5B9E;&#x73B0;&#x539F;&#x7406;&#x3002;<a id="more"></a></p>
 <h2 id="&#x524D;&#x8A00;"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</h2><p>APM&#xFF08;Application Performance Management&#xFF09;&#xFF0C;&#x5E94;&#x7528;&#x6027;&#x80FD;&#x7BA1;&#x7406;&#xFF0C;&#x4E3B;&#x8981;&#x662F;&#x4E3A;&#x4E86;&#x89E3;&#x51B3;&#x5E94;&#x7528;&#x4E0A;&#x7EBF;&#x4E4B;&#x540E;&#xFF0C;&#x6027;&#x80FD;&#x95EE;&#x9898;&#x96BE;&#x4EE5;&#x53D1;&#x73B0;&#x3001;&#x96BE;&#x4EE5;&#x5B9A;&#x4F4D;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x901A;&#x8FC7;&#x63A5;&#x5165;APM&#xFF0C;&#x53EF;&#x4EE5;&#x5B9E;&#x65F6;&#x4E86;&#x89E3;&#x5E94;&#x7528;&#x5728;&#x8FD0;&#x884C;&#x8FC7;&#x7A0B;&#x4E2D;&#x7684;&#x6027;&#x80FD;&#x8868;&#x73B0;&#xFF0C;&#x5FEB;&#x901F;&#x5B9A;&#x4F4D;&#x548C;&#x4FEE;&#x590D;&#x95EE;&#x9898;&#x3002;</p>
