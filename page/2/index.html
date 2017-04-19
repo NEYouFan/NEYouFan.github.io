@@ -1,0 +1,378 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>网易杭州前端技术部</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="网易杭州前端技术部">
+    
+
+    
+    <meta name="description" content="网易杭研前端技术部，分享最前沿的技术。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="网易杭州前端技术部">
+<meta property="og:url" content="http://NEYouFan.github.io/page/2/index.html">
+<meta property="og:site_name" content="网易杭州前端技术部">
+<meta property="og:description" content="网易杭研前端技术部，分享最前沿的技术。">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网易杭州前端技术部">
+<meta name="twitter:description" content="网易杭研前端技术部，分享最前沿的技术。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="网易杭州前端技术部" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/f.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/neyoufanlogo.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/neyoufanlogo.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="网易杭州前端技术部">网易杭州前端技术部</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:NEYouFan.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main">
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/11/25/android/网易 Android 工程模板化实践/" title="网易Android工程模板化实践" itemprop="url">网易Android工程模板化实践</a>
+  </h1>
+  <p class="article-author">By
+       
+		<span style="color: rgb(44, 166, 203);" >张丹</span>
+		
+  <p class="article-time">
+    <time datetime="2016-11-24T16:00:00.000Z" itemprop="datePublished"> 发表于 2016-11-25</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>&#x6211;&#x4EEC;&#x7F51;&#x6613;&#x524D;&#x7AEF;&#x6280;&#x672F;&#x90E8; - &#x79FB;&#x52A8;&#x6280;&#x672F;&#x7EC4;&#x4F5C;&#x4E3A;&#x516C;&#x53F8;&#x7684;&#x79FB;&#x52A8;&#x7AEF;&#x57FA;&#x7840;&#x6280;&#x672F;&#x90E8;&#x95E8;&#xFF0C;&#x4E3B;&#x8981;&#x4E3A;&#x5176;&#x4ED6;&#x90E8;&#x95E8;&#x63D0;&#x4F9B;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#x3001;&#x6280;&#x672F;&#x652F;&#x6301;&#x548C;&#x4EA7;&#x54C1;&#x5B75;&#x5316;&#x3002;&#x5728;&#x51E0;&#x5E74;&#x7684;&#x79EF;&#x7D2F;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x62E5;&#x6709;&#x4E00;&#x4E9B;&#x81EA;&#x5DF1;&#x7684;&#x6846;&#x67B6;&#x548C; SDK&#xFF0C;&#x5982;&#x8F7B;&#x5E94;&#x7528;&#x6846;&#x67B6;&#x3001;&#x70ED;&#x66F4;&#x65B0; SDK&#x3001;&#x7F51;&#x7EDC;&#x8BF7;&#x6C42;&#x5E93;&#x3001;&#x672C;&#x5730;&#x5B58;&#x50A8;&#x5E93;&#x3001;&#x9875;&#x9762;&#x7BA1;&#x7406;&#x7B49;&#x3002;&#x670D;&#x52A1;&#x8FC7;&#x7F51;&#x6613;&#x65B0;&#x95FB;&#x3001;&#x4E91;&#x97F3;&#x4E50;&#x3001;&#x8003;&#x62C9;&#x3001;&#x6613;&#x4FE1;&#x7B49;&#x4EBF;&#x7EA7;&#x4EA7;&#x54C1;&#xFF0C;&#x5148;&#x540E;&#x5B75;&#x5316;&#x8FC7;&#x9752;&#x679C;&#x6444;&#x50CF;&#x5934;&#x3001;&#x4E8C;&#x6B21;&#x5143;Gacha&#x3001;&#x4E25;&#x9009;&#x7B49;&#x91CD;&#x8981;&#x4EA7;&#x54C1;&#x3002;</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/11/25/android/网易 Android 工程模板化实践/#more">阅读原文</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/android工程模板/">android工程模板</a>
+  </div>
+
+</div>
+
+
+
+
+<!--<div class="comments-count">-->
+	<!---->
+	  	<!--<span></span>-->
+		<!--<a href="/2016/11/25/android/网易 Android 工程模板化实践/#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/11/25/android/网易 Android 工程模板化实践/" data-count-type="comments">&nbsp;</a>-->
+	<!---->
+<!--</div>-->
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+
+  <nav id="page-nav" class="clearfix">
+    <a class="extend prev" rel="prev" href="/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ios/" title="ios">ios<sup>5</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/LLVM/" title="LLVM">LLVM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/性能优化/" title="性能优化">性能优化<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/APM/" title="APM">APM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javaagent/" title="javaagent">javaagent<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HTTP/" title="HTTP">HTTP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ci容器/" title="ci容器">ci容器<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Crash-APP/" title="Crash, APP">Crash, APP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/埋点/" title="埋点">埋点<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NeteaseAPM/" title="NeteaseAPM">NeteaseAPM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Js引擎/" title="Js引擎">Js引擎<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/混合开发框架/" title="混合开发框架">混合开发框架<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">微信公众号</p>
+  <div class="barcode">
+    <img src="/img/qrcode_neyoufan.jpg" alt="">
+  </div>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+		<p class="copyright">
+		copyright © 2017
+		
+		<a href="/about" target="_blank" title="网易杭州前端技术部">网易杭州前端技术部</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?78a4a5539516d8238b30820c93b43b1f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+ </html>

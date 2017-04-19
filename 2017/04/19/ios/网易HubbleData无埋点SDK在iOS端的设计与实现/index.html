@@ -1,0 +1,716 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>网易HubbleData无埋点SDK在iOS端的设计与实现 | 网易杭州前端技术部</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="网易杭州前端技术部">
+    
+
+    
+    <meta name="description" content="&amp;#x7F51;&amp;#x6613;HubbleData&amp;#x662F;&amp;#x4E00;&amp;#x6B3E;&amp;#x63A2;&amp;#x7D22;&amp;#x7528;&amp;#x6237;&amp;#x884C;&amp;#x4E3A;&amp;#x7684;&amp;#x6570;&amp;#x636E;&amp;#x5206;&amp;#x6790;&amp;#x7CFB;&amp;#x7EDF;&amp;#x3002;&amp;#x672C;&amp;#x6587;&amp;#x4E3B;&amp;#x8981;&amp;#x4EC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网易HubbleData无埋点SDK在iOS端的设计与实现">
+<meta property="og:url" content="http://NEYouFan.github.io/2017/04/19/ios/网易HubbleData无埋点SDK在iOS端的设计与实现/index.html">
+<meta property="og:site_name" content="网易杭州前端技术部">
+<meta property="og:description" content="&amp;#x7F51;&amp;#x6613;HubbleData&amp;#x662F;&amp;#x4E00;&amp;#x6B3E;&amp;#x63A2;&amp;#x7D22;&amp;#x7528;&amp;#x6237;&amp;#x884C;&amp;#x4E3A;&amp;#x7684;&amp;#x6570;&amp;#x636E;&amp;#x5206;&amp;#x6790;&amp;#x7CFB;&amp;#x7EDF;&amp;#x3002;&amp;#x672C;&amp;#x6587;&amp;#x4E3B;&amp;#x8981;&amp;#x4EC">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/%E6%A6%82%E8%A7%88.jpg?imageView/2/w/600">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/%E4%BA%8B%E4%BB%B6.jpg?imageView/2/w/600">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/%E5%AE%9E%E6%97%B6.jpg?imageView/2/w/600">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/111.jpg?imageView/2/w/700">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/a001fa1c49889ec62e6aab38ea46d97e.jpg?imageView/2/w/550">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/d0e3226a902872499b6f6a9b2daf0dce.jpg?imageView/2/w/600">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/6ff5a9c6bf8a37837c94b7e36077f658.jpg?imageView/2/w/500">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/5987b2308a7e81e23f58f2c73c0b9013.jpg?imageView/2/w/360">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/76cea2c617f7f694a1451072946b75e9.jpg?imageView/2/w/365">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/fe80e4df8e91d7161ce09ef825964398.jpg?imageView/2/w/500">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/8104c8074bcc05f53046e14d57312f88.jpg?imageView/2/w/500">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/bar1.jpg?imageView/2/w/400">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/bar2.jpg?imageView/2/w/400">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/kaola.jpeg?imageView/2/w/250">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/yanxuan.jpeg?imageView/2/w/250">
+<meta property="og:image" content="http://ofwsr8cl0.bkt.clouddn.com/%E5%90%8C%E7%B1%BB%E5%85%83%E7%B4%A0.jpg?imageView/2/w/300">
+<meta property="og:updated_time" content="2017-04-19T08:44:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网易HubbleData无埋点SDK在iOS端的设计与实现">
+<meta name="twitter:description" content="&amp;#x7F51;&amp;#x6613;HubbleData&amp;#x662F;&amp;#x4E00;&amp;#x6B3E;&amp;#x63A2;&amp;#x7D22;&amp;#x7528;&amp;#x6237;&amp;#x884C;&amp;#x4E3A;&amp;#x7684;&amp;#x6570;&amp;#x636E;&amp;#x5206;&amp;#x6790;&amp;#x7CFB;&amp;#x7EDF;&amp;#x3002;&amp;#x672C;&amp;#x6587;&amp;#x4E3B;&amp;#x8981;&amp;#x4EC">
+<meta name="twitter:image" content="http://ofwsr8cl0.bkt.clouddn.com/%E6%A6%82%E8%A7%88.jpg?imageView/2/w/600">
+
+    
+    <link rel="alternative" href="/atom.xml" title="网易杭州前端技术部" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/f.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/neyoufanlogo.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/neyoufanlogo.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="网易杭州前端技术部">网易杭州前端技术部</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:NEYouFan.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/04/19/ios/网易HubbleData无埋点SDK在iOS端的设计与实现/" title="网易HubbleData无埋点SDK在iOS端的设计与实现" itemprop="url">网易HubbleData无埋点SDK在iOS端的设计与实现</a>
+  </h1>
+  <p class="article-author">By
+       
+		<span style="color: rgb(44, 166, 203);" >马守磊</span>
+		
+  <p class="article-time">
+    <time datetime="2017-04-18T16:00:00.000Z" itemprop="datePublished"> 发表于 2017-04-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#0-引言"><span class="toc-text">0 引言    </span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0"><span class="toc-text">0 引言    </span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、埋点简介"><span class="toc-text">一、埋点简介</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1"><span class="toc-text">一、埋点简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-三种埋点的实现方式简介"><span class="toc-text">1.1 三种埋点的实现方式简介</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1.1"><span class="toc-text">1.1 三种埋点的实现方式简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-无埋点SDK设计详细流程"><span class="toc-text">1.2 无埋点SDK设计详细流程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1.2"><span class="toc-text">1.2 无埋点SDK设计详细流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#二、事件唯一ID的确定"><span class="toc-text">二、事件唯一ID的确定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2"><span class="toc-text">二、事件唯一ID的确定</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-控件的层级结构path构造"><span class="toc-text">2.1 控件的层级结构path构造</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2.1"><span class="toc-text">2.1 控件的层级结构path构造</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-1-1-普通view的层级结构path构造"><span class="toc-text">2.1.1 普通view的层级结构path构造</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2.1.1"><span class="toc-text">2.1.1 普通view的层级结构path构造</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-1-2-几种特殊情况的处理"><span class="toc-text">2.1.2 几种特殊情况的处理</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2.1.2"><span class="toc-text">2.1.2 几种特殊情况的处理</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-各个子页面的controller不同？"><span class="toc-text">(1) 各个子页面的controller不同？</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-各个子页面的controller相同？"><span class="toc-text">(2) 各个子页面的controller相同？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-当前页面controller的获取"><span class="toc-text">2.2 当前页面controller的获取</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2.2"><span class="toc-text">2.2 当前页面controller的获取</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#三、无埋点的采集的实现"><span class="toc-text">三、无埋点的采集的实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3"><span class="toc-text">三、无埋点的采集的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-AOP-简介"><span class="toc-text">3.1 AOP 简介</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3.1"><span class="toc-text">3.1 AOP 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-UIViewController的无埋点采集"><span class="toc-text">3.2 UIViewController的无埋点采集</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3.2"><span class="toc-text">3.2 UIViewController的无埋点采集</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-UIControl的无埋点采集"><span class="toc-text">3.3 UIControl的无埋点采集</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3.3"><span class="toc-text">3.3 UIControl的无埋点采集</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-3-1-UITextField"><span class="toc-text">3.3.1 UITextField</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3.3.1"><span class="toc-text">3.3.1 UITextField</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-3-2-UIButton"><span class="toc-text">3.3.2 UIButton</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3.3.2"><span class="toc-text">3.3.2 UIButton</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-3-3-UISwitch"><span class="toc-text">3.3.3 UISwitch</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3.3.3"><span class="toc-text">3.3.3 UISwitch</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-3-4-其余UIControl"><span class="toc-text">3.3.4 其余UIControl</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3.3.4"><span class="toc-text">3.3.4 其余UIControl</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-UITableView和UICollectionView的无埋点采集"><span class="toc-text">3.4 UITableView和UICollectionView的无埋点采集</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3.4"><span class="toc-text">3.4 UITableView和UICollectionView的无埋点采集</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-UIGestureRecognizer的无埋点采集"><span class="toc-text">3.5 UIGestureRecognizer的无埋点采集</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3.5"><span class="toc-text">3.5 UIGestureRecognizer的无埋点采集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#四、总结"><span class="toc-text">四、总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4"><span class="toc-text">四、总结</span></a>
+		
+		</div>
+		
+		<p>&#x7F51;&#x6613;HubbleData&#x662F;&#x4E00;&#x6B3E;&#x63A2;&#x7D22;&#x7528;&#x6237;&#x884C;&#x4E3A;&#x7684;&#x6570;&#x636E;&#x5206;&#x6790;&#x7CFB;&#x7EDF;&#x3002;&#x672C;&#x6587;&#x4E3B;&#x8981;&#x4ECB;&#x7ECD;&#x65E0;&#x57CB;&#x70B9;SDK&#x5728;iOS&#x7AEF;&#x7684;&#x8BBE;&#x8BA1;&#x4E0E;&#x5B9E;&#x73B0;&#xFF0C;&#x5206;&#x4EAB;&#x5728;&#x65E0;&#x57CB;&#x70B9;&#x5F00;&#x53D1;&#x8FC7;&#x7A0B;&#x4E2D;&#x7684;&#x4E00;&#x4E9B;&#x5173;&#x952E;&#x6280;&#x672F;&#x7684;&#xFF0C;&#x5305;&#x62EC;&#x4E8B;&#x4EF6;&#x552F;&#x4E00;ID&#x7684;&#x8BBE;&#x8BA1;&#x4E0E;&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x5B9E;&#x73B0;&#x3002;<a id="more"></a></p>
+<h3 id="0-&#x5F15;&#x8A00;"><a href="#0-&#x5F15;&#x8A00;" class="headerlink" title="0 &#x5F15;&#x8A00;    "></a><h2 id="0">0 &#x5F15;&#x8A00;    </h2></h3><p>&#x6700;&#x8FD1;&#x5728;&#x8D1F;&#x8D23;&#x516C;&#x53F8;&#x7684;HubbleData&#x7684;&#x57CB;&#x70B9;SDK&#x7684;&#x5F00;&#x53D1;&#x4EFB;&#x52A1;&#xFF0C;&#x4EA7;&#x54C1;&#x7684;&#x96CF;&#x5F62;&#x5176;&#x5B9E;&#x5728;&#x51E0;&#x5E74;&#x524D;&#x5C31;&#x5DF2;&#x7ECF;&#x6709;&#x4E86;&#xFF0C;&#x516C;&#x53F8;&#x5185;&#x90E8;&#x7684;&#x8BF8;&#x5982;&#x8003;&#x62C9;&#x3001;&#x6613;&#x4FE1;&#x3001;LOFTER&#x3001;&#x7F8E;&#x5B66;&#x3001;&#x6F2B;&#x753B;&#x7B49;&#x591A;&#x6B3E;&#x4EA7;&#x54C1;&#x90FD;&#x5DF2;&#x63A5;&#x5165;&#x4F7F;&#x7528;&#x3002;</p>
+<p>&#x4E0B;&#x56FE;&#x7ED9;&#x51FA;HubbleData SDK&#x67D0;&#x4E2A;&#x5E94;&#x7528;&#x7684;&#x90E8;&#x5206;&#x5206;&#x6790;&#x7684;&#x5C55;&#x793A;&#x9875;&#x9762;&#xFF1A;</p>
+<p><strong>&#xFF08;1&#xFF09;&#x6982;&#x89C8;&#x793A;&#x610F;&#x56FE;</strong> </p>
+<center> <img src="http://ofwsr8cl0.bkt.clouddn.com/%E6%A6%82%E8%A7%88.jpg?imageView/2/w/600" alt="&#x4E8B;&#x4EF6;"></center>
+
+<p><strong>&#xFF08;2&#xFF09;&#x4E8B;&#x4EF6;&#x5206;&#x6790;&#x793A;&#x610F;&#x56FE;</strong> </p>
+<center> <img src="http://ofwsr8cl0.bkt.clouddn.com/%E4%BA%8B%E4%BB%B6.jpg?imageView/2/w/600" alt="&#x4E8B;&#x4EF6;"></center>
+
+<p><strong>&#xFF08;3&#xFF09;&#x5B9E;&#x65F6;&#x5206;&#x6790;&#x793A;&#x610F;&#x56FE;</strong></p>
+<center> <img src="http://ofwsr8cl0.bkt.clouddn.com/%E5%AE%9E%E6%97%B6.jpg?imageView/2/w/600" alt="&#x4E8B;&#x4EF6;"></center>
+
+<p>&#x6B64;&#x5916;HubbleData&#x5E73;&#x53F0;&#x8FD8;&#x5177;&#x5907;&#x7559;&#x5B58;&#x5206;&#x6790;&#x3001;&#x6F0F;&#x6597;&#x5206;&#x6790;&#x3001;&#x7C98;&#x6027;&#x5206;&#x6790;&#x3001;&#x6570;&#x636E;&#x770B;&#x677F;&#x7B49;&#x591A;&#x79CD;&#x529F;&#x80FD;&#xFF0C;&#x65B9;&#x4FBF;&#x76F8;&#x5173;&#x8D1F;&#x8D23;&#x4EBA;&#x5458;&#x5BF9;&#x4EA7;&#x54C1;&#x7528;&#x6237;&#x884C;&#x4E3A;&#x8FDB;&#x884C;&#x8FDB;&#x4E00;&#x6B65;&#x7684;&#x63A2;&#x7D22;&#x5206;&#x6790;&#x3002;</p>
+<p>&#x8001;&#x7248;&#x672C;&#x7684;SDK&#x7684;&#x8BBE;&#x8BA1;&#x662F;&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#x5B9E;&#x73B0;&#x7684;&#xFF0C;&#x867D;&#x7136;&#x5BF9;&#x4E8E;&#x4E00;&#x4E9B;&#x8F83;&#x4E3A;&#x6210;&#x719F;&#x7684;&#x4EA7;&#x54C1;&#xFF0C;&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#x5B8C;&#x5168;&#x80FD;&#x591F;&#x8FBE;&#x5230;&#x4EA7;&#x54C1;&#x65B9;&#x7684;&#x9700;&#x6C42;&#xFF0C;&#x4F46;&#x662F;&#x5BF9;&#x4E8E;&#x4E00;&#x4E9B;&#x65B0;&#x8D77;&#x6B65;&#x6216;&#x8005;&#x9700;&#x9891;&#x7E41;&#x53D8;&#x66F4;&#x7684;&#x9700;&#x6C42;&#x7684;&#x65B0;&#x4EA7;&#x54C1;&#x7B49;&#xFF0C;&#x8003;&#x8651;&#x5230;&#x5176;&#x7EF4;&#x62A4;&#x7684;&#x6210;&#x672C;&#x5927;&#xFF0C;&#x4EE3;&#x4EF7;&#x9AD8;&#x7B49;&#x7F3A;&#x70B9;&#xFF0C;HubbleData&#x65E0;&#x57CB;&#x70B9;SDK&#x7684;&#x8BBE;&#x8BA1;&#x5C31;&#x663E;&#x5F97;&#x5C24;&#x4E3A;&#x91CD;&#x8981;&#x4E86;&#x3002;</p>
+<p>&#x672C;&#x4EBA;&#x4E3B;&#x8981;&#x8D1F;&#x8D23;iOS&#x7AEF;&#x65E0;&#x57CB;&#x70B9;&#x4EE5;&#x53CA;&#x53EF;&#x89C6;&#x5316;&#x5708;&#x9009;&#x7684;&#x5DE5;&#x4F5C;&#xFF0C;&#x6587;&#x7AE0;&#x4E3B;&#x8981;&#x7CFB;&#x7EDF;&#x8BB2;&#x89E3;&#x4E00;&#x4E0B;HubbleData&#x65E0;&#x57CB;&#x70B9;SDK&#x5728;iOS&#x7AEF;&#x7684;&#x8BBE;&#x8BA1;&#x4E0E;&#x5B9E;&#x73B0;&#x548C;&#x4E00;&#x4E9B;&#x76F8;&#x5173;&#x95EE;&#x9898;&#x7684;&#x89E3;&#x51B3;&#xFF0C;&#x540E;&#x7EED;&#x5C06;&#x9488;&#x5BF9;&#x6574;&#x4E2A;&#x57CB;&#x70B9;&#x7684;&#x5B9E;&#x73B0;&#x6D41;&#x7A0B;&#x4E0E;&#x53EF;&#x89C6;&#x5316;&#x5708;&#x9009;&#x7B49;&#x5185;&#x5BB9;&#x518D;&#x4F5C;&#x5206;&#x4EAB;&#x3002;</p>
+<h3 id="&#x4E00;&#x3001;&#x57CB;&#x70B9;&#x7B80;&#x4ECB;"><a href="#&#x4E00;&#x3001;&#x57CB;&#x70B9;&#x7B80;&#x4ECB;" class="headerlink" title="&#x4E00;&#x3001;&#x57CB;&#x70B9;&#x7B80;&#x4ECB;"></a><h2 id="1">&#x4E00;&#x3001;&#x57CB;&#x70B9;&#x7B80;&#x4ECB;</h2></h3><h4 id="1-1-&#x4E09;&#x79CD;&#x57CB;&#x70B9;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;&#x7B80;&#x4ECB;"><a href="#1-1-&#x4E09;&#x79CD;&#x57CB;&#x70B9;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;&#x7B80;&#x4ECB;" class="headerlink" title="1.1 &#x4E09;&#x79CD;&#x57CB;&#x70B9;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;&#x7B80;&#x4ECB;"></a><h2 id="1.1">1.1 &#x4E09;&#x79CD;&#x57CB;&#x70B9;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;&#x7B80;&#x4ECB;</h2></h4><p>&#x57CB;&#x70B9;&#x7684;&#x65B9;&#x5F0F;&#x5206;&#x4E3A;&#x4E09;&#x7C7B;&#xFF1A;&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#x3001;&#x53EF;&#x89C6;&#x5316;&#x57CB;&#x70B9;&#x548C;&#x65E0;&#x57CB;&#x70B9;&#x3002;&#x8FD9;&#x91CC;&#x7B80;&#x5355;&#x7684;&#x4ECB;&#x7ECD;&#x4E00;&#x4E0B;&#x4E09;&#x79CD;&#x57CB;&#x70B9;&#x65B9;&#x5F0F;&#xFF1A;</p>
+<p>(1) &#x4EE3;&#x7801;&#x57CB;&#x70B9;&#x5373;&#x662F;&#x5728;&#x4EE3;&#x7801;&#x7684;&#x5173;&#x952E;&#x90E8;&#x4F4D;&#x690D;&#x5165;&#x6240;&#x8981;&#x6536;&#x96C6;&#x6570;&#x636E;&#x7684;N&#x884C;&#x4EE3;&#x7801;&#xFF0C;&#x9700;&#x8981;&#x6316;&#x5F00;&#x4EA7;&#x54C1;&#x672C;&#x8EAB;&#xFF0C;&#x6DF1;&#x5165;&#x4E86;&#x89E3;&#x4EA7;&#x54C1;&#x7684;&#x4E1A;&#x52A1;&#x903B;&#x8F91;&#x53CA;&#x9879;&#x76EE;&#x7ED3;&#x6784;&#xFF0C;&#x4E0B;&#x9762;&#x4EE3;&#x7801;&#x6A21;&#x62DF;&#x5C55;&#x793A;&#x7684;&#x5373;&#x662F;&#x70B9;&#x51FB;&#x63D0;&#x4EA4;&#x8BA2;&#x5355;&#x7684;&#x65F6;&#x5019;HubbleData SDK&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#xFF1B;</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)buyButtonClick:(<span class="keyword">id</span>)sender {</div><div class="line">    <span class="comment">//&#x5904;&#x7406;&#x7528;&#x6237;&#x7684;&#x4E1A;&#x52A1;&#x903B;&#x8F91;</span></div><div class="line">    [<span class="keyword">self</span> handleOrder];</div><div class="line">    </div><div class="line">    <span class="comment">//&#x7528;&#x6237;&#x81EA;&#x5B9A;&#x4E49;&#x57CB;&#x70B9;&#x5C5E;&#x6027;</span></div><div class="line">    <span class="built_in">NSDictionary</span> *properties = @{<span class="string">@&quot;&#x5546;&#x54C1;&#x540D;&#x79F0;&quot;</span>  :   <span class="keyword">self</span>.productName,</div><div class="line">                                 <span class="string">@&quot;&#x5546;&#x54C1;&#x4EF7;&#x683C;&quot;</span>  :   <span class="keyword">self</span>.productPrice,</div><div class="line">                                 <span class="string">@&quot;&#x5546;&#x54C1;&#x7C7B;&#x522B;&quot;</span>  :   <span class="keyword">self</span>.productType,</div><div class="line">                                 <span class="string">@&quot;&#x8D2D;&#x4E70;&#x65F6;&#x95F4;&quot;</span>  :   <span class="keyword">self</span>.productSaleTime};</div><div class="line">    </div><div class="line">    <span class="comment">//&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#xFF08;&#x4E8B;&#x4EF6;&#x540D;&#x79F0;&#xFF1A;EventID   &#x4E8B;&#x4EF6;&#x5C5E;&#x6027;&#xFF1A;properties&#xFF09;</span></div><div class="line">    [[DATracker sharedTracker] trackEvent:<span class="string">@&quot;EventID&quot;</span> withAttributes:properties];</div><div class="line">}</div></pre></td></tr></table></figure>
+<p>(2) &#x53EF;&#x89C6;&#x5316;&#x57CB;&#x70B9;&#x5373;&#x7528;&#x53EF;&#x89C6;&#x5316;&#x4EA4;&#x4E92;&#x7684;&#x65B9;&#x5F0F;&#x5708;&#x9009;&#x51FA;&#x6240;&#x8981;&#x91C7;&#x96C6;&#x6570;&#x636E;&#x7684;&#x63A7;&#x4EF6;&#xFF0C;&#x5F53;&#x7528;&#x6237;&#x884C;&#x4E3A;&#x4EA7;&#x751F;&#x65F6;&#xFF0C;&#x5373;&#x53EF;&#x6536;&#x96C6;&#x5230;&#x76F8;&#x5E94;&#x7684;&#x57CB;&#x70B9;&#x6570;&#x636E;&#x3002;&#x76F8;&#x6BD4;&#x4E8E;&#x524D;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#x800C;&#x8A00;&#xFF0C;&#x53EF;&#x89C6;&#x5316;&#x57CB;&#x70B9;&#x80FD;&#x591F;&#x89E3;&#x51B3;&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#x4EE3;&#x4EF7;&#x5927;&#x6210;&#x672C;&#x9AD8;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x4F46;&#x662F;&#x65E0;&#x6CD5;&#x7075;&#x6D3B;&#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x57CB;&#x70B9;&#x5C5E;&#x6027;&#x3002;</p>
+<center><img src="http://ofwsr8cl0.bkt.clouddn.com/111.jpg?imageView/2/w/700" alt="&#x53EF;&#x89C6;&#x5316;&#x57CB;&#x70B9;&#x6D41;&#x7A0B;"></center>
+
+<p>(3) &#x65E0;&#x57CB;&#x70B9;&#x4E5F;&#x53EB;&#x5168;&#x57CB;&#x70B9;&#xFF0C;&#x5373;&#x4E0D;&#x9700;&#x8981;&#x7528;&#x6237;&#x4E3B;&#x52A8;&#x57CB;&#x70B9;&#xFF0C;&#x53EF;&#x4EE5;&#x6536;&#x96C6;&#x7528;&#x6237;&#x6240;&#x6709;&#x7684;&#x64CD;&#x4F5C;&#x884C;&#x4E3A;&#xFF0C;&#x540C;&#x6837;&#x91C7;&#x7528;&#x53EF;&#x89C6;&#x5316;&#x5708;&#x9009;&#xFF0C;&#x7528;&#x6237;&#x80FD;&#x591F;&#x62FF;&#x5230;&#x6240;&#x60F3;&#x91C7;&#x96C6;&#x7684;&#x57CB;&#x70B9;&#x6570;&#x636E;&#xFF0C;&#x80FD;&#x591F;&#x89E3;&#x51B3;&#x53EF;&#x89C6;&#x5316;&#x5708;&#x9009;&#x4E2D;&#x6570;&#x636E;&#x4E0D;&#x53EF;&#x56DE;&#x6EAF;&#x7684;&#x95EE;&#x9898;&#x3002;&#x4E0B;&#x56FE;&#x7ED9;&#x51FA;&#x4E86;&#x65E0;&#x57CB;&#x70B9;&#x6570;&#x636E;&#x6536;&#x96C6;&#x7684;&#x7B80;&#x5355;&#x6D41;&#x7A0B;&#x3002;</p>
+<center><img src="http://ofwsr8cl0.bkt.clouddn.com/a001fa1c49889ec62e6aab38ea46d97e.jpg?imageView/2/w/550" alt="&#x65E0;&#x57CB;&#x70B9;&#x6570;&#x636E;&#x6536;&#x96C6;&#x6D41;&#x7A0B;"></center>
+
+<p>HubbleData SDK&#x7684;&#x8BBE;&#x8BA1;&#x4E3B;&#x8981;&#x662F;&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#x7ED3;&#x5408;&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x6570;&#x636E;&#x91C7;&#x96C6;&#x65B9;&#x5F0F;&#xFF0C;&#x5176;&#x4E2D;&#x4E5F;&#x6D89;&#x53CA;&#x5230;&#x53EF;&#x89C6;&#x5316;&#x57CB;&#x70B9;&#x4E2D;&#x7684;&#x5C4F;&#x5E55;&#x5E8F;&#x5217;&#x5316;&#x53CA;&#x4E8B;&#x4EF6;&#x7ED1;&#x5B9A;&#x673A;&#x5236;&#xFF0C;&#x672C;&#x6587;&#x4E3B;&#x8981;&#x4ECB;&#x7ECD;&#x4E00;&#x4E0B;&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x8BBE;&#x8BA1;&#x4E0E;&#x5B9E;&#x73B0;&#x3002;</p>
+<h4 id="1-2-&#x65E0;&#x57CB;&#x70B9;SDK&#x8BBE;&#x8BA1;&#x8BE6;&#x7EC6;&#x6D41;&#x7A0B;"><a href="#1-2-&#x65E0;&#x57CB;&#x70B9;SDK&#x8BBE;&#x8BA1;&#x8BE6;&#x7EC6;&#x6D41;&#x7A0B;" class="headerlink" title="1.2 &#x65E0;&#x57CB;&#x70B9;SDK&#x8BBE;&#x8BA1;&#x8BE6;&#x7EC6;&#x6D41;&#x7A0B;"></a><h2 id="1.2">1.2 &#x65E0;&#x57CB;&#x70B9;SDK&#x8BBE;&#x8BA1;&#x8BE6;&#x7EC6;&#x6D41;&#x7A0B;</h2></h4><p>&#x4E0B;&#x56FE;&#x7ED9;&#x51FA;HubbleData&#x65E0;&#x57CB;&#x70B9;SDK&#x5728;iOS&#x7AEF;&#x7684;&#x8BBE;&#x8BA1;&#x5B9E;&#x73B0;&#xFF1A;</p>
+<center><img src="http://ofwsr8cl0.bkt.clouddn.com/d0e3226a902872499b6f6a9b2daf0dce.jpg?imageView/2/w/600" alt="&#x65E0;&#x57CB;&#x70B9;&#x6570;&#x636E;&#x6536;&#x96C6;&#x6D41;&#x7A0B;"></center>
+
+<p>&#x4ECE;&#x4E0A;&#x56FE;&#x53EF;&#x4EE5;&#x770B;&#x51FA;&#xFF0C;HubbleData&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x662F;&#x5728;&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#x7684;&#x57FA;&#x7840;&#x4E0A;&#x5B9E;&#x73B0;&#x7684;&#xFF0C;&#x6240;&#x5904;&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x96BE;&#x70B9;&#x4E5F;&#x5C31;&#x96C6;&#x4E2D;&#x5728;&#x4EE5;&#x4E0B;&#x4E09;&#x4E2A;&#x65B9;&#x9762;&#xFF1A;</p>
+<pre><code>&#xFF08;1&#xFF09;&#x81EA;&#x52A8;&#x83B7;&#x53D6;&#x57CB;&#x70B9;&#x7684;EventID
+&#xFF08;2&#xFF09;&#x81EA;&#x52A8;&#x83B7;&#x53D6;&#x57CB;&#x70B9;&#x7684;&#x65F6;&#x673A;
+&#xFF08;3&#xFF09;&#x81EA;&#x52A8;&#x83B7;&#x53D6;&#x57CB;&#x70B9;&#x9700;&#x91C7;&#x96C6;&#x7684;&#x5C5E;&#x6027;
+</code></pre><p>&#x672C;&#x6587;&#x4E3B;&#x8981;&#x5C31;&#x8FD9;&#x4E09;&#x4E2A;&#x65B9;&#x9762;&#x8FDB;&#x884C;&#x5206;&#x6790;&#xFF0C;&#x7B2C;&#x4E8C;&#x90E8;&#x5206;&#x4E3B;&#x8981;&#x8BB2;&#x4E00;&#x4E0B;&#x4E8B;&#x4EF6;&#x552F;&#x4E00;ID&#x7684;&#x786E;&#x5B9A;&#xFF0C;&#x7B2C;&#x4E09;&#x90E8;&#x5206;&#x4E3B;&#x8981;&#x8BB2;&#x4E00;&#x4E0B;&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x91C7;&#x96C6;&#x7684;&#x5B9E;&#x73B0;&#xFF0C;&#x4E3B;&#x8981;&#x662F;&#x5404;&#x79CD;&#x4E8B;&#x4EF6;&#x53D1;&#x751F;&#x91C7;&#x96C6;&#x7684;&#x65F6;&#x673A;&#x4EE5;&#x53CA;&#x5F85;&#x91C7;&#x96C6;&#x7684;&#x5C5E;&#x6027;&#x7684;&#x914D;&#x7F6E;&#x3002;</p>
+<p>HubbleData SDK&#x8FD8;&#x6D89;&#x53CA;&#x5230;&#x8BB8;&#x591A;&#x5176;&#x4ED6;&#x529F;&#x80FD;&#xFF0C;&#x5305;&#x62EC;&#x5C4F;&#x5E55;&#x5E8F;&#x5217;&#x53EF;&#x89C6;&#x5316;&#x3001;&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#x3001;&#x7CBE;&#x51C6;&#x6E20;&#x9053;&#x8FFD;&#x8E2A;&#x7B49;&#xFF0C;&#x8FD9;&#x91CC;&#x4E0D;&#x518D;&#x4ECB;&#x7ECD;&#xFF0C;&#x540E;&#x9762;&#x4F1A;&#x9646;&#x7EED;&#x5206;&#x4EAB;&#x76F8;&#x5173;&#x7684;&#x6280;&#x672F;&#x5B9E;&#x73B0;&#x3002;</p>
+<h3 id="&#x4E8C;&#x3001;&#x4E8B;&#x4EF6;&#x552F;&#x4E00;ID&#x7684;&#x786E;&#x5B9A;"><a href="#&#x4E8C;&#x3001;&#x4E8B;&#x4EF6;&#x552F;&#x4E00;ID&#x7684;&#x786E;&#x5B9A;" class="headerlink" title="&#x4E8C;&#x3001;&#x4E8B;&#x4EF6;&#x552F;&#x4E00;ID&#x7684;&#x786E;&#x5B9A;"></a><h2 id="2">&#x4E8C;&#x3001;&#x4E8B;&#x4EF6;&#x552F;&#x4E00;ID&#x7684;&#x786E;&#x5B9A;</h2></h3><p>&#x4E3A;&#x4E86;&#x5B9E;&#x73B0;&#x5728;&#x53EF;&#x89C6;&#x5316;&#x5708;&#x9009;&#x65F6;&#x5019;&#x7684;&#x4E8B;&#x4EF6;&#x7684;&#x552F;&#x4E00;&#x6027;&#xFF0C;&#x6BCF;&#x4E00;&#x4E2A;&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x4E8B;&#x4EF6;&#x91C7;&#x96C6;&#x90FD;&#x5FC5;&#x987B;&#x6709;&#x4E14;&#x4EC5;&#x6709;&#x4E00;&#x4E2A;&#x552F;&#x4E00;&#x7684;&#x6807;&#x8BC6;&#x7B26;&#x6765;&#x533A;&#x5206;&#x4E0D;&#x540C;&#x7684;&#x4E8B;&#x4EF6;&#x3002;&#x4E0D;&#x540C;&#x4E8E;&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#xFF0C;&#x7528;&#x6237;&#x53EF;&#x4EE5;&#x81EA;&#x5B9A;&#x4E49;&#x7684;&#x914D;&#x7F6E;&#x81EA;&#x5DF1;&#x6240;&#x9700;&#x7684;EventID&#xFF0C;&#x65E0;&#x57CB;&#x70B9;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x9700;&#x8981;SDK&#x81EA;&#x5DF1;&#x914D;&#x7F6E;&#x6BCF;&#x4E00;&#x4E2A;&#x91C7;&#x96C6;&#x4E8B;&#x4EF6;&#x7684;EventID&#xFF0C;&#x901A;&#x8FC7;&#x53EF;&#x89C6;&#x5316;&#x5708;&#x9009;&#x7684;&#x64CD;&#x4F5C;&#xFF0C;&#x7B5B;&#x9009;&#x51FA;&#x76F8;&#x5E94;&#x7684;EventID&#x6240;&#x5BF9;&#x5E94;&#x7684;&#x6570;&#x636E;&#x4FE1;&#x606F;&#x3002;HubbleData&#x91C7;&#x7528;&#x7684;&#x662F;&#x6784;&#x9020;view&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x65B9;&#x5F0F;&#x53BB;&#x552F;&#x4E00;&#x7684;&#x6807;&#x8BC6;&#x8FD9;&#x6837;&#x7684;&#x4E00;&#x4E2A;&#x4E8B;&#x4EF6;&#xFF0C;&#x4E3B;&#x8981;&#x7531;view&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;path&#x8DEF;&#x5F84;&#x3001;&#x8BE5;view&#x7684;&#x6240;&#x5728;&#x9875;&#x9762;&#x7C7B;&#x540D;&#x4EE5;&#x53CA;view&#x6240;&#x5E26;&#x7684;&#x4E00;&#x4E9B;&#x81EA;&#x8EAB;&#x56FA;&#x5B9A;&#x5C5E;&#x6027;&#x7B49;&#x6784;&#x6210;&#xFF0C;&#x5E76;&#x901A;&#x8FC7;SHA256&#x7F16;&#x7801;&#x6765;&#x83B7;&#x53D6;&#x552F;&#x4E00;&#x7684;EventID&#x3002;</p>
+<p>&#x4E0B;&#x9762;&#x5C06;&#x6574;&#x4F53;&#x7CFB;&#x7EDF;&#x4ECB;&#x7ECD;&#x4E00;&#x4E9B;&#x4E8B;&#x4EF6;&#x552F;&#x4E00;ID&#x7684;&#x751F;&#x6210;&#x8FC7;&#x7A0B;&#x3002;</p>
+<h4 id="2-1-&#x63A7;&#x4EF6;&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;path&#x6784;&#x9020;"><a href="#2-1-&#x63A7;&#x4EF6;&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;path&#x6784;&#x9020;" class="headerlink" title="2.1 &#x63A7;&#x4EF6;&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;path&#x6784;&#x9020;"></a><h2 id="2.1">2.1 &#x63A7;&#x4EF6;&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;path&#x6784;&#x9020;</h2></h4><h5 id="2-1-1-&#x666E;&#x901A;view&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;path&#x6784;&#x9020;"><a href="#2-1-1-&#x666E;&#x901A;view&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;path&#x6784;&#x9020;" class="headerlink" title="2.1.1 &#x666E;&#x901A;view&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;path&#x6784;&#x9020;"></a><h2 id="2.1.1">2.1.1 &#x666E;&#x901A;view&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;path&#x6784;&#x9020;</h2></h5><p>&#x5C42;&#x7EA7;&#x7ED3;&#x6784;path&#x4E3B;&#x8981;&#x662F;&#x57FA;&#x4E8E;&#x9875;&#x9762;&#x7684;&#x63A7;&#x4EF6;&#x6811;&#x6784;&#x9020;&#x800C;&#x6210;&#xFF0C;&#x6BCF;&#x4E2A;view&#x90FD;&#x6709;superview&#x4E0E;subviews&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x5C06;&#x6BCF;&#x4E00;&#x4E2A;view&#x7684;superview&#x4F5C;&#x4E3A;&#x6811;&#x7684;&#x7236;&#x8282;&#x70B9;&#xFF0C;&#x5C06;&#x5176;subviews&#x4F5C;&#x4E3A;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x80FD;&#x628A;&#x6574;&#x4E2A;app&#x4E0A;&#x7684;&#x6240;&#x6709;view&#x7EC4;&#x6210;&#x4E00;&#x68F5;&#x5E9E;&#x5927;&#x7684;&#x63A7;&#x4EF6;&#x6811;&#xFF0C;&#x5176;&#x4E2D;&#x6811;&#x7684;&#x9876;&#x5C42;&#x662F;UIWindow&#xFF0C;&#x7136;&#x540E;&#x662F;&#x6BCF;&#x4E00;&#x4E2A;view&#x8282;&#x70B9;&#x4F9D;&#x6B21;&#x5411;&#x4E0B;&#x5C55;&#x5F00;&#x3002;&#x4E0B;&#x56FE;&#x7ED9;&#x51FA;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x63A7;&#x4EF6;&#x6811;&#x7684;&#x7ED3;&#x6784;&#x56FE;&#x3002;</p>
+<center><img src="http://ofwsr8cl0.bkt.clouddn.com/6ff5a9c6bf8a37837c94b7e36077f658.jpg?imageView/2/w/500" alt="&#x7A7A;&#x95F4;&#x6811;&#x7ED3;&#x6784;"></center>
+
+<p>&#x4E0B;&#x9762;&#x4F1A;&#x8BE6;&#x7EC6;&#x4ECB;&#x7ECD;&#x4E00;&#x4E0B;HubbleData&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x8DEF;&#x5F84;&#x7684;&#x6784;&#x9020;&#x65B9;&#x5F0F;&#x3002;</p>
+<center><img src="http://ofwsr8cl0.bkt.clouddn.com/5987b2308a7e81e23f58f2c73c0b9013.jpg?imageView/2/w/360" alt="&#x4E0D;&#x540C;&#x7C7B;">   <img src="http://ofwsr8cl0.bkt.clouddn.com/76cea2c617f7f694a1451072946b75e9.jpg?imageView/2/w/365" alt="&#x540C;&#x7C7B;"></center>
+
+<p>&#x50CF;&#x4E0A;&#x56FE;1&#x6240;&#x793A;&#xFF0C;&#x5982;&#x679C;&#x4E00;&#x4E2A;view&#x7684;subviews&#x4E2D;&#x90FD;&#x662F;&#x4E0D;&#x540C;&#x7C7B;&#x578B;&#x7684;&#xFF0C;&#x6BD4;&#x5982;&#x50CF;&#x4E0B;&#x56FE;&#x56FE;1&#x6240;&#x793A;&#x7684;&#x63A7;&#x4EF6;&#x6811;&#x90A3;&#x6837;&#xFF0C;&#x53EF;&#x4EE5;&#x552F;&#x4E00;&#x6807;&#x8BC6;UILabel&#x548C;UIButton&#x63A7;&#x4EF6;&#x4E3A;&#xFF1A;</p>
+<pre><code>UIView_UILabel
+UIView_UIButton
+</code></pre><p>&#x4F46;&#x662F;&#x771F;&#x6B63;&#x7684;&#x9875;&#x9762;&#x662F;&#x4E0D;&#x4F1A;&#x50CF;&#x7406;&#x60F3;&#x4E2D;&#x7684;&#x6240;&#x6709;&#x63A7;&#x4EF6;&#x90FD;&#x662F;&#x4E0D;&#x540C;&#x7C7B;&#x578B;&#x7684;&#xFF0C;&#x53EF;&#x4EE5;&#x8BF4;&#x8FD9;&#x79CD;&#x6781;&#x7AEF;&#x60C5;&#x51B5;&#x57FA;&#x672C;&#x4E0D;&#x5B58;&#x5728;&#xFF0C;&#x5982;&#x679C;&#x8FD8;&#x662F;&#x6309;&#x7167;&#x4E0A;&#x8FF0;&#x7684;&#x65B9;&#x6CD5;&#x6765;&#x6784;&#x9020;&#x8DEF;&#x5F84;&#x7684;&#x8BDD;&#xFF0C;&#x4E24;&#x4E2A;UILabel&#x90FD;&#x4F1A;&#x88AB;&#x6807;&#x8BC6;&#x6210;UIView_UILabel&#xFF0C;&#x8FD9;&#x663E;&#x7136;&#x65E0;&#x6CD5;&#x533A;&#x5206;&#x4E24;&#x4E2A;&#x63A7;&#x4EF6;&#x3002;&#x56E0;&#x6B64;&#x4EC5;&#x4EC5;&#x662F;&#x6BCF;&#x4E2A;&#x63A7;&#x4EF6;&#x8282;&#x70B9;&#x7684;&#x8DEF;&#x5F84;&#x540D;&#x79F0;&#x662F;&#x65E0;&#x6CD5;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x8FD9;&#x4E2A;&#x63A7;&#x4EF6;&#x7684;&#xFF0C;&#x8FD9;&#x91CC;HubbleData&#x52A0;&#x5165;&#x4E86;&#x6B64;&#x63A7;&#x4EF6;&#x8282;&#x70B9;&#x5728;&#x7236;&#x89C6;&#x56FE;&#x4E2D;&#x7684;<strong>index</strong>&#x3002;&#x6BD4;&#x5982;&#x4E0A;&#x56FE;2&#xFF0C;&#x53EF;&#x4EE5;&#x5C06;&#x4E24;&#x4E2A;UILabel&#x6807;&#x8BC6;&#x4E3A;:</p>
+<pre><code>UIView(0)_UILabel(0)
+UIView(0)_UILabel(1)
+</code></pre><p>&#x8FD9;&#x91CC;&#x5047;&#x8BBE;&#x7236;&#x89C6;&#x56FE;&#x662F;index&#x4E3A;0&#x7684;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x53EF;&#x4EE5;&#x5B8C;&#x5168;&#x7684;&#x533A;&#x5206;&#x51FA;&#x4E24;&#x4E2A;&#x63A7;&#x4EF6;&#x4E86;&#x3002;</p>
+<p>&#x90A3;&#x4E48;&#x5269;&#x4E0B;&#x7684;&#x95EE;&#x9898;&#x5C31;&#x662F;&#x6BCF;&#x4E2A;UIView index&#x7D22;&#x5F15;&#x503C;&#x7684;&#x786E;&#x5B9A;&#x3002;</p>
+<p>&#x6BCF;&#x4E2A;UIView&#x90FD;&#x6709;subviews&#x5C5E;&#x6027;&#xFF0C;&#x6BCF;&#x4E00;&#x4E2A;&#x5B50;&#x89C6;&#x56FE;&#x90FD;&#x6709;&#x4E00;&#x4E2A;&#x88AB;addsubView&#x7684;&#x6B21;&#x5E8F;&#xFF0C;&#x5176;&#x5B9E;&#x8981;&#x62FF;&#x7684;&#x8FD9;&#x4E2A;index&#x5C31;&#x662F;&#x5B50;&#x89C6;&#x56FE;&#x88AB;add&#x7684;&#x6B21;&#x5E8F;&#xFF0C;&#x90A3;&#x4E48;&#x8BE5;&#x600E;&#x4E48;&#x62FF;&#x5230;&#x8FD9;&#x4E2A;&#x6B21;&#x5E8F;&#x5462;&#xFF0C;&#x5728;&#x82F9;&#x679C;&#x7684;&#x5B98;&#x65B9;&#x8BF4;&#x660E;&#x6587;&#x6863;&#x4E2D;&#xFF0C;&#x5C81;UIView&#x7684;subviews&#x5C5E;&#x6027;&#xFF0C;&#x662F;&#x8FD9;&#x4E48;&#x4ECB;&#x7ECD;&#x7684;&#xFF1A;</p>
+<pre><code>@property(nonatomic, readonly, copy) NSArray *subviews
+
+You can use this property to retrieve the subviews associated with your custom view hierarchies. 
+The order of the subviews in the array reflects their visible order on the screen.
+</code></pre><p>&#x5373;&#x6BCF;&#x4E00;&#x4E2A;&#x5B50;&#x89C6;&#x56FE;&#x5728;&#x8FD9;&#x4E2A;subviews&#x6570;&#x7EC4;&#x4E2D;&#x7684;&#x7D22;&#x5F15;&#x5C31;&#x662F;HubbleData&#x8981;&#x62FF;&#x7684;index&#x3002;</p>
+<p>&#x9488;&#x5BF9;&#x590D;&#x6742;&#x7684;&#x89C6;&#x56FE;&#x5F62;&#x5F0F;&#xFF0C;&#x5982;&#x4E0B;&#x56FE;&#x6240;&#x793A;&#xFF0C;&#x6309;&#x7167;&#x4E0A;&#x8FF0;&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;&#x8DEF;&#x5F84;&#x6784;&#x9020;&#x65B9;&#x6CD5;&#x5F97;&#x5230;&#x7684;&#x552F;&#x4E00;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;</p>
+<pre><code>UIView(0)_UILabel(0)
+UIView(0)_UIButton(1)
+UIView(0)_UIButton(2)  
+</code></pre><center><img src="http://ofwsr8cl0.bkt.clouddn.com/fe80e4df8e91d7161ce09ef825964398.jpg?imageView/2/w/500" alt="&#x6DF7;&#x5408;"></center>
+
+<p>&#x4ECE;&#x4E0A;&#x8FF0;&#x7684;&#x5206;&#x6790;&#x53EF;&#x77E5;&#xFF0C;&#x6309;&#x7167;&#x4E0A;&#x8FF0;&#x4ECB;&#x7ECD;&#x7684;&#x65B9;&#x6CD5;&#x8FDB;&#x884C;view&#x7684;&#x552F;&#x4E00;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x6807;&#x8BC6;&#xFF0C;&#x5BF9;&#x5927;&#x90E8;&#x5206;&#x7684;&#x9875;&#x9762;&#x6765;&#x8BF4;&#x5DF2;&#x7ECF;&#x8DB3;&#x591F;&#xFF0C;&#x4F46;&#x662F;&#x5BF9;&#x4E8E;&#x4E00;&#x4E9B;&#x66F4;&#x4E3A;&#x7075;&#x6D3B;&#x70B9;&#x7684;&#x9875;&#x9762;&#xFF0C;&#x7531;&#x4E8E;&#x4E00;&#x4E9B;&#x4E1A;&#x52A1;&#x9700;&#x6C42;&#x7B49;&#x539F;&#x56E0;&#xFF0C;&#x5F00;&#x53D1;&#x4EBA;&#x5458;&#x7ECF;&#x5E38;&#x4F1A;&#x8C03;&#x7528;removeFromSuperview, insertSubview:atIndex:, insertSubview: belowSubview:&#x7B49;&#x51FD;&#x6570;&#xFF0C;&#x90FD;&#x4F1A;&#x6781;&#x5927;&#x7684;&#x5F71;&#x54CD;&#x6574;&#x4E2A;&#x9875;&#x9762;&#x7684;subviews&#x7684;&#x7D22;&#x5F15;&#x503C;&#xFF0C;&#x6BD4;&#x5982;&#x73B0;&#x5728;&#x6211;&#x5C06;&#x4E0A;&#x56FE;&#x6240;&#x793A;&#x7684;UILabel&#x79FB;&#x52A8;&#x5230;&#x4E24;&#x4E2A;UIButton&#x7684;&#x540E;&#x8FB9;&#xFF0C;&#x90A3;&#x4E48;&#x5F97;&#x5230;&#x7684;&#x552F;&#x4E00;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;</p>
+<pre><code>UIView(0)_UIButton(0)
+UIView(0)_UIButton(1)
+UIView(0)_UILabel(2)  
+</code></pre><center><img src="http://ofwsr8cl0.bkt.clouddn.com/8104c8074bcc05f53046e14d57312f88.jpg?imageView/2/w/500" alt="&#x6DF7;&#x5408;"></center>
+
+<p>&#x53EF;&#x4EE5;&#x53D1;&#x73B0;&#xFF0C;&#x552F;&#x4E00;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x5DF2;&#x7ECF;&#x88AB;&#x6539;&#x53D8;&#xFF0C;&#x4F46;&#x662F;&#x6574;&#x4E2A;&#x9875;&#x9762;&#x5374;&#x6CA1;&#x6709;&#x53D1;&#x751F;&#x53D8;&#x5316;&#xFF0C;&#x4E0D;&#x4EC5;&#x4F1A;&#x4EA7;&#x751F;&#x65B0;&#x7684;&#x4E8B;&#x4EF6;&#xFF08;&#x6BD4;&#x5982;UIButton(0)&#xFF0C;UILabel(2)&#xFF09;&#xFF0C;&#x8FDE;UIButton(1)&#x4E8B;&#x4EF6;&#x7684;&#x91C7;&#x96C6;&#x4E5F;&#x4F1A;&#x51FA;&#x9519;&#xFF0C;&#x5373;&#x4F7F;&#x662F;&#x4E0D;&#x540C;&#x7684;&#x4E8B;&#x4EF6;&#xFF0C;&#x5374;&#x5F97;&#x5230;&#x4E86;&#x4E0D;&#x540C;&#x7684;eventID&#xFF0C;&#x6240;&#x4EE5;&#x9700;&#x8981;&#x63D0;&#x9AD8;&#x6784;&#x9020;&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;&#x8DEF;&#x5F84;&#x7684;&#x7A33;&#x5065;&#x578B;&#x3002;</p>
+<p>&#x6B63;&#x50CF;&#x521A;&#x521A;&#x63D0;&#x5230;&#x7684;&#xFF0C;&#x4E0D;&#x540C;&#x7C7B;&#x578B;&#x7684;UIView&#x4E0D;&#x9700;&#x8981;&#x505A;index&#x7684;&#x533A;&#x5206;&#xFF0C;&#x90A3;&#x4E48;&#x5728;&#x83B7;&#x53D6;&#x8FD9;&#x4E2A;index&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4E0D;&#x662F;&#x7B80;&#x5355;&#x7684;&#x4ECE;subviews&#x8FD9;&#x4E2A;&#x6570;&#x7EC4;&#x4E2D;&#x83B7;&#x53D6;&#x5176;&#x5BF9;&#x5E94;&#x7684;&#x7D22;&#x5F15;&#x503C;&#xFF0C;&#x800C;&#x662F;&#x8FDB;&#x884C;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x540C;&#x7C7B;&#x5F52;&#x5E76;&#x518D;&#x53D6;&#x7D22;&#x5F15;&#x503C;&#xFF0C;&#x4E00;&#x4E2A;&#x5F88;&#x7B80;&#x5355;&#x7684;&#x5904;&#x7406;&#x3002;</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="built_in">UIView</span> *view <span class="keyword">in</span> subviews) {</div><div class="line">    <span class="keyword">if</span> ([<span class="built_in">NSStringFromClass</span>([subview <span class="keyword">class</span>]) isEqualToString:<span class="built_in">NSStringFromClass</span>(<span class="keyword">class</span>)]) { <span class="comment">//class&#x4E3A;&#x5F85;&#x7B5B;&#x9009;&#x7684;&#x7C7B;</span></div><div class="line">        [array addObject:view];</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+<p>&#x8FD9;&#x6837;&#x5C31;&#x53EF;&#x4EE5;&#x53D6;&#x5F97;array&#x4E2D;&#x7684;index&#x4F5C;&#x4E3A;&#x5176;&#x771F;&#x6B63;&#x7684;&#x7D22;&#x5F15;&#x503C;&#xFF0C;&#x5F97;&#x5230;&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;</p>
+<pre><code>UIView(0)_UILabel(0)
+UIView(0)_UIButton(0)
+UIView(0)_UIButton(1) 
+</code></pre><p>&#x6B64;&#x65F6;&#x65E0;&#x8BBA;UIlabel&#x7684;&#x4F4D;&#x7F6E;&#x653E;&#x5728;&#x4F55;&#x5904;&#xFF0C;&#x90FD;&#x4E0D;&#x4F1A;&#x6539;&#x53D8;&#x8FD9;&#x4E2A;&#x8DEF;&#x5F84;&#x7684;&#x6784;&#x9020;&#x5F62;&#x5F0F;&#xFF0C;&#x5927;&#x5927;&#x589E;&#x52A0;&#x4E86;&#x7A33;&#x5065;&#x578B;&#x3002;&#x5176;&#x5B9E;&#x4E5F;&#x80FD;&#x53D1;&#x73B0;&#xFF0C;&#x8FD9;&#x4EC5;&#x4EC5;&#x53EA;&#x80FD;&#x63D0;&#x9AD8;&#x7A33;&#x5065;&#x578B;&#xFF0C;&#x5E76;&#x4E0D;&#x80FD;&#x4ECE;&#x6839;&#x672C;&#x4E0A;&#x89E3;&#x51B3;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#xFF0C;&#x6BD4;&#x5982;&#x82E5;&#x6211;&#x628A;&#x4E24;&#x4E2A;UIButton&#x7684;&#x987A;&#x5E8F;&#x8C03;&#x6362;&#x4E86;&#xFF0C;&#x6216;&#x8005;&#x5220;&#x9664;&#x4E86;&#x7B2C;&#x4E00;&#x4E2A;&#xFF0C;&#x6B64;&#x65F6;&#x4F9D;&#x7136;&#x4F1A;&#x5F97;&#x5230;&#x4E00;&#x4E9B;&#x4E0D;&#x51C6;&#x786E;&#x7684;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x3002;&#x6B64;&#x95EE;&#x9898;&#x4F1A;&#x540E;&#x7EED;&#x89E3;&#x51B3;&#xFF0C;&#x4F1A;&#x9010;&#x6B65;&#x5F15;&#x5165;&#x8BEF;&#x5DEE;&#x5BB9;&#x91CF;&#x548C;&#x76F8;&#x4F3C;&#x5EA6;&#x8FD9;&#x4E2A;&#x6982;&#x5FF5;&#xFF0C;&#x5373;&#x53EA;&#x8981;&#x5728;&#x8BEF;&#x5DEE;&#x8303;&#x56F4;&#x5185;&#xFF0C;&#x5219;&#x4F1A;&#x8FDB;&#x884C;&#x8FDB;&#x4E00;&#x6B65;&#x7684;&#x5339;&#x914D;&#xFF0C;&#x5177;&#x4F53;&#x7684;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#x672C;&#x7BC7;&#x4E0D;&#x5728;&#x4ECB;&#x7ECD;&#x3002;</p>
+<h5 id="2-1-2-&#x51E0;&#x79CD;&#x7279;&#x6B8A;&#x60C5;&#x51B5;&#x7684;&#x5904;&#x7406;"><a href="#2-1-2-&#x51E0;&#x79CD;&#x7279;&#x6B8A;&#x60C5;&#x51B5;&#x7684;&#x5904;&#x7406;" class="headerlink" title="2.1.2 &#x51E0;&#x79CD;&#x7279;&#x6B8A;&#x60C5;&#x51B5;&#x7684;&#x5904;&#x7406;"></a><h2 id="2.1.2">2.1.2 &#x51E0;&#x79CD;&#x7279;&#x6B8A;&#x60C5;&#x51B5;&#x7684;&#x5904;&#x7406;</h2></h5><p>2.1.1&#x4E3B;&#x8981;&#x8BB2;&#x7684;&#x662F;&#x4E00;&#x4E9B;&#x666E;&#x901A;view&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;&#x7684;path&#x6784;&#x9020;&#x65B9;&#x5F0F;&#xFF0C;&#x4F46;&#x662F;&#x6709;&#x4E00;&#x4E9B;&#x7279;&#x6B8A;&#x60C5;&#x51B5;&#x9700;&#x8981;&#x7279;&#x522B;&#x7684;&#x8003;&#x8651;&#x5904;&#x7406;&#xFF1A;</p>
+<ul>
+<li><strong>UITableViewCell</strong></li>
+</ul>
+<p>&#x7531;&#x4E8E;UITableViewCell&#x5177;&#x6709;&#x53EF;&#x590D;&#x7528;&#x7684;&#x673A;&#x5236;&#xFF0C;&#x5F53;&#x4E00;&#x4E2A;&#x9875;&#x9762;&#x4E2D;&#x5728;&#x6301;&#x7EED;&#x6EDA;&#x52A8;&#x7684;&#x65F6;&#x5019;&#xFF0C;cell&#x5728;&#x4E0D;&#x65AD;&#x7684;&#x590D;&#x7528;&#xFF0C;&#x5982;&#x679C;&#x8FD8;&#x4F7F;&#x7528;2.1.1&#x4E2D;&#x4ECB;&#x7ECD;&#x7684;&#x65B9;&#x6CD5;&#x6765;&#x83B7;&#x53D6;index&#x7D22;&#x5F15;&#x503C;&#x8BDD;&#xFF0C;&#x90A3;&#x4E48;&#x4F1A;&#x5F15;&#x8D77;&#x6574;&#x4E2A;&#x9875;&#x9762;&#x65E0;&#x57CB;&#x70B9;&#x6570;&#x636E;&#x91C7;&#x96C6;&#x7684;&#x6DF7;&#x4E71;&#x3002;</p>
+<p>&#x5F53;&#x83B7;&#x53D6;&#x5F53;&#x524D;UITableViewCell&#x7684;index&#x65F6;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;indexPath&#x53C2;&#x6570;&#x8FDB;&#x884C;&#x66FF;&#x6362;&#xFF0C;&#x8FD9;&#x4E2A;&#x53C2;&#x6570;&#x53EF;&#x51C6;&#x786E;&#x7684;&#x83B7;&#x53D6;section&#x548C;row&#x7684;&#x503C;&#xFF0C;&#x552F;&#x4E00;&#x7684;&#x5BF9;&#x5E94;&#x6BCF;&#x4E00;&#x4E2A;cell&#x3002;&#x552F;&#x4E00;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x7684;&#x5F62;&#x5F0F;&#x53EF;&#x4EE5;&#x81EA;&#x5B9A;&#x4E49;&#x914D;&#x7F6E;&#xFF0C;HubbleData&#x7684;&#x8BBE;&#x7F6E;&#x65B9;&#x5F0F;&#x4E3A;&#xFF1A;&#x7C7B;&#x540D;+(section: row:)&#xFF0C;&#x4E0B;&#x9762;&#x7ED9;&#x51FA;&#x4E00;&#x4E2A;&#x793A;&#x4F8B;&#xFF1A;</p>
+<pre><code>MyTableViewCell(section:0 row:7)
+</code></pre><ul>
+<li><strong>UICollectionViewCell</strong></li>
+</ul>
+<p>UICollectionViewCell&#x7684;path&#x751F;&#x6210;&#x539F;&#x7406;&#x540C;UITableViewCell&#xFF0C;HubbleData&#x7684;&#x8BBE;&#x7F6E;&#x65B9;&#x5F0F;&#x4E3A;&#xFF1A;&#x7C7B;&#x540D;+(section:item:)&#xFF0C;&#x4E0B;&#x9762;&#x7ED9;&#x51FA;&#x4E00;&#x4E2A;&#x793A;&#x4F8B;&#xFF1A;</p>
+<pre><code>MyCollectionViewCell(section:0 item:7)
+</code></pre><ul>
+<li><strong>UIControl</strong></li>
+</ul>
+<p>&#x5176;&#x5B9E;UIButton&#x4E5F;&#x7B97;&#x662F;&#x4E00;&#x79CD;&#x666E;&#x901A;view&#x7684;&#x4E00;&#x79CD;&#xFF0C;&#x5927;&#x591A;&#x6570;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x4F7F;&#x7528;&#x4E0A;&#x8FF0;&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;path&#x4EE5;&#x53CA;&#x9875;&#x9762;&#x7C7B;&#x540D;&#x7684;&#x7EC4;&#x5408;&#x80FD;&#x591F;&#x552F;&#x4E00;&#x7684;&#x786E;&#x5B9A;&#x5F53;&#x524D;UIControl&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x7B26;&#xFF0C;&#x4F46;&#x662F;&#x6709;&#x4E00;&#x79CD;&#x7279;&#x6B8A;&#x7684;&#x60C5;&#x51B5;&#xFF0C;&#x5F53;&#x4F5C;&#x4E3A;UINavigationItem&#x65F6;&#x4F1A;&#x51FA;&#x73B0;&#x7279;&#x6B8A;&#x60C5;&#x51B5;&#xFF0C;&#x4E0B;&#x9762;&#x7684;&#x6240;&#x7ED9;&#x51FA;&#x7684;&#x4E24;&#x4E2A;&#x4F8B;&#x5B50;&#x3002;</p>
+<center><img src="http://ofwsr8cl0.bkt.clouddn.com/bar1.jpg?imageView/2/w/400" alt="bar1"></center>
+
+<center><img src="http://ofwsr8cl0.bkt.clouddn.com/bar2.jpg?imageView/2/w/400" alt="bar2"></center>
+
+<p>&#x5F53;&#x70B9;&#x51FB;&#x7B2C;&#x4E00;&#x4E2A;NavigationBar&#x7684;&#x53F3;&#x4FA7;&#x7684;&#x6309;&#x94AE;&#x65F6;&#xFF0C;&#x5F97;&#x5230;&#x7684;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;</p>
+<pre><code>...UIViewControllerWrapperView(0)_UIView(0)_UILayoutContainerView(0)_UINavigationBar(0)_UIButton(1)
+</code></pre><p>&#x5206;&#x6790;&#x53EF;&#x77E5;&#xFF0C;&#x5DE6;&#x4FA7;&#x7684;&#x8BBE;&#x7F6E;&#x6309;&#x94AE;&#x7684;&#x7D22;&#x5F15;&#x4E3A;0&#xFF0C;&#x6240;&#x4EE5;&#x53F3;&#x4FA7;&#x7684;&#x6309;&#x94AE;&#x7D22;&#x5F15;&#x4E3A;1&#x3002;&#x540C;&#x65F6;&#x83B7;&#x53D6;&#x7684;&#x5F53;&#x524D;&#x9875;&#x9762;&#x4E3A;&#xFF1A;UINavigationController&#x3002;</p>
+<p>&#x5F53;&#x70B9;&#x51FB;&#x7B2C;&#x4E8C;&#x4E2A;&#x9875;&#x9762;&#x7684;&#x540C;&#x4E00;&#x4E2A;&#x7C7B;&#x578B;&#x7684;&#x6309;&#x94AE;&#x65F6;&#xFF0C;&#x5373;&#x540C;&#x6837;&#x6807;&#x6709;&#x6570;&#x5B57;7&#x7684;item&#x65F6;&#xFF0C;&#x6B64;&#x65F6;&#x5F97;&#x5230;&#x7684;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;</p>
+<pre><code>...UIViewControllerWrapperView(0)_UIView(0)_UILayoutContainerView(0)_UINavigationBar(0)_UIButton(2)
+</code></pre><p>&#x53EF;&#x4EE5;&#x53D1;&#x73B0;&#x6B64;&#x65F6;&#x7684;&#x6309;&#x94AE;&#x7684;&#x7D22;&#x5F15;&#x53D8;&#x6210;&#x4E86;2&#xFF0C;&#x5DF2;&#x7ECF;&#x4E0D;&#x540C;&#x4E8E;&#x4E0A;&#x8FF0;&#x7B2C;&#x4E00;&#x4E2A;NavigationBar&#x7684;&#x540C;&#x4E00;&#x4E2A;&#x6309;&#x94AE;&#x7684;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x4E86;&#xFF0C;&#x7ECF;&#x8FC7;&#x5206;&#x6790;&#xFF0C;&#x7D22;&#x5F15;&#x503C;&#x4E3A;1&#x7684;&#x6309;&#x94AE;&#x662F;&#x6700;&#x53F3;&#x4FA7;&#x7684;&#x8868;&#x683C;&#x7684;&#x90A3;&#x4E2A;item&#xFF0C;&#x7ECF;&#x8FC7;&#x9A8C;&#x8BC1;&#x53EF;&#x4EE5;&#x5F97;&#x5230;&#x5176;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#xFF1A;</p>
+<pre><code>...UIViewControllerWrapperView(0)_UIView(0)_UILayoutContainerView(0)_UINavigationBar(0)_UIButton(1)
+</code></pre><p>&#x83B7;&#x53D6;&#x7684;&#x9875;&#x9762;&#x4E3A;&#xFF1A;UINavigationController&#x3002;</p>
+<p>&#x5176;&#x5B9E;&#x8FD9;&#x79CD;&#x9875;&#x9762;&#x5F88;&#x5E38;&#x89C1;&#xFF0C;&#x7531;&#x4E8E;&#x9875;&#x9762;&#x7684;&#x5207;&#x6362;&#xFF0C;NavigationBar&#x4E0A;&#x7684;&#x4E00;&#x4E9B;&#x6309;&#x94AE;&#x7684;&#x4F4D;&#x7F6E;&#x53EF;&#x80FD;&#x987A;&#x5E8F;&#x4F1A;&#x6253;&#x4E71;&#xFF0C;&#x5BFC;&#x81F4;&#x540C;&#x4E00;&#x4E2A;&#x529F;&#x80FD;&#x7684;NavigationItem&#x5DF2;&#x7ECF;&#x65E0;&#x6CD5;&#x786E;&#x5B9A;&#x6807;&#x8BC6;&#x552F;&#x4E00;&#xFF0C;&#x5373;&#x4F7F;&#x662F;&#x83B7;&#x53D6;&#x4E86;&#x5F53;&#x524D;&#x6309;&#x94AE;&#x6240;&#x5728;&#x7684;&#x9875;&#x9762;&#x4E5F;&#x65E0;&#x6CD5;&#x533A;&#x5206;&#xFF0C;&#x56E0;&#x4E3A;&#x83B7;&#x53D6;&#x7684;&#x90FD;&#x662F;UINavigationController&#x3002;&#x4ECE;&#x4E0A;&#x9762;&#x7684;&#x5206;&#x6790;&#x53EF;&#x4EE5;&#x770B;&#x51FA;&#xFF0C;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x751A;&#x81F3;&#x4F1A;&#x5BFC;&#x81F4;&#x4E25;&#x91CD;&#x9519;&#x4E71;&#x7684;&#x6570;&#x636E;&#x91C7;&#x96C6;&#x3002;</p>
+<p>&#x5176;&#x5B9E;&#x4ED4;&#x7EC6;&#x5206;&#x6790;&#x4E00;&#x4E0B;&#xFF0C;&#x5982;&#x679C;&#x5206;&#x6790;&#x5F97;&#x51FA;&#x8BE5;UIControl&#x662F;&#x5728;UINavigationBar&#x4E0A;&#xFF0C;&#x5219;&#x65E0;&#x9700;&#x8BBE;&#x7F6E;&#x5176;&#x76F8;&#x5E94;&#x7684;index&#x503C;&#xFF0C;&#x5373;&#x4E0A;&#x8FF0;&#x7684;&#x6240;&#x6709;navigationItem&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;&#x8DEF;&#x5F84;&#x90FD;&#x4E3A;&#xFF1A;</p>
+<pre><code>...UIViewControllerWrapperView(0)_UIView(0)_UILayoutContainerView(0)_UINavigationBar(0)_UIButton
+</code></pre><p>&#x5373;&#x90FD;&#x4E0D;&#x505A;&#x533A;&#x5206;&#x3002;</p>
+<p>HubbleData&#x91C7;&#x7528;&#x589E;&#x52A0;&#x4E00;&#x79CD;&#x65B0;&#x7684;&#x5C5E;&#x6027;&#x6765;&#x533A;&#x5206;&#x5404;&#x4E2A;item&#xFF0C;&#x5176;&#x5B9E;&#x5F88;&#x660E;&#x663E;&#x53EF;&#x4EE5;&#x770B;&#x51FA;&#x6765;&#xFF0C;&#x8FD9;&#x4E2A;item&#x7684;&#x6267;&#x884C;&#x7684;action&#x80AF;&#x5B9A;&#x662F;&#x4E0D;&#x540C;&#x7684;&#xFF0C;&#x6240;&#x4EE5;&#x53D6;&#x5176;action&#x5C5E;&#x6027;&#x6765;&#x533A;&#x5206;&#xFF0C;&#x6700;&#x7EC8;&#x7684;&#x533A;&#x5206;&#x5F62;&#x5F0F;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>path(...UIViewControllerWrapperView(0)_UIView(0)_UILayoutContainerView(0)_UINavigationBar(0)_UIButton)&amp;actions(button1Click:)
+path(...UIViewControllerWrapperView(0)_UIView(0)_UILayoutContainerView(0)_UINavigationBar(0)_UIButton)&amp;actions(button2Click:)
+</code></pre><p>&#x8FD9;&#x6837;&#xFF0C;HubbleData&#x5C31;&#x53EF;&#x4EE5;&#x51C6;&#x786E;&#x7684;&#x533A;&#x5206;&#x4E0D;&#x540C;&#x7684;item&#x4E86;&#xFF0C;&#x540C;&#x65F6;&#x5B9E;&#x73B0;&#x540C;&#x4E00;&#x79CD;&#x529F;&#x80FD;&#x7684;item&#xFF0C;&#x7531;&#x4E8E;&#x5176;action&#x76F8;&#x540C;&#xFF0C;&#x6240;&#x4EE5;&#x4E5F;&#x4F1A;&#x51C6;&#x786E;&#x7684;&#x6807;&#x8BC6;&#x5176;&#x552F;&#x4E00;&#x6027;&#x3002;</p>
+<ul>
+<li><strong>UIAlertController</strong></li>
+</ul>
+<p>&#x7531;&#x4E8E;&#x4E0D;&#x540C;&#x7684;UIAlertController&#x5728;&#x9009;&#x62E9;&#x786E;&#x5B9A;&#x3001;&#x53D6;&#x6D88;&#x7B49;&#x9009;&#x9879;&#x65F6;&#xFF0C;&#x9009;&#x53D6;&#x7684;&#x8FDB;&#x884C;&#x552F;&#x4E00;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x5224;&#x5B9A;&#x7684;view&#x9700;&#x8981;&#x8FDB;&#x884C;&#x4E00;&#x5B9A;&#x7684;&#x5904;&#x7406;&#xFF0C;&#x540C;&#x65F6;&#x4E3A;&#x4E86;&#x4FDD;&#x8BC1;&#x4E0D;&#x540C;&#x7684;UIAlertController&#x5904;&#x4E8E;&#x540C;&#x4E00;&#x4F4D;&#x7F6E;&#x7684;&#x9009;&#x9879;&#x7684;&#x57CB;&#x70B9;EventID&#x4E0D;&#x540C;&#xFF0C;&#x8FD9;&#x91CC;&#x5728;&#x6784;&#x9020;&#x552F;&#x4E00;&#x6807;&#x5FD7;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x65F6;&#x5019;&#x8FD8;&#x8981;&#x52A0;&#x5165;&#x8BE5;UIAlertController&#x7684;message&#x548C;title&#x4FE1;&#x606F;&#x3002;3.5&#x5C0F;&#x8282;&#x4E2D;&#x4F1A;&#x8FDB;&#x884C;&#x76F8;&#x5173;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;&#x7684;&#x4ECB;&#x7ECD;&#x3002;</p>
+<ul>
+<li><strong>viewController&#x7684;&#x5D4C;&#x5957;</strong></li>
+</ul>
+<p>&#x4E00;&#x822C;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x666E;&#x901A;&#x7684;view&#x53EA;&#x9700;&#x6309;&#x7167;&#x4E00;&#x822C;&#x7684;&#x5C42;&#x6B21;&#x8DEF;&#x5F84;&#x6536;&#x96C6;index&#x5373;&#x53EF;&#xFF0C;&#x4F46;&#x662F;&#x5F53;&#x5B58;&#x5728;pageViewController&#x65F6;&#xFF0C;&#x5982;&#x4E0B;&#x56FE;&#x6240;&#x793A;&#x5206;&#x522B;&#x7ED9;&#x51FA;&#x4E86;&#x4E00;&#x4E2A;&#x6A2A;&#x5411;&#x6EDA;&#x52A8;(&#x4EE5;&#x516C;&#x53F8;&#x8003;&#x62C9;app&#x4E3A;&#x4F8B;)&#x548C;&#x7EB5;&#x5411;&#x6EDA;&#x52A8;&#xFF08;&#x4EE5;&#x516C;&#x53F8;&#x4E25;&#x9009;app&#x4E3A;&#x4F8B;&#xFF09;&#x7684;app&#x7684;&#x622A;&#x56FE;&#x7684;&#x793A;&#x4F8B;&#xFF1A;</p>
+<center><img src="http://ofwsr8cl0.bkt.clouddn.com/kaola.jpeg?imageView/2/w/250" alt="&#x4E0D;&#x540C;&#x7C7B;">                      <img src="http://ofwsr8cl0.bkt.clouddn.com/yanxuan.jpeg?imageView/2/w/250" alt="&#x4E0D;&#x540C;&#x7C7B;"></center>
+
+<p>&#x5176;&#x5B9E;&#x53EF;&#x4EE5;&#x770B;&#x51FA;&#xFF0C;pageViewController&#x4F1A;&#x5E94;&#x7528;&#x5230;&#x5404;&#x79CD;&#x5404;&#x6837;app&#x4E2D;&#xFF0C;&#x6240;&#x4EE5;&#x8FD9;&#x7C7B;app&#x5728;&#x4F7F;&#x7528;&#x8FC7;&#x7A0B;&#x4E2D;&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x95EE;&#x9898;&#x5C24;&#x5176;&#x8981;&#x8003;&#x8651;&#x3002;</p>
+<h6 id="1-&#x5404;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x7684;controller&#x4E0D;&#x540C;&#xFF1F;"><a href="#1-&#x5404;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x7684;controller&#x4E0D;&#x540C;&#xFF1F;" class="headerlink" title="(1) &#x5404;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x7684;controller&#x4E0D;&#x540C;&#xFF1F;"></a>(1) &#x5404;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x7684;controller&#x4E0D;&#x540C;&#xFF1F;</h6><p>&#x5982;&#x679C;pageViewController&#x4E2D;&#x7684;&#x5404;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x4E0D;&#x540C;&#xFF0C;&#x867D;&#x7136;&#x540E;&#x7EED;2.2&#x8282;HubbleData&#x4F1A;&#x52A0;&#x5165;&#x9875;&#x9762;controller&#x7684;&#x4FE1;&#x606F;&#x6765;&#x533A;&#x5206;&#x8FD9;&#x4E9B;&#x4E0D;&#x540C;&#x7684;&#x5B50;&#x9875;&#x9762;&#xFF0C;&#x4F46;&#x662F;&#x53EF;&#x80FD;&#x4F1A;&#x7531;&#x4E8E;&#x6BCF;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x52A0;&#x5165;&#x7684;&#x987A;&#x5E8F;&#x4E0D;&#x540C;&#xFF0C;&#x5BFC;&#x81F4;&#x6BCF;&#x6B21;app&#x8FDB;&#x6765;&#x7684;&#x65F6;&#x5019;&#x540C;&#x4E00;&#x4E2A;&#x9875;&#x9762;&#x7684;&#x4E8B;&#x4EF6;&#x4F1A;&#x83B7;&#x53D6;&#x4E0D;&#x540C;&#x7684;EventID&#xFF0C;&#x4E3E;&#x4F8B;&#x6765;&#x8BF4;&#x660E;&#x4E00;&#x4E0B;&#xFF0C;&#x5982;&#x4E0A;&#x56FE;1&#x6240;&#x793A;&#xFF0C;&#x6BD4;&#x5982;&#x524D;&#x56DB;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x662F;ViewController1, ViewController2, ViewController3, ViewController4&#xFF0C;&#x8FD9;&#x7C7B;pageViewController&#x9664;&#x975E;&#x8BBE;&#x7F6E;&#x56DB;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x540C;&#x65F6;&#x9884;&#x52A0;&#x8F7D;&#x51FA;&#x6765;&#xFF0C;&#x90A3;&#x4E48;&#x6B64;&#x65F6;&#x7684;&#x83B7;&#x53D6;&#x7684;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;</p>
+<pre><code>ViewController1&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView(0) 
+ViewController2&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView(1)
+ViewController3&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView(2)
+ViewController4&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView(3)
+</code></pre><p>&#x4F46;&#x662F;app&#x57FA;&#x672C;&#x90FD;&#x4E0D;&#x4F1A;&#x9884;&#x52A0;&#x8F7D;&#x51FA;&#x6240;&#x6709;&#x9875;&#x9762;&#xFF0C;&#x5BF9;&#x4E8E;&#x7528;&#x6237;&#x4E0D;&#x611F;&#x5174;&#x8DA3;&#x7684;&#x9875;&#x9762;&#x5B8C;&#x5168;&#x6CA1;&#x5FC5;&#x8981;&#x4E00;&#x6B21;&#x6027;&#x5168;&#x90E8;&#x52A0;&#x8F7D;&#x5904;&#x7406;&#xFF0C;&#x53EA;&#x6709;&#x5F53;&#x7528;&#x6237;&#x9009;&#x62E9;&#x4E86;&#x8BE5;&#x6761;&#x76EE;&#x65F6;&#xFF0C;&#x8BE5;&#x5BF9;&#x5E94;&#x7684;&#x5B50;&#x9875;&#x9762;&#x624D;&#x4F1A;&#x52A0;&#x8F7D;&#x51FA;&#x6765;&#xFF0C;&#x5982;&#x679C;&#x73B0;&#x5728;&#x7528;&#x6237;&#x70B9;&#x51FB;&#x7684;&#x987A;&#x5E8F;&#x662F;ViewController1&#xFF0C;ViewController3&#xFF0C;ViewController4&#xFF0C;ViewController2&#xFF0C;&#x7531;&#x4E8E;addChildViewController&#x6216;&#x8005;addSubView&#x7684;&#x987A;&#x5E8F;&#x7684;&#x6539;&#x53D8;&#xFF0C;&#x90A3;&#x4E48;&#x6B64;&#x65F6;&#x83B7;&#x53D6;&#x7684;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;</p>
+<pre><code>ViewController1&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView(0) 
+ViewController2&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView(3)
+ViewController3&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView(1)
+ViewController4&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView(2)
+</code></pre><p>&#x53EF;&#x4EE5;&#x53D1;&#x73B0;&#xFF0C;index&#x503C;&#x53D8;&#x4E86;&#xFF0C;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x4E0D;&#x552F;&#x4E00;&#x4E86;&#xFF0C;&#x90A3;&#x4E48;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;&#x7684;EventID&#x53EF;&#x80FD;&#x4F1A;&#x7531;&#x4E8E;&#x7528;&#x6237;&#x9009;&#x62E9;&#x9875;&#x9762;&#x987A;&#x5E8F;&#x7684;&#x4E0D;&#x540C;&#x800C;&#x4E0D;&#x540C;&#xFF0C;&#x9020;&#x6210;&#x57CB;&#x70B9;&#x6570;&#x636E;&#x7684;&#x6DF7;&#x4E71;&#x3002;</p>
+<p>HubbleData&#x5BF9;&#x4E8E;&#x6B64;&#x7C7B;&#x9875;&#x9762;&#x7684;&#x5904;&#x7406;&#x662F;&#xFF0C;&#x9047;&#x5230;&#x6B64;&#x7C7B;&#x9875;&#x9762;&#xFF0C;&#x5373;&#x4E0D;&#x7528;index&#x6807;&#x6CE8;&#xFF0C;&#x6240;&#x4EE5;&#x4F1A;&#x7EDF;&#x4E00;&#x7684;&#x6807;&#x8BC6;&#x6210;&#xFF1A;</p>
+<pre><code>ViewController1&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView 
+ViewController2&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView
+ViewController3&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView
+ViewController4&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView
+</code></pre><p>&#x540E;&#x7EED;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x4E0D;&#x540C;&#x7684;&#x9875;&#x9762;&#x7684;controller&#x7684;&#x7C7B;&#x540D;&#x83B7;&#x53D6;&#x5176;&#x4E0D;&#x540C;&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x5B57;&#x7B26;&#x4E32;&#x3002;</p>
+<h6 id="2-&#x5404;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x7684;controller&#x76F8;&#x540C;&#xFF1F;"><a href="#2-&#x5404;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x7684;controller&#x76F8;&#x540C;&#xFF1F;" class="headerlink" title="(2) &#x5404;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x7684;controller&#x76F8;&#x540C;&#xFF1F;"></a>(2) &#x5404;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x7684;controller&#x76F8;&#x540C;&#xFF1F;</h6><p>&#x5176;&#x5B9E;&#x505A;&#x8FC7;&#x6B64;&#x7C7B;&#x9875;&#x9762;&#x7684;&#x57FA;&#x672C;&#x5E94;&#x8BE5;&#x90FD;&#x719F;&#x6089;&#xFF0C;&#x5F88;&#x591A;&#x60C5;&#x51B5;&#x4E0B;&#x5B50;&#x9875;&#x9762;&#x90FD;&#x662F;&#x5171;&#x7528;&#x7684;&#xFF0C;&#x53EA;&#x4E0D;&#x8FC7;&#x662F;&#x586B;&#x5165;&#x7684;model&#x4E0D;&#x540C;&#x800C;&#x5DF2;&#xFF0C;&#x90A3;&#x4E48;&#x9047;&#x5230;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#xFF0C;&#x5982;&#x679C;&#x662F;&#x6309;&#x7167;&#x95EE;&#x9898;1&#x7684;&#x89E3;&#x51B3;&#x601D;&#x8DEF;&#xFF0C;&#x5373;&#x4F7F;&#x6309;&#x7167;2.2&#x62FF;&#x5230;&#x4E86;&#x5F53;&#x524D;&#x9875;&#x9762;&#x7684;controller&#xFF0C;&#x90A3;&#x4E48;&#x8FD8;&#x662F;&#x65E0;&#x6CD5;&#x533A;&#x5206;&#x51FA;&#x8FD9;&#x4E9B;&#x9875;&#x9762;&#xFF0C;&#x6240;&#x4EE5;&#x8FD8;&#x662F;&#x9700;&#x8981;&#x8BBE;&#x7F6E;&#x65B0;&#x7684;&#x5177;&#x6709;&#x8FA8;&#x8BC6;&#x5EA6;&#x7684;index&#x3002;</p>
+<p>&#x5176;&#x5B9E;&#x901A;&#x8FC7;pageViewController&#x53EF;&#x4EE5;&#x53D1;&#x73B0;&#xFF0C;&#x7528;&#x6237;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x5DE6;&#x53F3;&#x6ED1;&#x52A8;&#x6216;&#x8005;&#x4E0A;&#x4E0B;&#x6ED1;&#x52A8;&#x6765;&#x5207;&#x6362;&#x5B50;&#x9875;&#x9762;&#xFF0C;&#x8BF4;&#x660E;&#x6240;&#x6709;&#x7684;&#x5B50;&#x9875;&#x9762;&#x90FD;&#x662F;&#x5D4C;&#x5165;&#x5728;&#x4E00;&#x4E2A;scrollView&#x4E4B;&#x4E2D;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x53EF;&#x4EE5;&#x4ECE;&#x8FD9;&#x4E2A;scrollView&#x5165;&#x624B;&#xFF0C;&#x91CD;&#x65B0;&#x786E;&#x5B9A;index&#x3002;&#x4E0B;&#x9762;&#x7ED9;&#x51FA;HubbleData&#x89E3;&#x51B3;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#x7684;&#x65B9;&#x6CD5;&#x3002;</p>
+<p>&#x4E00;&#x5F00;&#x59CB;&#x60F3;&#x4F7F;&#x7528;&#x5F53;&#x524D;scrollView&#x7684;contentOffset&#x6574;&#x9664;&#x6B64;pageViewController&#x7684;&#x9875;&#x9762;&#x5BBD;&#x5EA6;&#x548C;&#x9AD8;&#x5EA6;&#x6240;&#x5F97;&#x5230;&#x7684;&#x503C;&#x4F5C;&#x4E3A;&#x533A;&#x5206;&#x5B50;&#x9875;&#x9762;&#x7684;index&#xFF0C;&#x4F46;&#x662F;&#x8003;&#x8651;&#x5230;&#x53EF;&#x80FD;contentOffset&#x7684;&#x8FDE;&#x7EED;&#x53D8;&#x5316;&#x4EE5;&#x53CA;&#x5B50;&#x9875;&#x9762;&#x6A2A;&#x8DE8;pageViewController&#x6574;&#x6570;&#x500D;&#x5BBD;&#x5EA6;&#x7684;&#x8FB9;&#x754C;&#x65F6;&#xFF0C;&#x53EF;&#x80FD;&#x4F1A;&#x5BFC;&#x81F4;&#x83B7;&#x53D6;&#x7684;index&#x4E0D;&#x552F;&#x4E00;&#x7684;&#x60C5;&#x51B5;&#xFF0C;&#x6240;&#x4EE5;&#x540E;&#x6765;&#x4F7F;&#x7528;&#x8BE5;&#x5B50;&#x9875;&#x9762;&#x7684;&#x8D77;&#x59CB;&#x4F4D;&#x7F6E;&#x6574;&#x9664;pageViewController&#x7684;&#x76F8;&#x5E94;&#x5730;&#x5BBD;&#x5EA6;&#x548C;&#x9AD8;&#x5EA6;&#x5F97;&#x5230;&#x76F8;&#x5E94;&#x5730;index&#x3002;&#x5177;&#x4F53;&#x7684;&#x5B9E;&#x73B0;&#x5982;&#x4E0B;&#xFF0C;&#x5176;&#x4E2D;controller&#x4E3A;&#x5F53;&#x524D;&#x7684;&#x9875;&#x9762;&#xFF1A;</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (view == controller.view || view == controller.view.superview) {</div><div class="line">     <span class="built_in">NSInteger</span> index_x = view.center.x / [view superview].frame.size.width;</div><div class="line">     <span class="built_in">NSInteger</span> index_y = view.center.y / [view superview].frame.size.height;</div><div class="line">     <span class="built_in">NSString</span> *path = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@&quot;%@(indexx:%ld indexy:%ld)&quot;</span>,  </div><div class="line">     		            <span class="built_in">NSStringFromClass</span>([view <span class="keyword">class</span>]), index_x, index_y];</div><div class="line"> }</div></pre></td></tr></table></figure>
+<p>&#x6240;&#x4EE5;&#x540C;&#x6837;&#x9488;&#x5BF9;&#x4E0A;&#x8FF0;&#xFF08;1&#xFF09;&#x6240;&#x7ED9;&#x51FA;&#x7684;&#x56DB;&#x4E2A;ViewController1&#xFF0C;&#x4F18;&#x5316;&#x540E;&#x7684;&#x5230;&#x7684;&#x552F;&#x4E00;&#x7684;&#x6807;&#x8BC6;&#x4E3A;&#xFF1A;</p>
+<pre><code>ViewController1&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView(indexx:0 indexy:0)
+ViewController2&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView(indexx:1 indexy:0)
+ViewController3&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView(indexx:2 indexy:0)
+ViewController4&#x5BF9;&#x5E94;&#x8DEF;&#x5F84;&#x4E3A;&#xFF1A;superview(0)_subControllerView(indexx:3 indexy:0)
+</code></pre><p>&#x8FD9;&#x6837;&#x5373;&#x4F7F;&#x5404;&#x4E2A;&#x5B50;&#x9875;&#x9762;&#x7684;controller&#x76F8;&#x540C;&#xFF0C;&#x4E5F;&#x80FD;&#x901A;&#x8FC7;&#x4F18;&#x5316;&#x540E;&#x7684;index&#x6765;&#x533A;&#x5206;&#x5404;&#x4E2A;&#x4E0D;&#x540C;&#x7684;&#x5B50;&#x9875;&#x9762;&#x3002;&#x5F53;&#x7136;&#x8FD9;&#x79CD;&#x53EA;&#x662F;&#x9488;&#x5BF9;&#x5D4C;&#x5957;scrollView&#x7684;&#x5B50;&#x9875;&#x9762;&#x7684;&#x60C5;&#x51B5;&#xFF0C;&#x4E0D;&#x8FC7;&#x80FD;&#x89E3;&#x51B3;&#x5927;&#x90E8;&#x5206;&#x7684;&#x8BE5;&#x7C7B;&#x95EE;&#x9898;&#xFF0C;&#x5BF9;&#x4E8E;&#x4E00;&#x4E9B;&#x5176;&#x4ED6;&#x7684;&#x7279;&#x6B8A;&#x60C5;&#x51B5;&#x7B49;&#xFF0C;&#x9700;&#x8BE6;&#x7EC6;&#x5206;&#x6790;&#x9875;&#x9762;&#x5E03;&#x5C40;&#x8FDB;&#x884C;&#x5206;&#x6790;&#x3002;</p>
+<h4 id="2-2-&#x5F53;&#x524D;&#x9875;&#x9762;controller&#x7684;&#x83B7;&#x53D6;"><a href="#2-2-&#x5F53;&#x524D;&#x9875;&#x9762;controller&#x7684;&#x83B7;&#x53D6;" class="headerlink" title="2.2 &#x5F53;&#x524D;&#x9875;&#x9762;controller&#x7684;&#x83B7;&#x53D6;"></a><h2 id="2.2">2.2 &#x5F53;&#x524D;&#x9875;&#x9762;controller&#x7684;&#x83B7;&#x53D6;</h2></h4><p>&#x770B;&#x4E0A;&#x53BB;&#xFF0C;&#x5927;&#x591A;&#x6570;&#x60C5;&#x51B5;&#x4E0B;2.1&#x7684;view&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;path&#x5DF2;&#x7ECF;&#x57FA;&#x672C;&#x786E;&#x5B9A;view&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x4F46;&#x662F;&#x666E;&#x904D;&#x5B58;&#x5728;&#x8FD9;&#x4E48;&#x4E00;&#x79CD;&#x60C5;&#x51B5;&#xFF0C;&#x5F53;&#x540C;&#x4E00;&#x4E2A;&#x9875;&#x9762;&#x8DF3;&#x8F6C;&#x4E24;&#x4E2A;&#x4E0D;&#x540C;&#x7684;&#x9875;&#x9762;&#x65F6;&#xFF0C;&#x5047;&#x5982;&#x8FD9;&#x4E24;&#x4E2A;&#x4E0D;&#x540C;&#x7684;&#x9875;&#x9762;&#x4E0A;&#x90FD;&#x53D6;&#x7B2C;&#x4E00;&#x4E2A;&#x6309;&#x94AE;&#x7684;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#xFF0C;&#x5F97;&#x5230;&#x7684;&#x7B80;&#x5316;&#x540E;&#x7684;&#x7ED3;&#x679C;&#x90FD;&#x5982;&#x4E0B;&#x6240;&#x793A;&#xFF1A;</p>
+<pre><code>.../UINavigationTransitionView(0)/UIViewControllerWrapperView(0)/UIView(0)/UIButton(0)
+</code></pre><p>&#x662F;&#x65E0;&#x6CD5;&#x8FDB;&#x884C;&#x8FD9;&#x4E24;&#x4E2A;&#x9875;&#x9762;&#x4E0A;&#x7684;&#x6309;&#x94AE;&#x533A;&#x5206;&#x7684;&#xFF0C;&#x5176;&#x5B9E;&#x9875;&#x9762;&#x7684;&#x7C7B;&#x540D;&#x662F;&#x533A;&#x5206;&#x7684;&#x4E00;&#x4E2A;&#x6700;&#x76F4;&#x63A5;&#x7684;&#x65B9;&#x5F0F;&#x3002;HubbleData&#x662F;&#x6309;&#x7167;&#x4E0B;&#x9762;&#x7684;&#x65B9;&#x6CD5;&#x83B7;&#x53D6;&#x67D0;&#x4E2A;view&#x6240;&#x5728;&#x7684;controller&#x7684;&#x7C7B;&#x540D;&#x7684;&#x3002;</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">+ (<span class="built_in">NSString</span> *)currentController:(<span class="built_in">UIView</span> *)view {</div><div class="line">    <span class="built_in">NSString</span> *result = <span class="string">@&quot;&quot;</span>;</div><div class="line">    <span class="built_in">UIResponder</span> *responder = [view nextResponder];</div><div class="line">    <span class="keyword">while</span> (responder &amp;&amp; ![responder isKindOfClass:[<span class="built_in">UIViewController</span> <span class="keyword">class</span>]]) {</div><div class="line">        responder = [responder nextResponder];</div><div class="line">    }</div><div class="line">    <span class="keyword">if</span> (responder) {</div><div class="line">        result = <span class="built_in">NSStringFromClass</span>([responder <span class="keyword">class</span>]);</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">}</div></pre></td></tr></table></figure>
+<p>&#x5C06;view&#x7684;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x7ED3;&#x5408;&#x5F53;&#x524D;&#x9875;&#x9762;&#x7684;&#x540D;&#x79F0;&#xFF0C;&#x5DF2;&#x7ECF;&#x80FD;&#x591F;&#x89E3;&#x51B3;&#x6389;&#x5927;&#x90E8;&#x5206;&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x95EE;&#x9898;&#x4E86;&#x3002;</p>
+<p>&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x4E00;&#x70B9;&#x662F;&#xFF0C;&#x5F53;&#x9875;&#x9762;&#x7C7B;&#x578B;&#x4E00;&#x6837;&#xFF0C;&#x53EA;&#x662F;&#x586B;&#x5145;&#x7684;model&#x4E0D;&#x540C;&#x65F6;&#xFF0C;&#x6BD4;&#x5982;&#x6D4F;&#x89C8;&#x5546;&#x54C1;&#x8BE6;&#x60C5;&#x65F6;&#xFF0C;&#x6240;&#x8FDB;&#x5165;&#x7684;&#x9875;&#x9762;&#x90FD;&#x662F;&#x4E00;&#x4E2A;&#xFF0C;&#x53EA;&#x662F;model&#x4E0D;&#x540C;&#xFF0C;&#x76EE;&#x524D;HubbleData&#x5BF9;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x6682;&#x65F6;&#x672A;&#x505A;&#x5904;&#x7406;&#x3002;&#x540E;&#x7EED;&#x53EF;&#x53C2;&#x8003;&#x6587;&#x7AE0;3.2&#x8282;UIViewController&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;&#xFF0C;&#x5BF9;&#x4E00;&#x4E9B;&#x9875;&#x9762;&#xFF0C;&#x7528;&#x6237;&#x53EF;&#x4EE5;&#x81EA;&#x5B9A;&#x4E49;&#x8BF8;&#x5982;screenTitle&#x7684;&#x5B57;&#x6BB5;&#xFF0C;&#x5B9A;&#x4E49;&#x8BE5;&#x9875;&#x9762;&#x7684;&#x540D;&#x79F0;&#xFF0C;&#x6BD4;&#x5982;screenTitle&#x5305;&#x542B;&#x4EA7;&#x54C1;&#x552F;&#x4E00;ID&#x65F6;&#xFF0C;&#x6B64;&#x65F6;&#x5C06;&#x8BE5;&#x5B57;&#x6BB5;&#x52A0;&#x5165;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x5373;&#x53EF;&#x533A;&#x5206;&#x3002;&#x76EE;&#x524D;&#x8FD9;&#x5757;&#x8FD8;&#x672A;&#x505A;&#x76F8;&#x5173;&#x5904;&#x7406;&#xFF0C;&#x8FD9;&#x91CC;&#x53EA;&#x662F;&#x63D0;&#x4F9B;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x89E3;&#x51B3;&#x601D;&#x8DEF;&#x3002;</p>
+<h3 id="&#x4E09;&#x3001;&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x91C7;&#x96C6;&#x7684;&#x5B9E;&#x73B0;"><a href="#&#x4E09;&#x3001;&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x91C7;&#x96C6;&#x7684;&#x5B9E;&#x73B0;" class="headerlink" title="&#x4E09;&#x3001;&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x91C7;&#x96C6;&#x7684;&#x5B9E;&#x73B0;"></a><h2 id="3">&#x4E09;&#x3001;&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x91C7;&#x96C6;&#x7684;&#x5B9E;&#x73B0;</h2></h3><h4 id="3-1-AOP-&#x7B80;&#x4ECB;"><a href="#3-1-AOP-&#x7B80;&#x4ECB;" class="headerlink" title="3.1 AOP &#x7B80;&#x4ECB;"></a><h2 id="3.1">3.1 AOP &#x7B80;&#x4ECB;</h2></h4><p>&#x4E0B;&#x9762;&#x8BB2;&#x4E00;&#x4E0B;&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x5177;&#x4F53;&#x5B9E;&#x73B0;&#xFF0C;&#x7528;&#x5230;&#x7684;&#x4E3B;&#x8981;&#x662F;AOP(Aspect-Oriented-Programming)&#xFF0C;&#x9762;&#x5411;&#x5207;&#x9762;&#x7F16;&#x7A0B;&#xFF0C;&#x9762;&#x5BF9;&#x7684;&#x662F;&#x5904;&#x7406;&#x8FC7;&#x7A0B;&#x4E2D;&#x7684;&#x67D0;&#x4E2A;&#x6B65;&#x9AA4;&#x548C;&#x65B9;&#x6CD5;&#x3002;&#x5728;&#x8FD0;&#x884C;&#x65F6;&#xFF0C;&#x52A8;&#x6001;&#x7684;&#x5C06;&#x4EE3;&#x7801;&#x63D2;&#x5165;&#x5230;&#x7C7B;&#x7684;&#x5236;&#x5B9A;&#x65B9;&#x6CD5;&#x3001;&#x6307;&#x5B9A;&#x4F4D;&#x7F6E;&#x4E0A;&#x7684;&#x7F16;&#x7A0B;&#x601D;&#x60F3;&#x5C31;&#x662F;&#x9762;&#x5411;&#x5207;&#x9762;&#x7F16;&#x7A0B;&#x3002;&#x719F;&#x6089;iOS Runtime&#x7684;&#x5E94;&#x8BE5;&#x5F88;&#x6E05;&#x695A;&#xFF0C;&#x76F8;&#x5173;&#x7684;&#x4ECB;&#x7ECD;&#x6587;&#x7AE0;&#x4E5F;&#x5F88;&#x591A;&#xFF0C;&#x8FD9;&#x91CC;&#x4E0D;&#x518D;&#x8FC7;&#x591A;&#x7684;&#x8D58;&#x8FF0;&#x3002;</p>
+<p>HubbleData&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x5B9E;&#x73B0;&#x4E3B;&#x8981;&#x5C31;&#x662F;&#x501F;&#x52A9;AOP&#xFF0C;hook&#x5BF9;&#x5E94;&#x7C7B;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x5E76;&#x5728;&#x539F;&#x5B9E;&#x73B0;&#x4EE3;&#x7801;&#x7684;&#x57FA;&#x7840;&#x4E0A;&#x63D2;&#x5165;&#x81EA;&#x5DF1;&#x5B9A;&#x4E49;&#x7684;&#x57CB;&#x70B9;&#x7684;&#x4EE3;&#x7801;&#xFF0C;&#x5F53;&#x8BE5;&#x7C7B;&#x7684;&#x88AB;hook&#x7684;&#x51FD;&#x6570;&#x6267;&#x884C;&#x65F6;&#xFF0C;&#x5C31;&#x80FD;&#x5B9E;&#x73B0;&#x65E0;&#x57CB;&#x70B9;&#x6570;&#x636E;&#x91C7;&#x96C6;&#x7684;&#x529F;&#x80FD;&#x3002;&#x4E0B;&#x9762;&#x7ED9;&#x51FA;HubbleData&#x91CC;&#x9762;Method Swizzling&#x7684;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x5B9E;&#x73B0;&#x3002;</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">+ (<span class="keyword">void</span>)swizzleSelector:(SEL)selector onClass:(Class)<span class="keyword">class</span> withBlock:(swizzleBlock)block {</div><div class="line">	Method method = class_getInstanceMethod(<span class="keyword">class</span>, selector);</div><div class="line">	IMP originalMethod = method_getImplementation(aMethod);<span class="comment">//&#x539F;&#x51FD;&#x6570;&#x7684;&#x5B9E;&#x73B0;</span></div><div class="line">	IMP newMethod = (IMP)new_swizzledMethod;<span class="comment">//&#x65B0;&#x51FD;&#x6570;&#x7684;&#x5B9E;&#x73B0;</span></div><div class="line">	........ <span class="comment">//&#x7701;&#x53BB;&#x4E00;&#x4E9B;&#x9884;&#x64CD;&#x4F5C;&#x7684;&#x5904;&#x7406;</span></div><div class="line">	method_setImplementation(method, newMethod);<span class="comment">//&#x8BBE;&#x7F6E;method&#x6307;&#x5411;newMethod&#x7684;&#x5B9E;&#x73B0;</span></div><div class="line">	........ <span class="comment">//&#x7701;&#x53BB;originalMethod&#x3001;block&#x7B49;&#x53C2;&#x6570;&#x7684;&#x5904;&#x7406;&#x64CD;&#x4F5C;</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">static</span> <span class="keyword">void</span> new_swizzledMethod(<span class="keyword">id</span> <span class="keyword">self</span>, SEL _cmd) {    </div><div class="line">    ........ <span class="comment">//&#x7701;&#x53BB;originalMethod&#x3001;block&#x7B49;&#x53C2;&#x6570;&#x7684;&#x5904;&#x7406;&#x64CD;&#x4F5C;</span></div><div class="line">    ((<span class="keyword">void</span>(*)(<span class="keyword">id</span>, SEL))originalMethod)(<span class="keyword">self</span>, _cmd); <span class="comment">//&#x5148;&#x6267;&#x884C;&#x539F;&#x6709;&#x7684;&#x51FD;&#x6570;</span></div><div class="line">    </div><div class="line">    swizzleBlock block;</div><div class="line">    <span class="keyword">while</span> ((block = [blocks nextObject])) { <span class="comment">//&#x518D;&#x6267;&#x884C;block</span></div><div class="line">        block(<span class="keyword">self</span>, _cmd);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+<p>&#x4E0A;&#x8FF0;&#x4EE3;&#x7801;&#x53EA;&#x662F;&#x7ED9;&#x51FA;&#x4E86;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x5B9E;&#x73B0;&#x7684;&#x903B;&#x8F91;&#x7ED3;&#x6784;&#xFF0C;new_swizzledMethod&#x4E5F;&#x53EA;&#x662F;selector&#x6CA1;&#x6709;&#x53C2;&#x6570;&#x7684;&#x60C5;&#x51B5;&#xFF08;&#x9664;&#x53BB;self&#x548C;_cmd&#xFF09;&#xFF0C;&#x771F;&#x6B63;&#x5728;&#x57CB;&#x70B9;&#x7684;&#x5904;&#x7406;&#x8FC7;&#x7A0B;&#x9700;&#x8981;&#x8003;&#x8651;&#x7684;&#x60C5;&#x51B5;&#x6BD4;&#x8F83;&#x591A;&#x3002;</p>
+<h4 id="3-2-UIViewController&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;"><a href="#3-2-UIViewController&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;" class="headerlink" title="3.2 UIViewController&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;"></a><h2 id="3.2">3.2 UIViewController&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;</h2></h4><p>&#x4E3B;&#x8981;&#x662F;&#x6536;&#x96C6;&#x9875;&#x9762;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;&#xFF0C;&#x8FD9;&#x91CC;HubbleData&#x91C7;&#x7528;&#x7684;&#x662F;hook UIViewController&#x7684;viewWillAppear&#x65B9;&#x6CD5;&#xFF0C;&#x6309;&#x7167;3.1&#x7ED9;&#x51FA;&#x7684;&#x65B9;&#x5F0F;&#xFF1A;</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[DASwizzler swizzleBoolSelector:<span class="keyword">@selector</span>(viewWillAppear:)</div><div class="line">                        onClass:[<span class="built_in">UIViewController</span> <span class="keyword">class</span>]</div><div class="line">                      withBlock:executeAppearBlock];</div></pre></td></tr></table></figure>
+<p>&#x5F53;viewWillAppear&#x51FD;&#x6570;&#x6267;&#x884C;&#x65F6;&#xFF0C;&#x63D2;&#x5165;&#x57CB;&#x70B9;&#x7684;&#x4EE3;&#x7801;&#x3002;HubbleData&#x7684;&#x8BBE;&#x8BA1;&#x65B9;&#x6CD5;&#x4E3A;&#xFF1A;</p>
+<p>EventID&#x8BBE;&#x7F6E;&#x4E3A;&#x56FA;&#x5B9A;&#x7684;da_screen&#xFF0C;&#x5373;&#x4E0D;&#x4F1A;&#x901A;&#x8FC7;EventID&#x6765;&#x533A;&#x5206;&#x5404;&#x4E2A;&#x9875;&#x9762;&#x7684;&#x4FE1;&#x606F;&#xFF0C;HubbleData&#x5C06;&#x5404;&#x4E2A;&#x9875;&#x9762;&#x7684;&#x533A;&#x5206;&#x4FE1;&#x606F;&#x653E;&#x5728;&#x4E86;properties&#x4E2D;&#xFF0C;&#x5176;&#x4E2D;properties&#x7684;&#x8BBE;&#x7F6E;&#x4E3A;&#xFF1A;</p>
+<pre><code>(1) $screenName &#x4E3A;&#x5F53;&#x524D;&#x9875;&#x9762;&#x7684;&#x540D;&#x79F0;&#xFF1B;
+(2) $screenTitle &#x4E3A;&#x5F53;&#x524D;&#x9875;&#x9762;&#x7684;title&#xFF0C;&#x53EF;&#x4E3A;&#x7A7A;&#xFF1B;
+</code></pre><p>&#x540C;&#x65F6;HubbleData SDK&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;protocol <dascreenautotracker></dascreenautotracker></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">DAScreenAutoTracker</span></span></div><div class="line"><span class="keyword">@required</span></div><div class="line"><span class="comment">//&#x8FD4;&#x56DE;&#x5F53;&#x524D;&#x9875;&#x9762;&#x7684;Title</span></div><div class="line">-(<span class="built_in">NSString</span> *)screenTitle;</div><div class="line"></div><div class="line"><span class="keyword">@optional</span></div><div class="line"><span class="comment">//&#x5B9E;&#x73B0;&#x8BE5;Protocol&#x7684;Controller&#x5BF9;&#x8C61;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x63A5;&#x53E3;&#x5411;&#x81EA;&#x52A8;&#x91C7;&#x96C6;&#x7684;&#x4E8B;&#x4EF6;&#x4E2D;&#x52A0;&#x5165;&#x5C5E;&#x6027;</span></div><div class="line">-(<span class="built_in">NSDictionary</span> *)trackProperties;</div><div class="line"><span class="comment">//&#x8FD4;&#x56DE;&#x5F53;&#x524D;&#x9875;&#x9762;&#x7684;Url</span></div><div class="line">-(<span class="built_in">NSString</span> *)screenUrl;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>&#x5373;&#x7528;&#x6237;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x5B9E;&#x73B0;&#x8BE5;protocol&#xFF0C;HubbleData SDK&#x4F1A;&#x5C06;screenTitle&#x8FD4;&#x56DE;&#x7684;&#x503C;&#x4F5C;&#x4E3A;&#x9875;&#x9762;&#x7684;&#x540D;&#x79F0;&#xFF0C;trackProperties&#x8FD4;&#x56DE;&#x7684;&#x5C5E;&#x6027;&#x52A0;&#x5165;&#x5BF9;&#x5E94;&#x9875;&#x9762;&#x7684;da_screen&#x4E8B;&#x4EF6;&#x7684;&#x5C5E;&#x6027;&#x4E2D;&#xFF0C;&#x4F5C;&#x4E3A;&#x7528;&#x6237;&#x8BBF;&#x95EE;&#x8BE5;&#x9875;&#x9762;&#x65F6;&#x7684;&#x4E8B;&#x4EF6;&#x5C5E;&#x6027;&#xFF0C;screenUrl&#x8FD4;&#x56DE;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x4F5C;&#x4E3A;&#x9875;&#x9762;&#x7684;Url&#xFF0C;&#x7528;&#x4E8E;&#x505A;&#x4E00;&#x4E9B;&#x9875;&#x9762;&#x4E4B;&#x95F4;&#x76F8;&#x4E92;&#x8DF3;&#x8F6C;&#x7684;&#x5206;&#x6790;&#x7B49;&#x3002;</p>
+<p>&#x540C;&#x65F6;&#x589E;&#x52A0;&#x4E86;&#x767D;&#x540D;&#x5355;&#x8BBE;&#x7F6E;&#xFF0C;&#x6709;&#x4E00;&#x4E9B;UIViewController&#x7684;&#x4FE1;&#x606F;&#x7528;&#x6237;&#x4E0D;&#x60F3;&#x91C7;&#x96C6;&#xFF0C;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x8BBE;&#x7F6E;&#x767D;&#x540D;&#x5355;&#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x5C06;&#x4E00;&#x4E9B;&#x4E0D;&#x60F3;&#x91C7;&#x96C6;&#x7684;UIViewController&#x8FC7;&#x6EE4;&#x6389;&#xFF0C;&#x6BD4;&#x5982;&#x8BF4;SFBrowserRemoteViewController&#xFF0C;UIInputWindowController&#x7B49;&#x7CFB;&#x7EDF;&#x81EA;&#x5E26;&#x7684;&#x4E00;&#x4E9B;&#x3002;</p>
+<p>&#x6700;&#x540E;&#x4F1A;&#x8C03;&#x7528;trackEvent&#x8BB0;&#x5F55;&#x8BE5;&#x91C7;&#x96C6;&#x7684;&#x4E8B;&#x4EF6;&#xFF0C;&#x540C;&#x4E0A;&#x8FF0;&#x4ECB;&#x7ECD;&#x7684;&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#x4E00;&#x6837;&#xFF0C;&#x8C03;&#x7528;&#x7684;&#x65B9;&#x6CD5;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>[[DATracker sharedTracker] trackScreenEvent:@&#x201C;da_screen&#x201D; withAttributes:properties];
+</code></pre><p>&#x5176;&#x4E2D;properties&#x5373;&#x4E3A;&#x4E0A;&#x8FF0;&#x8981;&#x91C7;&#x96C6;&#x7684;&#x4E00;&#x4E9B;&#x5C5E;&#x6027;&#x3002;</p>
+<h4 id="3-3-UIControl&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;"><a href="#3-3-UIControl&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;" class="headerlink" title="3.3 UIControl&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;"></a><h2 id="3.3">3.3 UIControl&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;</h2></h4><p>&#x9488;&#x5BF9;UIControl&#xFF0C;HubbleData&#x91C7;&#x7528;&#x7684;&#x662F;hook UIControl&#x7684;sendAction:to:forEvent:&#x65B9;&#x6CD5;&#x3002;&#x7531;&#x5B98;&#x65B9;&#x6587;&#x6863;&#x53EF;&#x77E5;&#xFF0C;&#x5728;UIControl&#x6267;&#x884C;&#x5BF9;&#x5E94;&#x7684;action&#x65F6;&#x90FD;&#x4F1A;&#x9996;&#x5148;&#x8C03;&#x7528;sendAction:to:forEvent:&#x65B9;&#x6CD5;&#xFF0C;&#x5B9E;&#x73B0;&#x5982;&#x4E0B;&#xFF1A;</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[DASwizzler swizzleSendActionSelector:<span class="keyword">@selector</span>(sendAction:to:forEvent:)</div><div class="line">                              onClass:[<span class="built_in">UIControl</span> <span class="keyword">class</span>]</div><div class="line">                            withBlock:executeBlock];</div></pre></td></tr></table></figure>
+<p>&#x8003;&#x8651;&#x5230;UIControl&#x7684;&#x5B50;&#x7C7B;&#x8F83;&#x591A;&#xFF0C;&#x6240;&#x4EE5;HubbleData&#x9009;&#x53D6;&#x4E86;&#x5176;&#x4E2D;&#x4F7F;&#x7528;&#x8F83;&#x591A;&#x7684;&#x51E0;&#x79CD;&#x8FDB;&#x884C;&#x4E86;&#x7279;&#x6B8A;&#x7684;&#x5206;&#x6790;&#xFF1A;&#x4E3B;&#x8981;&#x662F;UITextField&#x3001;UIButton&#x548C;UISwitch&#xFF0C;&#x5176;&#x4F59;&#x7684;&#x6682;&#x65F6;&#x672A;&#x505A;&#x7279;&#x6B8A;&#x5206;&#x6790;&#x3002;&#x5177;&#x4F53;&#x7684;&#x57CB;&#x70B9;&#x7684;&#x91C7;&#x96C6;&#x8BBE;&#x8BA1;&#x4E3A;&#xFF1A;</p>
+<p>&#x65E0;&#x8BBA;&#x662F;&#x54EA;&#x79CD;UIControl&#xFF0C;EventID&#x5747;&#x91C7;&#x7528;&#x7684;&#x662F;&#x7B2C;&#x4E09;&#x90E8;&#x5206;&#x4ECB;&#x7ECD;&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x5B57;&#x7B26;&#x4E32;&#x7684;SHA256&#x7F16;&#x7801;&#x503C;&#xFF0C;&#x4F46;&#x662F;&#x76F8;&#x5173;&#x91C7;&#x96C6;properties&#x6709;&#x6240;&#x5DEE;&#x522B;&#x3002;</p>
+<h5 id="3-3-1-UITextField"><a href="#3-3-1-UITextField" class="headerlink" title="3.3.1 UITextField"></a><h2 id="3.3.1">3.3.1 UITextField</h2></h5><p>UITextField&#x662F;UIControl&#x7684;&#x4E00;&#x4E2A;&#x5B50;&#x7C7B;&#xFF0C;&#x7531;&#x4E8E;UITextField&#x6D89;&#x53CA;&#x5230;&#x7528;&#x6237;&#x7684;&#x9690;&#x79C1;&#x6BD4;&#x8F83;&#x591A;&#xFF0C;&#x6BD4;&#x5982;&#x7528;&#x6237;&#x540D;&#x3001;&#x5BC6;&#x7801;&#x3001;&#x804A;&#x5929;&#x6587;&#x672C;&#x7B49;&#xFF0C;&#x6240;&#x4EE5;HubbleData&#x4E0D;&#x4F1A;&#x5BF9;&#x6B64;&#x7C7B;&#x7684;UITextField&#x8FDB;&#x884C;&#x57CB;&#x70B9;&#x7684;&#x91C7;&#x96C6;&#x3002;</p>
+<p>HubbleData&#x4E3B;&#x8981;&#x91C7;&#x96C6;&#x7684;&#x662F;UISearchBar&#x4E2D;&#x7684;UITextField&#xFF0C;&#x5373;UISearchBarTextField&#xFF0C;&#x5E76;&#x83B7;&#x53D6;&#x641C;&#x7D22;&#x7684;&#x6587;&#x672C;&#x5185;&#x5BB9;&#xFF0C;&#x8FD9;&#x5BF9;&#x4E8E;&#x4E00;&#x4E9B;&#x7535;&#x5546;&#x7C7B;&#x7684;App&#x6765;&#x8BF4;&#xFF0C;&#x80FD;&#x591F;&#x8F83;&#x597D;&#x7684;&#x5206;&#x6790;&#x7528;&#x6237;&#x611F;&#x5174;&#x8DA3;&#x7684;&#x5546;&#x54C1;&#x7B49;&#xFF0C;&#x8FD9;&#x662F;&#x4F5C;&#x4E3A;HubbleData SDK&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x4E00;&#x4E2A;&#x9700;&#x6C42;&#x3002;</p>
+<p>hook&#x4F4F;sendAction:to:forEvent:&#x540E;&#xFF0C;&#x5982;&#x679C;&#x5BF9;UISearchBarTextField&#x7684;&#x6240;&#x6709;actions&#x90FD;&#x8FDB;&#x884C;hook&#x7684;&#x8BDD;&#xFF0C;&#x90A3;&#x4E48;_searchFieldBeginEditing&#x3001;_searchFieldEndEditing&#x7B49;&#x6240;&#x6709;&#x7684;action&#x53D1;&#x751F;&#x7684;&#x65F6;&#x5019;&#x90FD;&#x4F1A;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x7684;&#x91C7;&#x96C6;&#xFF0C;&#x4F1A;&#x91C7;&#x96C6;&#x5230;&#x5F88;&#x591A;&#x65E0;&#x7528;&#x7684;&#x4FE1;&#x606F;&#xFF0C;&#x5BFC;&#x81F4;&#x91C7;&#x96C6;&#x7684;&#x6570;&#x636E;&#x6DF7;&#x4E71;&#x3002;HubbleData SDK&#x53EA;&#x6709;&#x5F53;_searchFieldEndEditing action&#x53D1;&#x751F;&#x65F6;&#x624D;&#x4F1A;&#x8FDB;&#x884C;&#x57CB;&#x70B9;&#xFF0C;&#x6536;&#x96C6;&#x7684;properties&#x4E3A;&#xFF1A;</p>
+<pre><code>(1) type &#x4E3A;UIControl&#x91C7;&#x96C6;&#x7684;&#x4E8B;&#x4EF6;&#x7C7B;&#x578B;&#xFF0C;&#x8FD9;&#x91CC;&#x8BBE;&#x7F6E;&#x4E3A;searchBarEvent&#xFF1B;
+(2) page &#x4E3A;&#x5F53;&#x524D;&#x9875;&#x9762;&#x7684;&#x540D;&#x79F0;&#xFF0C;&#x7528;&#x4E8E;&#x524D;&#x7AEF;&#x663E;&#x793A;&#x7528;&#xFF1B;
+(3) searchText &#x4E3A;_searchFieldEndEditing&#x53D1;&#x751F;&#x65F6;&#x91C7;&#x96C6;&#x5230;&#x641C;&#x7D22;&#x6846;&#x7684;&#x641C;&#x7D22;&#x6587;&#x5B57;&#xFF08;&#x6B64;&#x5B57;&#x6BB5;&#x4E0D;&#x4E3A;&#x7A7A;&#xFF09;&#xFF1B;
+</code></pre><p>&#x8FD9;&#x6837;&#x5C31;&#x80FD;&#x5BF9;&#x641C;&#x7D22;&#x6846;&#x8FDB;&#x884C;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;&#xFF0C;&#x5E76;&#x80FD;&#x6536;&#x96C6;&#x641C;&#x7D22;&#x7684;&#x6587;&#x672C;&#x5185;&#x5BB9;&#x3002;&#x6B64;&#x65B9;&#x6CD5;&#x53EA;&#x662F;&#x5728;_searchFieldEndEditing&#x53D1;&#x751F;&#x65F6;&#x91C7;&#x96C6;&#x6570;&#x636E;&#xFF0C;&#x6709;&#x53EF;&#x80FD;&#x8BE5;action&#x6267;&#x884C;&#x65F6;&#x5E76;&#x672A;&#x5C3D;&#x5174;&#x771F;&#x6B63;&#x7684;&#x641C;&#x7D22;&#x64CD;&#x4F5C;&#xFF0C;&#x53EF;&#x80FD;&#x4F1A;&#x4E0E;&#x4E1A;&#x52A1;&#x6570;&#x636E;&#x5E93;&#x7684;&#x6570;&#x636E;&#x6709;&#x51FA;&#x5165;&#xFF0C;&#x4F46;&#x662F;&#x4E5F;&#x80FD;&#x591F;&#x8F83;&#x4E3A;&#x51C6;&#x786E;&#x7684;&#x5206;&#x6790;&#x7528;&#x6237;&#x611F;&#x5174;&#x8DA3;&#x7684;&#x641C;&#x7D22;&#x5185;&#x5BB9;&#x3002;</p>
+<h5 id="3-3-2-UIButton"><a href="#3-3-2-UIButton" class="headerlink" title="3.3.2 UIButton"></a><h2 id="3.3.2">3.3.2 UIButton</h2></h5><p>UIControl&#x4E2D;&#x4F7F;&#x7528;&#x6700;&#x591A;&#x6700;&#x5E38;&#x89C1;&#x7684;&#x662F;UIButton&#xFF0C;&#x56E0;&#x6B64;&#x5BF9;UIButton&#x7684;&#x91C7;&#x96C6;&#x975E;&#x5E38;&#x91CD;&#x8981;&#x3002;&#x5728;&#x4F7F;&#x7528;UIButton&#x7684;&#x65F6;&#x5019;&#x53EF;&#x4EE5;&#x968F;&#x610F;&#x7684;&#x8BBE;&#x7F6E;&#x5176;title&#x7B49;&#x5C5E;&#x6027;&#x6765;&#x8868;&#x793A;&#x4E1A;&#x52A1;&#x903B;&#x8F91;&#x7684;&#x4E0D;&#x540C;&#x72B6;&#x6001;&#x3002;&#x8FD9;&#x91CC;&#x53EF;&#x4EE5;&#x4E3E;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x4F8B;&#x5B50;&#xFF1A;&#x57FA;&#x672C;app&#x7684;&#x767B;&#x5F55;&#x9875;&#x9762;&#xFF0C;&#x5728;&#x7528;&#x6237;&#x540D;&#x548C;&#x5BC6;&#x7801;&#x90FD;&#x672A;&#x8F93;&#x5165;&#x65F6;&#x3001;&#x90FD;&#x8F93;&#x5165;&#x65F6;&#x4EE5;&#x53CA;&#x767B;&#x5F55;&#x4E2D;&#x5404;&#x4E2A;&#x72B6;&#x6001;&#xFF0C;&#x767B;&#x5F55;&#x6309;&#x94AE;&#x7684;title&#x3001;titleColor&#x7B49;&#x5C5E;&#x6027;&#x53EF;&#x80FD;&#x90FD;&#x662F;&#x4E0D;&#x540C;&#x7684;&#xFF0C;&#x5373;&#x6BCF;&#x4E00;&#x79CD;button&#x7684;&#x6837;&#x5F0F;&#x90FD;&#x4EE3;&#x8868;&#x7740;&#x4E00;&#x79CD;&#x6837;&#x5F0F;&#xFF0C;&#x4F46;&#x662F;&#x5F97;&#x5230;&#x7684;EventID&#x662F;&#x76F8;&#x540C;&#x7684;&#x3002;&#x9488;&#x5BF9;&#x6B64;&#x79CD;&#x60C5;&#x51B5;&#xFF0C;HubbleData&#x4F1A;&#x52A0;&#x5165;title&#x3001;titleColor&#x4F5C;&#x4E3A;&#x5C5E;&#x6027;&#x503C;&#xFF0C;&#x4EE5;&#x65B9;&#x4FBF;&#x540E;&#x53F0;&#x8FDB;&#x884C;&#x8FDB;&#x4E00;&#x6B65;&#x7684;&#x5206;&#x6790;&#x3002;</p>
+<p>&#x5F53;&#x6309;&#x94AE;&#x7684;&#x4E24;&#x79CD;&#x72B6;&#x6001;&#x53EA;&#x662F;&#x4E24;&#x79CD;&#x4E0D;&#x540C;&#x7684;&#x80CC;&#x666F;&#x56FE;&#x7247;&#x65F6;&#xFF0C;&#x6BD4;&#x5982;&#x5FAE;&#x535A;&#x6216;&#x8005;&#x5FAE;&#x4FE1;&#x7684;&#x70B9;&#x8D5E;&#x7B49;&#xFF0C;&#x5176;&#x5B9E;&#x662F;&#x53D8;&#x6362;&#x4E86;&#x4E00;&#x79CD;&#x80CC;&#x666F;&#x56FE;&#x7247;&#xFF0C;&#x9488;&#x5BF9;&#x5BF9;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x5904;&#x7406;&#xFF0C;HubbleData&#x5219;&#x4F1A;&#x83B7;&#x53D6;&#x56FE;&#x7247;&#x7684;imageName&#x4F5C;&#x4E3A;&#x5176;&#x4E2D;&#x4E00;&#x4E2A;&#x5C5E;&#x6027;&#x3002;</p>
+<pre><code>(1) type &#x4E3A;UIControl&#x91C7;&#x96C6;&#x7684;&#x4E8B;&#x4EF6;&#x7C7B;&#x578B;&#xFF0C;&#x8FD9;&#x91CC;&#x8BBE;&#x7F6E;&#x4E3A;buttonEvent&#xFF1B;
+(2) page &#x4E3A;&#x5F53;&#x524D;&#x9875;&#x9762;&#x7684;&#x540D;&#x79F0;&#xFF0C;&#x7528;&#x4E8E;&#x524D;&#x7AEF;&#x663E;&#x793A;&#x7528;&#xFF1B;
+(3) title &#x4E3A;&#x5F53;&#x524D;&#x6309;&#x94AE;&#x7684;title&#xFF1B;
+(4) titleColor &#x4E3A;&#x5F53;&#x524D;title&#x7684;color&#xFF0C;&#x4F1A;&#x8F6C;&#x6362;&#x6210;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5F62;&#x5F0F;&#xFF0C;rgba(r, g, b, alpha)&#xFF1B;
+(5) imageName &#x4E3A;&#x5F53;&#x524D;&#x6309;&#x94AE;&#x7684;&#x80CC;&#x666F;&#x56FE;&#x7247;&#x7684;name;
+(6) frame &#x4E3A;UIButton&#x7684;frame&#xFF0C;&#x7528;&#x4E8E;&#x5206;&#x6790;&#x540C;&#x7C7B;&#x5143;&#x7D20;,&#x4F1A;&#x8F6C;&#x6362;&#x6210;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5F62;&#x5F0F;,rect(x, y, width, height)&#xFF1B;
+</code></pre><p>&#x53EF;&#x4EE5;&#x770B;&#x51FA;&#xFF0C;HubbleData&#x8FD8;&#x91C7;&#x96C6;&#x4E86;&#x8BE5;view&#x7684;frame&#x4FE1;&#x606F;&#xFF0C;&#x4E3B;&#x8981;&#x662F;&#x7528;&#x6765;&#x5206;&#x6790;&#x540C;&#x7C7B;&#x5143;&#x7D20;&#x7528;&#x7684;&#xFF0C;&#x4E0B;&#x56FE;&#x7ED9;&#x51FA;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x793A;&#x4F8B;&#xFF1A;</p>
+<center><img src="http://ofwsr8cl0.bkt.clouddn.com/%E5%90%8C%E7%B1%BB%E5%85%83%E7%B4%A0.jpg?imageView/2/w/300" alt="bar1"></center>
+
+<p>&#x76EE;&#x524D;&#x6709;&#x516D;&#x4E2A;&#x5DF2;&#x5173;&#x6CE8;&#x7684;&#x4EA7;&#x54C1;&#xFF0C;&#x5F53;&#x60F3;&#x7EDF;&#x8BA1;&#x7528;&#x6237;&#x6240;&#x6709;&#x70B9;&#x8D5E;&#x7684;&#x4E8B;&#x4EF6;&#x65F6;&#xFF0C;&#x7531;&#x4E8E;&#x6BCF;&#x4E2A;&#x70B9;&#x8D5E;&#x7684;&#x6309;&#x94AE;&#x90FD;&#x5904;&#x4E8E;&#x4E00;&#x4E2A;UITableViewCell&#x4E2D;&#xFF0C;&#x5728;&#x524D;&#x9762;&#x4ECB;&#x7ECD;&#x7684;&#x83B7;&#x53D6;&#x5C42;&#x7EA7;&#x552F;&#x4E00;&#x8DEF;&#x5F84;UITableViewCell&#x65F6;&#x7684;&#x7279;&#x6B8A;&#x5904;&#x7406;&#xFF0C;&#x7531;&#x4E8E;&#x6BCF;&#x4E2A;&#x6309;&#x94AE;&#x6240;&#x5728;&#x7684;cell&#x7684;row&#x4E0D;&#x540C;&#xFF0C;&#x6240;&#x4EE5;&#x83B7;&#x5F97;&#x7684;&#x6BCF;&#x4E2A;&#x6309;&#x94AE;&#x7684;&#x4E8B;&#x4EF6;&#x7684;&#x552F;&#x4E00;EventID&#x90FD;&#x662F;&#x4E0D;&#x540C;&#x7684;&#xFF0C;&#x8FD9;&#x6837;&#x540E;&#x7AEF;&#x5728;&#x5206;&#x6790;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x65E0;&#x6CD5;&#x5F52;&#x7C7B;&#x540C;&#x7C7B;&#x5143;&#x7D20;&#x3002;&#x5F53;HubbleData&#x7ED9;&#x51FA;frame&#x65F6;&#xFF0C;&#x540E;&#x7AEF;&#x53EF;&#x4EE5;&#x6839;&#x636E;frame&#x5F52;&#x7C7B;&#x51FA;&#x540C;&#x4E00;&#x7C7B;&#x6309;&#x94AE;&#x7684;&#x4E8B;&#x4EF6;&#xFF0C;&#x5177;&#x4F53;&#x7684;&#x5F52;&#x7C7B;&#x7B56;&#x7565;&#x8FD9;&#x91CC;&#x4E0D;&#x518D;&#x4ECB;&#x7ECD;&#x3002;</p>
+<h5 id="3-3-3-UISwitch"><a href="#3-3-3-UISwitch" class="headerlink" title="3.3.3 UISwitch"></a><h2 id="3.3.3">3.3.3 UISwitch</h2></h5><p>&#x7C7B;&#x4F3C;&#x4E8E;UIButton&#xFF0C;&#x53EA;&#x4E0D;&#x8FC7;&#x8FD9;&#x91CC;&#x8981;&#x91C7;&#x96C6;switchState&#xFF0C;&#x5373;&#x5F53;&#x524D;&#x7684;&#x5F00;&#x5173;&#x72B6;&#x6001;&#xFF0C;&#x5177;&#x4F53;&#x7684;&#x91C7;&#x96C6;&#x5C5E;&#x6027;&#x4E3A;&#xFF1A;</p>
+<pre><code>(1) type &#x4E3A;UIControl&#x91C7;&#x96C6;&#x7684;&#x4E8B;&#x4EF6;&#x7C7B;&#x578B;&#xFF0C;&#x8FD9;&#x91CC;&#x8BBE;&#x7F6E;&#x4E3A;switchEvent&#xFF1B;
+(2) page &#x4E3A;&#x5F53;&#x524D;&#x9875;&#x9762;&#x7684;&#x540D;&#x79F0;&#xFF0C;&#x7528;&#x4E8E;&#x524D;&#x7AEF;&#x663E;&#x793A;&#x7528;&#xFF1B;
+(3) switchState &#x4E3A;switch&#x7684;&#x5F00;&#x5173;&#x72B6;&#x6001;&#xFF1B;
+</code></pre><h5 id="3-3-4-&#x5176;&#x4F59;UIControl"><a href="#3-3-4-&#x5176;&#x4F59;UIControl" class="headerlink" title="3.3.4 &#x5176;&#x4F59;UIControl"></a><h2 id="3.3.4">3.3.4 &#x5176;&#x4F59;UIControl</h2></h5><p>&#x5176;&#x4F59;&#x7684;&#x53EA;&#x662F;&#x91C7;&#x96C6;type&#xFF0C;page&#x5C5E;&#x6027;&#xFF0C;&#x76EE;&#x524D;&#x672A;&#x505A;&#x8FC7;&#x591A;&#x7684;&#x5904;&#x7406;&#x3002;</p>
+<h4 id="3-4-UITableView&#x548C;UICollectionView&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;"><a href="#3-4-UITableView&#x548C;UICollectionView&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;" class="headerlink" title="3.4 UITableView&#x548C;UICollectionView&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;"></a><h2 id="3.4">3.4 UITableView&#x548C;UICollectionView&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;</h2></h4><p>&#x9488;&#x5BF9;UITableView&#x548C;UICollectionView&#xFF0C;HubbleData&#x91C7;&#x7528;&#x7684;&#x662F;&#x5148;hook UITableView&#x548C;UICoolectionView&#x7684;setDelegate:&#x65B9;&#x6CD5;&#xFF0C;&#x7136;&#x540E;&#x627E;&#x5230;&#x5BF9;&#x5E94;&#x7684;delegate&#xFF0C;&#x7136;&#x540E;&#x518D;hook delegate&#x7C7B;&#x4E2D;&#x7684;tableView:didSelectRowAtIndexPath:&#x65B9;&#x6CD5;&#x548C;UICollectionView&#x7684;collectionView:didSelectItemAtIndexPath:&#x65B9;&#x6CD5;&#x3002;&#x8FD9;&#x91CC;&#x4EE5;UITableView&#x4E3A;&#x4F8B;&#xFF1A;</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//&#x5148;hook setDelegate:&#x65B9;&#x6CD5;</span></div><div class="line">[DASwizzler swizzleSelector:<span class="keyword">@selector</span>(setDelegate:)</div><div class="line">                    onClass:[<span class="built_in">UITableView</span> <span class="keyword">class</span>]</div><div class="line">                  withBlock:executeSetDelegateBlock];</div><div class="line"></div><div class="line"><span class="comment">//&#x518D;hook delegate&#x7684;tableView:didSelectRowAtIndexPath:&#x65B9;&#x6CD5;</span></div><div class="line"><span class="keyword">void</span> (^executeSetDelegateBlock)(<span class="keyword">id</span>, SEL, <span class="keyword">id</span>) = ^(<span class="keyword">id</span> view, SEL command, <span class="keyword">id</span>&lt;<span class="built_in">UITableViewDelegate</span>&gt; delegate) {</div><div class="line">        <span class="keyword">if</span> ([delegate respondsToSelector:<span class="keyword">@selector</span>(tableView:didSelectRowAtIndexPath:)]) {</div><div class="line">            [DASwizzler swizzleSelector:<span class="keyword">@selector</span>(tableView:didSelectRowAtIndexPath:)</div><div class="line">                                onClass:[delegate <span class="keyword">class</span>]</div><div class="line">                              withBlock:executeBlock];</div><div class="line">        }</div><div class="line">    };</div></pre></td></tr></table></figure>
+<p>EventID&#x6309;&#x7167;&#x4E0A;&#x8FF0;&#x4ECB;&#x7ECD;&#x7684;&#x65B9;&#x6CD5;&#x83B7;&#x53D6;&#xFF0C;&#x53EA;&#x4E0D;&#x8FC7;&#x8FD9;&#x91CC;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;&#x83B7;&#x53D6;&#x7684;&#x5E76;&#x4E0D;&#x662F;UITableView&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x5B57;&#x7B26;&#x4E32;&#x800C;&#x662F;&#x5BF9;&#x5E94;&#x7684;&#x70B9;&#x51FB;&#x7684;cell&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x5B57;&#x7B26;&#x4E32;&#x3002;&#x91C7;&#x96C6;&#x7684;properties&#x4E3A;&#xFF1A;</p>
+<pre><code>(1) type &#x4E3A;UITableView&#x91C7;&#x96C6;&#x7684;&#x4E8B;&#x4EF6;&#x7C7B;&#x578B;&#xFF0C;&#x8FD9;&#x91CC;&#x8BBE;&#x7F6E;&#x4E3A;tableViewSelectEvent&#xFF1B;
+(2) page &#x4E3A;&#x5F53;&#x524D;&#x9875;&#x9762;&#x7684;&#x540D;&#x79F0;&#xFF0C;&#x7528;&#x4E8E;&#x524D;&#x7AEF;&#x663E;&#x793A;&#x7528;&#xFF1B;
+(3) section &#x4E3A;&#x70B9;&#x51FB;&#x7684;cell&#x6240;&#x5728;&#x7684;section&#xFF1B;
+(4) row &#x4E3A;&#x70B9;&#x51FB;&#x7684;cell&#x6240;&#x5728;&#x7684;row&#xFF1B;
+</code></pre><h4 id="3-5-UIGestureRecognizer&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;"><a href="#3-5-UIGestureRecognizer&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;" class="headerlink" title="3.5 UIGestureRecognizer&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;"></a><h2 id="3.5">3.5 UIGestureRecognizer&#x7684;&#x65E0;&#x57CB;&#x70B9;&#x91C7;&#x96C6;</h2></h4><p>&#x5728;iOS&#x5F00;&#x53D1;&#x4E2D;&#xFF0C;&#x7ECF;&#x5E38;&#x4F1A;&#x4F7F;&#x7528;&#x4E00;&#x4E9B;&#x624B;&#x52BF;&#x6765;&#x5904;&#x7406;&#x4E00;&#x4E9B;&#x70B9;&#x51FB;&#x7684;&#x64CD;&#x4F5C;&#xFF0C;&#x6240;&#x4EE5;&#x4E5F;&#x6709;&#x5FC5;&#x8981;&#x5BF9;UIGestureRecognizer&#x8FDB;&#x884C;hook&#x3002;HubbleData &#x5E76;&#x4E0D;&#x662F;&#x76F4;&#x63A5;&#x9488;&#x5BF9;UIGestureRecognizer&#x8FD9;&#x4E2A;&#x7C7B;&#x8FDB;&#x884C;hook&#xFF0C;&#x800C;&#x662F;hook UIView&#x7C7B;&#x7684;addGestureRecognizer:&#x65B9;&#x6CD5;&#xFF0C;&#x5B9E;&#x73B0;&#x5982;&#x4E0B;&#xFF1A;</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> (^executeBlock)(<span class="keyword">id</span>, SEL, <span class="keyword">id</span>) = ^(<span class="keyword">id</span> target, SEL command, <span class="keyword">id</span> arg) {</div><div class="line">        <span class="keyword">if</span> ([arg isKindOfClass:[<span class="built_in">UITapGestureRecognizer</span> <span class="keyword">class</span>]] ||</div><div class="line">            [arg isKindOfClass:[<span class="built_in">UILongPressGestureRecognizer</span> <span class="keyword">class</span>]]) {</div><div class="line">            [arg addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(da_autoEventAction:)];<span class="comment">//&#x5728;&#x672C;&#x7C7B;&#x4E0B;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;action&#x7684;&#x5B9E;&#x73B0;</span></div><div class="line">            ...........</div><div class="line">        }</div><div class="line">};</div><div class="line"></div><div class="line">[DASwizzler swizzleSelector:<span class="keyword">@selector</span>(addGestureRecognizer:)</div><div class="line">                    onClass:[<span class="built_in">UIView</span> <span class="keyword">class</span>]</div><div class="line">                  withBlock:executeBlock];</div></pre></td></tr></table></figure>
+<p>&#x901A;&#x8FC7;hook addGestureRecognizer:&#x65B9;&#x6CD5;&#xFF0C;&#x53EF;&#x4EE5;&#x5F97;&#x5230;&#x8BE5;UIView&#x6240;&#x6DFB;&#x52A0;&#x7684;UIGestureRecognizer&#xFF0C;&#x8FD9;&#x91CC;&#x53EA;&#x5BF9;UITapGestureRecognizer&#x548C;UILongPressGestureRecognizer&#x8FDB;&#x884C;&#x5904;&#x7406;&#xFF0C;&#x5176;&#x4ED6;&#x7684;&#x624B;&#x52BF;&#x6682;&#x672A;&#x505A;&#x5904;&#x7406;&#x3002;&#x5F97;&#x5230;&#x76F8;&#x5E94;&#x7684;UIGestureRecognizer&#xFF0C;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;action&#xFF0C;&#x5F53;&#x8BE5;&#x624B;&#x52BF;&#x6267;&#x884C;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x540C;&#x6837;&#x4F1A;&#x6267;&#x884C;&#x8BE5;action&#xFF0C;&#x5728;action&#x4E2D;&#x6267;&#x884C;&#x57CB;&#x70B9;&#x7684;&#x64CD;&#x4F5C;&#x3002;</p>
+<p>&#x8FD9;&#x91CC;&#x83B7;&#x53D6;&#x7684;&#x662F;UIGestureRecognizer&#x6240;&#x5728;&#x7684;UIView&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x6807;&#x8BC6;&#x5B57;&#x7B26;&#x4E32;&#x7F16;&#x7801;&#x4F5C;&#x4E3A;EventID,&#x91C7;&#x96C6;&#x7684;&#x5C5E;&#x6027;&#x4E3A;&#xFF1A;</p>
+<pre><code>(1) type &#x4E3A;UIGestureRecognizer&#x91C7;&#x96C6;&#x7684;&#x4E8B;&#x4EF6;&#x7C7B;&#x578B;&#xFF0C;&#x8FD9;&#x91CC;&#x8BBE;&#x7F6E;&#x4E3A;gestureTapEvent&#xFF1B;
+(2) page &#x4E3A;&#x5F53;&#x524D;&#x9875;&#x9762;&#x7684;&#x540D;&#x79F0;&#xFF0C;&#x7528;&#x4E8E;&#x524D;&#x7AEF;&#x663E;&#x793A;&#x7528;&#xFF1B;
+</code></pre><p><strong>UIAlertController&#x7684;&#x7279;&#x6B8A;&#x5904;&#x7406;</strong></p>
+<p>&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x5BF9;UIAlertController&#x505A;&#x4E00;&#x4E2A;&#x8BE6;&#x7EC6;&#x7684;&#x8BF4;&#x660E;&#xFF0C;&#x56E0;&#x4E3A;UIAlertController&#x5728;&#x70B9;&#x51FB;&#x8BF8;&#x5982;&#x53D6;&#x6D88;&#x3001;&#x786E;&#x5B9A;&#x7684;&#x9009;&#x9879;&#x6309;&#x94AE;&#x65F6;&#xFF0C;&#x4E5F;&#x4F1A;&#x8FDB;&#x884C;&#x624B;&#x52BF;&#x7684;&#x57CB;&#x70B9;&#x91C7;&#x96C6;&#xFF0C;&#x4F46;&#x662F;&#x5728;iOS9&#x548C;iOS10&#x4E0A;&#x7565;&#x5FAE;&#x6709;&#x4E9B;&#x533A;&#x522B;&#x3002;</p>
+<p>&#x8FD9;&#x91CC;&#x5148;&#x4EE5;iOS9&#x4E3A;&#x4F8B;&#xFF0C;&#x5176;target&#x662F;&#x4F5C;&#x7528;&#x5728;_UIAlertControllerView&#x8FD9;&#x4E2A;&#x7CFB;&#x7EDF;&#x7684;&#x79C1;&#x6709;&#x7C7B;&#x4E0A;&#x7684;&#xFF0C;&#x5982;&#x679C;&#x76F4;&#x63A5;&#x5BF9;&#x8FD9;&#x4E2A;_UIAlertControllerView&#x8FDB;&#x884C;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x6784;&#x9020;&#xFF0C;&#x5219;&#x53D6;&#x6D88;&#x548C;&#x786E;&#x5B9A;&#x9009;&#x9879;&#x5F97;&#x5230;&#x7684;EventID&#x662F;&#x76F8;&#x540C;&#x7684;&#xFF0C;&#x8FD9;&#x6837;&#x5C06;&#x65E0;&#x6CD5;&#x51C6;&#x786E;&#x7684;&#x5206;&#x6790;&#x51FA;&#x7528;&#x6237;&#x7684;&#x9009;&#x62E9;&#xFF0C;&#x6240;&#x4EE5;&#x5FC5;&#x987B;&#x4EE5;&#x6BCF;&#x4E2A;&#x9009;&#x9879;view&#x4F5C;&#x4E3A;&#x5355;&#x72EC;&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x5B57;&#x7B26;&#x4E32;&#x8FDB;&#x884C;&#x5206;&#x6790;&#x624D;&#x80FD;&#x51C6;&#x786E;&#x533A;&#x5206;&#x3002;&#x901A;&#x8FC7;&#x83B7;&#x53D6;_UIAlertControllerView&#x7684;_actionViews&#x53D8;&#x91CF;&#xFF0C;&#x5C31;&#x80FD;&#x5F97;&#x5230;&#x5404;&#x4E2A;&#x9009;&#x9879;&#x7684;view&#xFF0C;&#x8FD9;&#x91CC;&#x8981;&#x505A;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x70B9;&#x51FB;&#x5750;&#x6807;&#x83B7;&#x53D6;&#xFF0C;&#x5224;&#x65AD;&#x6240;&#x70B9;&#x51FB;&#x7684;&#x533A;&#x57DF;&#x4F4D;&#x4E8E;&#x7684;actionView&#xFF0C;&#x5177;&#x4F53;&#x5B9E;&#x73B0;&#x5982;&#x4E0B;&#xFF1A;</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ([<span class="built_in">NSStringFromClass</span>([view <span class="keyword">class</span>]) isEqualToString:<span class="string">@&quot;_UIAlertControllerView&quot;</span>]) {</div><div class="line">	Ivar ivar = class_getInstanceVariable([view <span class="keyword">class</span>], <span class="string">&quot;_actionViews&quot;</span>);</div><div class="line">	<span class="built_in">NSMutableArray</span> *actionviews =  object_getIvar(view, ivar);</div><div class="line">	<span class="keyword">for</span> (<span class="built_in">UIView</span> *actionview <span class="keyword">in</span> actionviews) {</div><div class="line">		<span class="built_in">CGPoint</span> point = [gesture locationInView:actionview];</div><div class="line">		<span class="keyword">if</span> ([<span class="built_in">NSStringFromClass</span>([actionview <span class="keyword">class</span>]) isEqualToString:<span class="string">@&quot;_UIAlertControllerActionView&quot;</span>] &amp;&amp;</div><div class="line">			point.x &gt; <span class="number">0</span> &amp;&amp; point.x &lt; <span class="built_in">CGRectGetWidth</span>(actionview.bounds) &amp;&amp;</div><div class="line">          	point.y &gt; <span class="number">0</span> &amp;&amp; point.y &lt; <span class="built_in">CGRectGetHeight</span>(actionview.bounds) &amp;&amp;</div><div class="line">          	gesture.state == <span class="built_in">UIGestureRecognizerStateBegan</span>) {</div><div class="line">           .........  <span class="comment">//&#x8FDB;&#x884C;&#x57CB;&#x70B9;&#x64CD;&#x4F5C;</span></div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+<p>&#x8FD9;&#x91CC;&#x5728;&#x6761;&#x4EF6;&#x5224;&#x65AD;&#x65F6;&#x8BBE;&#x5B9A;gesture.state == UIGestureRecognizerStateBegan&#xFF0C;&#x662F;&#x7531;&#x4E8E;UILongPressGestureRecognizer&#x4F1A;&#x8FDE;&#x7EED;&#x4E24;&#x6B21;&#x8C03;&#x7528;action&#xFF0C;&#x56E0;&#x6B64;&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x52A0;&#x5165;&#x4E8B;&#x4EF6;&#x7684;&#x72B6;&#x6001;&#x8FDB;&#x884C;&#x533A;&#x5206;&#xFF0C;&#x9632;&#x6B62;&#x8FDB;&#x884C;&#x4E24;&#x6B21;&#x76F8;&#x540C;&#x7684;&#x6570;&#x636E;&#x91C7;&#x96C6;&#x3002;</p>
+<p>iOS10&#x4E0B;&#x7684;UIAlertController&#x7684;&#x5185;&#x90E8;&#x5B9E;&#x73B0;&#x505A;&#x4E86;&#x4E00;&#x4E9B;&#x6539;&#x52A8;&#xFF0C;&#x5176;target&#x53D8;&#x6362;&#x6210;&#x5728;_UIAlertControllerInterfaceActionGroupView&#x8FD9;&#x4E2A;&#x7CFB;&#x7EDF;&#x7684;&#x79C1;&#x6709;&#x7C7B;&#x4E0A;&#x7684;&#xFF0C;&#x7136;&#x540E;&#x9700;&#x8981;&#x8FDB;&#x884C;&#x4E00;&#x5B9A;&#x7684;&#x5904;&#x7406;&#xFF0C;&#x83B7;&#x53D6;UIInterfaceActionSelectionTrackingController&#x7684;_representationViews&#x53D8;&#x91CF;&#xFF0C;&#x904D;&#x5386;&#x5F97;&#x5230;&#x5404;&#x4E2A;&#x9009;&#x9879;&#x7684;view&#xFF0C;&#x5177;&#x4F53;&#x5B9E;&#x73B0;&#x5982;&#x4E0B;&#xFF1A;</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ([<span class="built_in">NSStringFromClass</span>([view <span class="keyword">class</span>]) isEqualToString:<span class="string">@&quot;_UIAlertControllerInterfaceActionGroupView&quot;</span>]) {</div><div class="line">	<span class="built_in">NSMutableArray</span> *targets = [gesture valueForKey:<span class="string">@&quot;_targets&quot;</span>];</div><div class="line">	<span class="keyword">id</span> targetContainer = targets[<span class="number">0</span>];</div><div class="line">	<span class="keyword">id</span> targetOfGesture = [targetContainer valueForKey:<span class="string">@&quot;_target&quot;</span>];</div><div class="line">	<span class="keyword">if</span> ([targetOfGesture isKindOfClass:[<span class="built_in">NSClassFromString</span>(<span class="string">@&quot;UIInterfaceActionSelectionTrackingController&quot;</span>) <span class="keyword">class</span>]]) {</div><div class="line">		Ivar ivar = class_getInstanceVariable([targetOfGesture <span class="keyword">class</span>], <span class="string">&quot;_representationViews&quot;</span>);</div><div class="line">		<span class="built_in">NSMutableArray</span> *representationViews =  object_getIvar(targetOfGesture, ivar);</div><div class="line">		<span class="keyword">for</span> (<span class="built_in">UIView</span> *representationView <span class="keyword">in</span> representationViews) {</div><div class="line">			<span class="built_in">CGPoint</span> point = [gesture locationInView:representationView];</div><div class="line">			<span class="keyword">if</span> ([<span class="built_in">NSStringFromClass</span>([representationView <span class="keyword">class</span>]) isEqualToString:<span class="string">@&quot;_UIInterfaceActionCustomViewRepresentationView&quot;</span>] &amp;&amp;</div><div class="line">             	point.x &gt; <span class="number">0</span> &amp;&amp; point.x &lt; <span class="built_in">CGRectGetWidth</span>(representationView.bounds) &amp;&amp;</div><div class="line">              	point.y &gt; <span class="number">0</span> &amp;&amp; point.y &lt; <span class="built_in">CGRectGetHeight</span>(representationView.bounds) &amp;&amp;</div><div class="line">              	gesture.state == <span class="built_in">UIGestureRecognizerStateBegan</span>) {</div><div class="line">              	.........  <span class="comment">//&#x8FDB;&#x884C;&#x57CB;&#x70B9;&#x64CD;&#x4F5C;</span></div><div class="line">          		}</div><div class="line">       		}</div><div class="line">	}</div><div class="line">}</div></pre></td></tr></table></figure>
+<p>&#x901A;&#x8FC7;&#x4E0A;&#x8FF0;&#x7684;&#x5206;&#x6790;&#x53EF;&#x4EE5;&#x53D1;&#x73B0;&#xFF0C;&#x8FD9;&#x6837;&#x867D;&#x7136;&#x80FD;&#x533A;&#x5206;&#x540C;&#x4E00;&#x4E2A;UIAlertController&#x7684;&#x4E0D;&#x540C;&#x7684;&#x64CD;&#x4F5C;&#x9009;&#x9879;&#xFF0C;&#x4F46;&#x662F;&#x53EF;&#x80FD;&#x65E0;&#x6CD5;&#x533A;&#x5206;&#x51FA;&#x4E0D;&#x540C;UIAlertController&#x7684;&#x5904;&#x4E8E;&#x540C;&#x4E00;&#x4F4D;&#x7F6E;&#x7684;&#x9009;&#x9879;&#xFF0C;&#x6240;&#x4EE5;&#x8FD9;&#x91CC;&#x8FD8;&#x8981;&#x52A0;&#x5165;UIAlertController&#x989D;&#x5916;&#x7684;&#x5C5E;&#x6027;&#x4FE1;&#x606F;&#x6765;&#x533A;&#x5206;&#x3002;</p>
+<p>&#x524D;&#x9762;&#x4E5F;&#x6709;&#x63D0;&#x8FC7;&#xFF0C;&#x53EF;&#x4EE5;&#x5F88;&#x5BB9;&#x6613;&#x7684;&#x60F3;&#x5230;UIAlertController&#x7684;message&#x548C;title&#x80FD;&#x591F;&#x8F83;&#x597D;&#x7684;&#x8FDB;&#x884C;&#x533A;&#x5206;&#xFF0C;&#x6240;&#x4EE5;&#x5728;&#x539F;&#x6709;&#x7684;&#x5C42;&#x7EA7;&#x8DEF;&#x5F84;&#x548C;&#x5F53;&#x524D;&#x9875;&#x9762;&#x7684;&#x57FA;&#x7840;&#x4E0A;&#xFF0C;&#x8FD8;&#x8981;&#x52A0;&#x4E0A;message&#x548C;title&#x4EE5;&#x6784;&#x6210;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x5B57;&#x7B26;&#x4E32;&#x3002;&#x7ED9;&#x51FA;&#x4E00;&#x4E2A;&#x6837;&#x4F8B;&#xFF1A;</p>
+<pre><code>path(UIWindow(0)__UIAlertControllerView(0)_UIView(0)_UIView(0)_UIView(0)_UICollectionView(0)__UIAlertControllerCollectionViewCell(section:0 item:0)_UIView(0)__UIAlertControllerActionView(0))&amp;controller(UIAlertController)&amp;message(&#x786E;&#x8BA4;&#x9000;&#x51FA;&#x7FA4;&#x804A;&#x5417;&#xFF1F;)&amp;title(&#x9000;&#x7FA4;)
+</code></pre><h3 id="&#x56DB;&#x3001;&#x603B;&#x7ED3;"><a href="#&#x56DB;&#x3001;&#x603B;&#x7ED3;" class="headerlink" title="&#x56DB;&#x3001;&#x603B;&#x7ED3;"></a><h2 id="4">&#x56DB;&#x3001;&#x603B;&#x7ED3;</h2></h3><p>&#x6587;&#x7AE0;&#x4E3B;&#x8981;&#x4ECB;&#x7ECD;&#x4E86;HubbleData&#x65E0;&#x57CB;&#x70B9;SDk&#x5728;iOS&#x7AEF;&#x7684;&#x8BBE;&#x8BA1;&#x4E0E;&#x5B9E;&#x73B0;&#xFF0C;&#x6D89;&#x53CA;&#x7684;&#x4E3B;&#x8981;&#x5185;&#x5BB9;&#xFF1A;&#x4E8B;&#x4EF6;&#x552F;&#x4E00;ID&#x7684;&#x786E;&#x5B9A;&#x548C;&#x90E8;&#x5206;&#x65E0;&#x57CB;&#x70B9;&#x7684;&#x5B9E;&#x73B0;&#xFF0C;&#x5F53;&#x7136;&#x5728;&#x65E0;&#x57CB;&#x70B9;SDK&#x7684;&#x8BBE;&#x8BA1;&#x5F00;&#x53D1;&#x4E2D;&#x8FD8;&#x9047;&#x5230;&#x4E86;&#x5404;&#x79CD;&#x5404;&#x6837;&#x7684;&#x95EE;&#x9898;&#x3002;&#x9274;&#x4E8E;&#x6587;&#x7AE0;&#x7684;&#x7BC7;&#x5E45;&#x5DF2;&#x7ECF;&#x8F83;&#x957F;&#xFF0C;&#x4E00;&#x4E9B;&#x95EE;&#x9898;&#x7684;&#x89E3;&#x51B3;&#x4EE5;&#x53CA;&#x5173;&#x952E;&#x6280;&#x672F;&#x7684;&#x5B9E;&#x73B0;&#xFF0C;&#x6BD4;&#x5982;&#x7CBE;&#x51C6;&#x6E20;&#x9053;&#x8FFD;&#x8E2A;&#x3001;hook&#x51B2;&#x7A81;&#x89E3;&#x51B3;&#x3001;&#x4EE3;&#x7801;&#x57CB;&#x70B9;&#x7684;&#x5B9E;&#x73B0;&#x3001;&#x5C4F;&#x5E55;&#x5E8F;&#x5217;&#x5316;&#x4EE5;&#x53CA;&#x53EF;&#x89C6;&#x5316;&#x5708;&#x9009;&#x90E8;&#x5206;&#x7684;&#x5185;&#x5BB9;&#xFF0C;&#x672C;&#x7BC7;&#x6587;&#x7AE0;&#x4E0D;&#x518D;&#x4ECB;&#x7ECD;&#xFF0C;&#x5C06;&#x4F1A;&#x5728;&#x540E;&#x7EED;&#x6587;&#x7AE0;&#x4E2D;&#x7EE7;&#x7EED;&#x4ECB;&#x7ECD;&#x3002;</p>
+<p>&#x9274;&#x4E8E;&#x5F53;&#x524D;&#x65E0;&#x57CB;&#x70B9;SDK&#x4ECD;&#x5728;&#x4E0D;&#x65AD;&#x6539;&#x8FDB;&#x548C;&#x5B8C;&#x5584;&#x4E2D;&#xFF0C;&#x5F85;&#x76F8;&#x5173;&#x529F;&#x80FD;&#x5B8C;&#x5584;&#xFF0C;&#x5C06;&#x8003;&#x8651;&#x5F00;&#x6E90;HubbleData&#x7684;&#x65E0;&#x57CB;&#x70B9;SDK&#x8BBE;&#x8BA1;&#x3002;&#x7531;&#x4E8E;&#x4E00;&#x4E9B;&#x539F;&#x56E0;&#xFF0C;&#x6587;&#x7AE0;&#x4ECB;&#x7ECD;&#x7684;&#x5F88;&#x591A;&#x4E1C;&#x897F;&#x53EF;&#x80FD;&#x4ECD;&#x6709;&#x5F85;&#x6539;&#x8FDB;&#xFF0C;&#x6B22;&#x8FCE;&#x5927;&#x5BB6;&#x4E00;&#x8D77;&#x63A2;&#x8BA8;&#x63D0;&#x9AD8;&#x3002;</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/ios/">ios</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/埋点/">埋点</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://NEYouFan.github.io/2017/04/19/ios/网易HubbleData无埋点SDK在iOS端的设计与实现/" data-title="网易HubbleData无埋点SDK在iOS端的设计与实现 | 网易杭州前端技术部" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2017/03/10/android/NAPM Android SDK/"  title="网易NAPM Andorid SDK实现原理">
+ <strong>下一篇：</strong><br/> 
+ <span>网易NAPM Andorid SDK实现原理
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2017/04/19/ios/网易HubbleData无埋点SDK在iOS端的设计与实现/" data-title="网易HubbleData无埋点SDK在iOS端的设计与实现" data-url="http://NEYouFan.github.io/2017/04/19/ios/网易HubbleData无埋点SDK在iOS端的设计与实现/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ios/" title="ios">ios<sup>5</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/LLVM/" title="LLVM">LLVM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/性能优化/" title="性能优化">性能优化<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/APM/" title="APM">APM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javaagent/" title="javaagent">javaagent<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HTTP/" title="HTTP">HTTP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ci容器/" title="ci容器">ci容器<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Crash-APP/" title="Crash, APP">Crash, APP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android工程模板/" title="android工程模板">android工程模板<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/埋点/" title="埋点">埋点<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NeteaseAPM/" title="NeteaseAPM">NeteaseAPM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Js引擎/" title="Js引擎">Js引擎<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/混合开发框架/" title="混合开发框架">混合开发框架<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">微信公众号</p>
+  <div class="barcode">
+    <img src="/img/qrcode_neyoufan.jpg" alt="">
+  </div>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+		<p class="copyright">
+		copyright © 2017
+		
+		<a href="/about" target="_blank" title="网易杭州前端技术部">网易杭州前端技术部</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"neyoufan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?78a4a5539516d8238b30820c93b43b1f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
